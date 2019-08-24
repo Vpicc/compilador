@@ -37,10 +37,10 @@ break       return KW_BREAK;
 "=="        return OPERATOR_EQ;
 "!="        return OPERATOR_DIF;
 
-TRUE        return LIT_TRUE;
-FALSE       return LIT_FALSE;
-\'.\'       return LIT_CHAR;
-\"(\\.|[^\\"])*\"     return LIT_STRING;
+TRUE        { hashInsert(yytext, LIT_TRUE); return LIT_TRUE; }
+FALSE       { hashInsert(yytext, LIT_FALSE); return LIT_FALSE; }
+\'.\'       { hashInsert(yytext, LIT_CHAR); return LIT_CHAR; }
+\"(\\.|[^\\"])*\"     { hashInsert(yytext, LIT_STRING); return LIT_STRING; }
 
 ","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"v"|"."|"~"|"&"|"$"|"#" return yytext[0];
 

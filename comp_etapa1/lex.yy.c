@@ -906,23 +906,23 @@ return OPERATOR_DIF;
 case 19:
 YY_RULE_SETUP
 #line 40 "scanner.l"
-return LIT_TRUE;
+{ hashInsert(yytext, LIT_TRUE); return LIT_TRUE; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 41 "scanner.l"
-return LIT_FALSE;
+{ hashInsert(yytext, LIT_FALSE); return LIT_FALSE; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 42 "scanner.l"
-return LIT_CHAR;
+{ hashInsert(yytext, LIT_CHAR); return LIT_CHAR; }
 	YY_BREAK
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
 #line 43 "scanner.l"
-return LIT_STRING;
+{ hashInsert(yytext, LIT_STRING); return LIT_STRING; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
