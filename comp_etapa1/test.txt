@@ -1,0 +1,56 @@
+int abcde;
+"TEST"
+"test"
+for abc 123 44 5
+'k'
+// comentario
+/*
+comentario de mais linhas
+entendeu irmao
+*/
+TRUE
+FALSE
+true
+false
+TRUe
+FALse
+AGASDASG
+
+%%^^
+
+"dasd"
+k
+++
+--
+int r;
+int x;
+>=
+<=
+!=
+==
+&&
+1.1
+.1
+0.4
+1
+5.
+.
+5939
+'a'
+'aa'
+"b"
+"string meu nome!"
+"float"
+"\n"
+###
+int
+float
+comentario
+de multiplas
+linhas
+2.4
+2
+.0
+"STRING"
+###
+C
