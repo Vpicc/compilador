@@ -8,6 +8,7 @@ for abc 123 44 5
 comentario de mais linhas
 entendeu irmao
 */
+"teste \" string \""
 TRUE
 FALSE
 true
@@ -42,6 +43,8 @@ int x;
 "string meu nome!"
 "float"
 "\n"
+""
+''
 ###
 int
 float

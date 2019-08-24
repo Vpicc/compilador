@@ -40,7 +40,7 @@ break       return KW_BREAK;
 TRUE        return LIT_TRUE;
 FALSE       return LIT_FALSE;
 \'.\'       return LIT_CHAR;
-\".+\"      return LIT_STRING;
+\"(\\.|[^\\"])*\"     return LIT_STRING;
 
 ","|";"|":"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"/"|"<"|">"|"="|"v"|"."|"~"|"&"|"$"|"#" return yytext[0];
 
