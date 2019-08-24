@@ -1,3 +1,6 @@
+// Victor de Almeida Piccoli Ferreira
+// Lucas Cardoso Tavares
+
 /*
     Hash Table code based on the teacher Johann class
 */
