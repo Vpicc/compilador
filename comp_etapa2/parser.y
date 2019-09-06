@@ -58,6 +58,6 @@ cmd: TK_IDENTIFIER '=' LIT_FLOAT
 %%
 
 int yyerror(char *msg) {
-    fprintf(stderr, "deu erro");
+    fprintf(stderr, "Erro de sintaxe na linha %d!\n", lineNumber);
     exit(3); //codigo de erro sintatico padrao
 }

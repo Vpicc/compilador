@@ -3,8 +3,10 @@
 int lineNumber = 1;
 int running = 1;
 
+#include "y.tab.h"
 #include "hash_table.c"
-#include "tokens.h"
+//#include "tokens.h"
+
 
 void initMed(void);
 int getLineNumber();
@@ -61,10 +63,11 @@ FALSE       { hashInsert(yytext, LIT_FALSE); return LIT_FALSE; }
 <COMMENT>"\t"
 <COMMENT>.  
 
-.        return TOKEN_ERROR;
+.
 %%
 
 #include "main.c"
+#include "y.tab.c"
 
 int yywrap()
 {
