@@ -6,8 +6,10 @@ int a = 0;
 int i = 0;
 long l = 0;
 float f = 0.0;
-int list[10]: 0 0 0 0 0 0 0 0 0 0; 
+int mat1[10]; 
 int mat [ 10]; 
+int list[10]: 0 0 0 0 0 0 0 0 0 0; 
+
 
 int main ()
   {
@@ -20,6 +22,7 @@ int main ()
 
   while (i<10)
     {
+    x = incn();
     i = incn(i,1);
     a = incn(a,1);
     };

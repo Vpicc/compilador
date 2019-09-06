@@ -37,42 +37,72 @@ extern int lineNumber;
 
 %%
 
-programa: programa decl
-    |
+programa: programa decl  |   ;
+
+decl: vardec | fundec;
+
+vardec: vartype  TK_IDENTIFIER '=' literal ';' |
+    vartype TK_IDENTIFIER '[' LIT_INTEGER ']' veclist ';'
     ;
 
-decl: vardec | fundec
+vartype: KW_INT | KW_BOOL | KW_BYTE | KW_LONG | KW_FLOAT;
+
+literal: LIT_INTEGER |
+LIT_FLOAT  |
+LIT_TRUE   |
+LIT_FALSE  |
+LIT_CHAR   |
+LIT_STRING ;
+
+veclist: ':' literal vecrest | ;
+
+vecrest: literal vecrest | ;
+
+fundec: vartype TK_IDENTIFIER '(' parlist ')' body ;
+
+par: KW_INT TK_IDENTIFIER;
+
+parlist:  par rest   |   ;
+
+rest: ',' par rest  |   ;
+
+body: cmd body   |   ;
+
+funcall: TK_IDENTIFIER '(' funlist ')';
+
+funpar: TK_IDENTIFIER | literal;
+
+funlist: funpar funrest | ;
+
+funrest: ',' funpar funrest | ;
+
+cmd:  TK_IDENTIFIER '=' literal | 
+    TK_IDENTIFIER '[' vecindex ']' '=' literal |
+    KW_PRINT printlist |
+    KW_READ TK_IDENTIFIER |
+    KW_WHILE '(' expression ')' cmd |  
+    TK_IDENTIFIER '=' funcall |
+    KW_FOR '(' ')' cmd |
+    block |
     ;
 
-vardec:   KW_INT  TK_IDENTIFIER    '='    init ';'
+printlist: expression printrest;
+
+printrest: expression printrest | ;
+
+expression: TK_IDENTIFIER '[' vecindex ']' | 
+    TK_IDENTIFIER |
+    literal |
+    expression '<' expression |
+;
+
+vecindex:
+    TK_IDENTIFIER | LIT_INTEGER;
+
+block:  '{' lcmd '}'
     ;
 
-init: LIT_INTEGER
-    ;
-
-fundec: KW_INT TK_IDENTIFIER    '(' parlist ')' body
-    ;
-
-par: KW_INT;
-
-parlist: par resto
-    |
-    ;
-resto: ',' par resto
-    |
-    ;
-
-body: cmd body
-    |
-    ;
-
-cmd: TK_IDENTIFIER '=' LIT_FLOAT 
-    |
-    block
-    ;
-block: '{' lcmd '}'
-    ;
-lcmd: lcmd cmd ';'
+lcmd:  lcmd cmd ';'
     |
     ;
 
