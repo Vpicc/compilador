@@ -86,6 +86,8 @@ cmd:  TK_IDENTIFIER '=' literal |
     block |
     ;
 
+forlist: forfirst ',' forsecond ',' forthird;
+
 printlist: expression printrest;
 
 printrest: expression printrest | ;
