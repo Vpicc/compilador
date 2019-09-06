@@ -5,6 +5,7 @@ int running = 1;
 
 #include "hash_table.c"
 #include "tokens.h"
+#include "y.tab.h"
 
 void initMed(void);
 int getLineNumber();
@@ -65,6 +66,7 @@ FALSE       { hashInsert(yytext, LIT_FALSE); return LIT_FALSE; }
 %%
 
 #include "main.c"
+#include "t.tab.c"
 
 int yywrap()
 {
