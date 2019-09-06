@@ -77,29 +77,45 @@ funlist: funpar funrest | ;
 funrest: ',' funpar funrest | ;
 
 cmd:  TK_IDENTIFIER '=' literal | 
-    TK_IDENTIFIER '[' vecindex ']' '=' literal |
+    TK_IDENTIFIER '[' expression ']' '=' literal |
     KW_PRINT printlist |
     KW_READ TK_IDENTIFIER |
     KW_WHILE '(' expression ')' cmd |  
     TK_IDENTIFIER '=' funcall |
-    KW_FOR '(' ')' cmd |
+    KW_FOR '(' forlist ')' cmd |
+    KW_IF '(' expression ')' KW_THEN cmd |
+    KW_BREAK |
     block |
     ;
 
 forlist: forfirst ',' forsecond ',' forthird;
 
+forfirst: expression ':' expression | ;
+
+forsecond: expression | ;
+
+forthird: expression | ;
+
 printlist: expression printrest;
 
 printrest: expression printrest | ;
 
-expression: TK_IDENTIFIER '[' vecindex ']' | 
+expression: TK_IDENTIFIER '[' expression ']' | 
     TK_IDENTIFIER |
     literal |
+    expression OPERATOR_EQ expression |
+    expression OPERATOR_DIF expression |
+    expression OPERATOR_GE expression |
+    expression OPERATOR_LE expression |
+    expression '+' expression |
+    expression '-' expression |
+    expression '*' expression |
+    expression '/' expression |
     expression '<' expression |
-;
-
-vecindex:
-    TK_IDENTIFIER | LIT_INTEGER;
+    expression '>' expression |
+    expression '.' expression |
+    expression 'v' expression |
+    expression '~' expression;
 
 block:  '{' lcmd '}'
     ;
