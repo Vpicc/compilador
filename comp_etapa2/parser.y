@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+extern int lineNumber;
+
 %}
 
 %token KW_BYTE       
@@ -42,10 +44,22 @@ programa: programa decl
 decl: vardec | fundec
     ;
 
-vardec:   KW_INT  TK_IDENTIFIER    '='    LIT_INTEGER
+vardec:   KW_INT  TK_IDENTIFIER    '='    init ';'
     ;
 
-fundec: KW_INT TK_IDENTIFIER    '(' ')' body
+init: LIT_INTEGER
+    ;
+
+fundec: KW_INT TK_IDENTIFIER    '(' parlist ')' body
+    ;
+
+par: KW_INT;
+
+parlist: par resto
+    |
+    ;
+resto: ',' par resto
+    |
     ;
 
 body: cmd body
@@ -53,6 +67,13 @@ body: cmd body
     ;
 
 cmd: TK_IDENTIFIER '=' LIT_FLOAT 
+    |
+    block
+    ;
+block: '{' lcmd '}'
+    ;
+lcmd: lcmd cmd ';'
+    |
     ;
 
 %%
