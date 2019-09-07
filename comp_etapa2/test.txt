@@ -12,7 +12,7 @@ int list[10]: 0 0 0 0 0 0 0 0 0 0;
 
 
 int main ()
-  {
+{
   a = 5;
   list[a] = 55;
   print list[55];
@@ -46,9 +46,9 @@ int main ()
     }
   else
     print "OK!\n"
-  }
+}
 
-int incn ( int x, int n )
+int incn ( float x, int n )
   {
   return x+n
   }

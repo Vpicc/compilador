@@ -58,15 +58,13 @@ veclist: ':' literal vecrest | ;
 
 vecrest: literal vecrest | ;
 
-fundec: vartype TK_IDENTIFIER '(' parlist ')' body ;
+fundec: vartype TK_IDENTIFIER '(' parlist ')' block ;
 
-par: KW_INT TK_IDENTIFIER;
+par: vartype TK_IDENTIFIER;
 
 parlist:  par rest   |   ;
 
 rest: ',' par rest  |   ;
-
-body: cmd body   |   ;
 
 funcall: TK_IDENTIFIER '(' funlist ')';
 
@@ -83,9 +81,13 @@ cmd:  TK_IDENTIFIER '=' literal |
     KW_WHILE '(' expression ')' cmd |  
     TK_IDENTIFIER '=' funcall |
     KW_FOR '(' forlist ')' cmd |
-    KW_IF '(' expression ')' KW_THEN cmd |
+    KW_IF '(' expression ')' KW_THEN cmd else |
     KW_BREAK |
     block |
+    KW_RETURN expression |
+    ;
+
+else: KW_ELSE cmd |
     ;
 
 forlist: forfirst ',' forsecond ',' forthird;
@@ -120,9 +122,9 @@ expression: TK_IDENTIFIER '[' expression ']' |
 block:  '{' lcmd '}'
     ;
 
-lcmd:  lcmd cmd ';'
-    |
-    ;
+lcmd:  cmd cmdend;
+
+cmdend: ';' cmd cmdend | ;
 
 %%
 
