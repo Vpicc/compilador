@@ -74,8 +74,8 @@ funlist: funpar funrest | ;
 
 funrest: ',' funpar funrest | ;
 
-cmd:  TK_IDENTIFIER '=' literal | 
-    TK_IDENTIFIER '[' expression ']' '=' literal |
+cmd:  TK_IDENTIFIER '=' expression | 
+    TK_IDENTIFIER '[' expression ']' '=' expression |
     KW_PRINT printlist |
     KW_READ TK_IDENTIFIER |
     KW_WHILE '(' expression ')' cmd |  
@@ -92,7 +92,7 @@ else: KW_ELSE cmd |
 
 forlist: forfirst ',' forsecond ',' forthird;
 
-forfirst: expression ':' expression | ;
+forfirst: TK_IDENTIFIER ':' expression | ;
 
 forsecond: expression | ;
 

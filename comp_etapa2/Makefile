@@ -15,4 +15,4 @@ y.tab:
 	yacc -d parser.y
 
 clean:
-	rm lex.yy.c y.tab.c y.tab.h etapa2
+	rm lex.yy.c lex.yy.h y.tab.c y.tab.h etapa2
