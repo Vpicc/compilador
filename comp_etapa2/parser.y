@@ -68,7 +68,7 @@ rest: ',' par rest  |   ;
 
 funcall: TK_IDENTIFIER '(' funlist ')';
 
-funpar: TK_IDENTIFIER | literal;
+funpar: expression;
 
 funlist: funpar funrest | ;
 
@@ -79,7 +79,6 @@ cmd:  TK_IDENTIFIER '=' expression |
     KW_PRINT printlist |
     KW_READ TK_IDENTIFIER |
     KW_WHILE '(' expression ')' cmd |  
-    TK_IDENTIFIER '=' funcall |
     KW_FOR '(' forlist ')' cmd |
     KW_IF '(' expression ')' KW_THEN cmd else |
     KW_BREAK |
@@ -92,11 +91,11 @@ else: KW_ELSE cmd |
 
 forlist: forfirst ',' forsecond ',' forthird;
 
-forfirst: TK_IDENTIFIER ':' expression | ;
+forfirst: TK_IDENTIFIER ':' expression;
 
-forsecond: expression | ;
+forsecond: expression;
 
-forthird: expression | ;
+forthird: expression;
 
 printlist: expression printrest;
 
@@ -117,7 +116,9 @@ expression: TK_IDENTIFIER '[' expression ']' |
     expression '>' expression |
     expression '.' expression |
     expression 'v' expression |
-    expression '~' expression;
+    expression '~' expression |
+    '(' expression ')'        |
+    funcall;
 
 block:  '{' lcmd '}'
     ;
