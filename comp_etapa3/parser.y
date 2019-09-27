@@ -48,11 +48,13 @@ int yyerror(char*);
 
 
 
+
 %left OPERATOR_DIF OPERATOR_EQ OPERATOR_GE OPERATOR_LE '>' '<'
 %left '.' 'v' '~'
 %left '+' '-'
 %left '*' '/'
 %right KW_THEN KW_ELSE
+%right TK_IDENTIFIER '[' '(' // talvez esteja errado
 
 %%
 

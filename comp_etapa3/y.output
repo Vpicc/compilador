@@ -1,6 +1,3 @@
-State 59 conflicts: 1 shift/reduce
-
-
 Grammar
 
     0 $accept: begin $end
@@ -335,33 +332,19 @@ State 13
     7       | vartype TK_IDENTIFIER . '[' LIT_INTEGER ']' veclist ';'
    23 fundec: vartype TK_IDENTIFIER . '(' parlist ')' block
 
-    '='  shift, and go to state 14
-    '['  shift, and go to state 15
-    '('  shift, and go to state 16
+    '['  shift, and go to state 14
+    '('  shift, and go to state 15
+    '='  shift, and go to state 16
 
 
 State 14
 
-    6 vardec: vartype TK_IDENTIFIER '=' . literal ';'
+    7 vardec: vartype TK_IDENTIFIER '[' . LIT_INTEGER ']' veclist ';'
 
     LIT_INTEGER  shift, and go to state 17
-    LIT_FLOAT    shift, and go to state 18
-    LIT_TRUE     shift, and go to state 19
-    LIT_FALSE    shift, and go to state 20
-    LIT_CHAR     shift, and go to state 21
-    LIT_STRING   shift, and go to state 22
-
-    literal  go to state 23
 
 
 State 15
-
-    7 vardec: vartype TK_IDENTIFIER '[' . LIT_INTEGER ']' veclist ';'
-
-    LIT_INTEGER  shift, and go to state 24
-
-
-State 16
 
    23 fundec: vartype TK_IDENTIFIER '(' . parlist ')' block
 
@@ -373,100 +356,107 @@ State 16
 
     $default  reduce using rule 26 (parlist)
 
-    vartype  go to state 25
-    par      go to state 26
-    parlist  go to state 27
+    vartype  go to state 18
+    par      go to state 19
+    parlist  go to state 20
+
+
+State 16
+
+    6 vardec: vartype TK_IDENTIFIER '=' . literal ';'
+
+    LIT_INTEGER  shift, and go to state 21
+    LIT_FLOAT    shift, and go to state 22
+    LIT_TRUE     shift, and go to state 23
+    LIT_FALSE    shift, and go to state 24
+    LIT_CHAR     shift, and go to state 25
+    LIT_STRING   shift, and go to state 26
+
+    literal  go to state 27
 
 
 State 17
+
+    7 vardec: vartype TK_IDENTIFIER '[' LIT_INTEGER . ']' veclist ';'
+
+    ']'  shift, and go to state 28
+
+
+State 18
+
+   24 par: vartype . TK_IDENTIFIER
+
+    TK_IDENTIFIER  shift, and go to state 29
+
+
+State 19
+
+   25 parlist: par . rest
+
+    ','  shift, and go to state 30
+
+    $default  reduce using rule 28 (rest)
+
+    rest  go to state 31
+
+
+State 20
+
+   23 fundec: vartype TK_IDENTIFIER '(' parlist . ')' block
+
+    ')'  shift, and go to state 32
+
+
+State 21
 
    13 literal: LIT_INTEGER .
 
     $default  reduce using rule 13 (literal)
 
 
-State 18
+State 22
 
    14 literal: LIT_FLOAT .
 
     $default  reduce using rule 14 (literal)
 
 
-State 19
+State 23
 
    15 literal: LIT_TRUE .
 
     $default  reduce using rule 15 (literal)
 
 
-State 20
+State 24
 
    16 literal: LIT_FALSE .
 
     $default  reduce using rule 16 (literal)
 
 
-State 21
+State 25
 
    17 literal: LIT_CHAR .
 
     $default  reduce using rule 17 (literal)
 
 
-State 22
+State 26
 
    18 literal: LIT_STRING .
 
     $default  reduce using rule 18 (literal)
 
 
-State 23
+State 27
 
     6 vardec: vartype TK_IDENTIFIER '=' literal . ';'
 
-    ';'  shift, and go to state 28
-
-
-State 24
-
-    7 vardec: vartype TK_IDENTIFIER '[' LIT_INTEGER . ']' veclist ';'
-
-    ']'  shift, and go to state 29
-
-
-State 25
-
-   24 par: vartype . TK_IDENTIFIER
-
-    TK_IDENTIFIER  shift, and go to state 30
-
-
-State 26
-
-   25 parlist: par . rest
-
-    ','  shift, and go to state 31
-
-    $default  reduce using rule 28 (rest)
-
-    rest  go to state 32
-
-
-State 27
-
-   23 fundec: vartype TK_IDENTIFIER '(' parlist . ')' block
-
-    ')'  shift, and go to state 33
+    ';'  shift, and go to state 33
 
 
 State 28
-
-    6 vardec: vartype TK_IDENTIFIER '=' literal ';' .
-
-    $default  reduce using rule 6 (vardec)
-
-
-State 29
 
     7 vardec: vartype TK_IDENTIFIER '[' LIT_INTEGER ']' . veclist ';'
 
@@ -477,14 +467,14 @@ State 29
     veclist  go to state 35
 
 
-State 30
+State 29
 
    24 par: vartype TK_IDENTIFIER .
 
     $default  reduce using rule 24 (par)
 
 
-State 31
+State 30
 
    27 rest: ',' . par rest
 
@@ -494,18 +484,18 @@ State 31
     KW_FLOAT  shift, and go to state 7
     KW_BOOL   shift, and go to state 8
 
-    vartype  go to state 25
+    vartype  go to state 18
     par      go to state 36
 
 
-State 32
+State 31
 
    25 parlist: par rest .
 
     $default  reduce using rule 25 (parlist)
 
 
-State 33
+State 32
 
    23 fundec: vartype TK_IDENTIFIER '(' parlist ')' . block
 
@@ -514,16 +504,23 @@ State 33
     block  go to state 38
 
 
+State 33
+
+    6 vardec: vartype TK_IDENTIFIER '=' literal ';' .
+
+    $default  reduce using rule 6 (vardec)
+
+
 State 34
 
    19 veclist: ':' . literal vecrest
 
-    LIT_INTEGER  shift, and go to state 17
-    LIT_FLOAT    shift, and go to state 18
-    LIT_TRUE     shift, and go to state 19
-    LIT_FALSE    shift, and go to state 20
-    LIT_CHAR     shift, and go to state 21
-    LIT_STRING   shift, and go to state 22
+    LIT_INTEGER  shift, and go to state 21
+    LIT_FLOAT    shift, and go to state 22
+    LIT_TRUE     shift, and go to state 23
+    LIT_FALSE    shift, and go to state 24
+    LIT_CHAR     shift, and go to state 25
+    LIT_STRING   shift, and go to state 26
 
     literal  go to state 39
 
@@ -539,7 +536,7 @@ State 36
 
    27 rest: ',' par . rest
 
-    ','  shift, and go to state 31
+    ','  shift, and go to state 30
 
     $default  reduce using rule 28 (rest)
 
@@ -578,12 +575,12 @@ State 39
 
    19 veclist: ':' literal . vecrest
 
-    LIT_INTEGER  shift, and go to state 17
-    LIT_FLOAT    shift, and go to state 18
-    LIT_TRUE     shift, and go to state 19
-    LIT_FALSE    shift, and go to state 20
-    LIT_CHAR     shift, and go to state 21
-    LIT_STRING   shift, and go to state 22
+    LIT_INTEGER  shift, and go to state 21
+    LIT_FLOAT    shift, and go to state 22
+    LIT_TRUE     shift, and go to state 23
+    LIT_FALSE    shift, and go to state 24
+    LIT_CHAR     shift, and go to state 25
+    LIT_STRING   shift, and go to state 26
 
     $default  reduce using rule 22 (vecrest)
 
@@ -639,12 +636,12 @@ State 46
    37 cmd: KW_PRINT . printlist
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -658,12 +655,12 @@ State 47
    45 cmd: KW_RETURN . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -683,8 +680,8 @@ State 49
    35 cmd: TK_IDENTIFIER . '=' expression
    36    | TK_IDENTIFIER . '[' expression ']' '=' expression
 
-    '='  shift, and go to state 66
-    '['  shift, and go to state 67
+    '['  shift, and go to state 66
+    '='  shift, and go to state 67
 
 
 State 50
@@ -716,12 +713,12 @@ State 53
 
    21 vecrest: literal . vecrest
 
-    LIT_INTEGER  shift, and go to state 17
-    LIT_FLOAT    shift, and go to state 18
-    LIT_TRUE     shift, and go to state 19
-    LIT_FALSE    shift, and go to state 20
-    LIT_CHAR     shift, and go to state 21
-    LIT_STRING   shift, and go to state 22
+    LIT_INTEGER  shift, and go to state 21
+    LIT_FLOAT    shift, and go to state 22
+    LIT_TRUE     shift, and go to state 23
+    LIT_FALSE    shift, and go to state 24
+    LIT_CHAR     shift, and go to state 25
+    LIT_STRING   shift, and go to state 26
 
     $default  reduce using rule 22 (vecrest)
 
@@ -742,12 +739,12 @@ State 55
    42    | KW_IF '(' . expression ')' KW_THEN cmd KW_ELSE cmd
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -760,12 +757,12 @@ State 56
    39 cmd: KW_WHILE '(' . expression ')' cmd
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -799,7 +796,6 @@ State 59
     '['  shift, and go to state 77
     '('  shift, and go to state 78
 
-    '('       [reduce using rule 55 (expression)]
     $default  reduce using rule 55 (expression)
 
 
@@ -808,12 +804,12 @@ State 60
    70 expression: '(' . expression ')'
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -864,12 +860,12 @@ State 64
     OPERATOR_EQ    shift, and go to state 82
     OPERATOR_DIF   shift, and go to state 83
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '>'            shift, and go to state 84
     '<'            shift, and go to state 85
     '.'            shift, and go to state 86
@@ -925,15 +921,15 @@ State 65
 
 State 66
 
-   35 cmd: TK_IDENTIFIER '=' . expression
+   36 cmd: TK_IDENTIFIER '[' . expression ']' '=' expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -943,15 +939,15 @@ State 66
 
 State 67
 
-   36 cmd: TK_IDENTIFIER '[' . expression ']' '=' expression
+   35 cmd: TK_IDENTIFIER '=' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1093,12 +1089,12 @@ State 77
    54 expression: TK_IDENTIFIER '[' . expression ']'
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1111,12 +1107,12 @@ State 78
    29 funcall: TK_IDENTIFIER '(' . funlist ')'
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     $default  reduce using rule 32 (funlist)
@@ -1166,12 +1162,12 @@ State 80
    60 expression: expression OPERATOR_LE . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1184,12 +1180,12 @@ State 81
    59 expression: expression OPERATOR_GE . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1202,12 +1198,12 @@ State 82
    57 expression: expression OPERATOR_EQ . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1220,12 +1216,12 @@ State 83
    58 expression: expression OPERATOR_DIF . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1238,12 +1234,12 @@ State 84
    66 expression: expression '>' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1256,12 +1252,12 @@ State 85
    65 expression: expression '<' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1274,12 +1270,12 @@ State 86
    67 expression: expression '.' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1292,12 +1288,12 @@ State 87
    68 expression: expression 'v' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1310,12 +1306,12 @@ State 88
    69 expression: expression '~' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1328,12 +1324,12 @@ State 89
    61 expression: expression '+' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1346,12 +1342,12 @@ State 90
    62 expression: expression '-' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1364,12 +1360,12 @@ State 91
    63 expression: expression '*' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1382,12 +1378,12 @@ State 92
    64 expression: expression '/' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1424,12 +1420,12 @@ State 94
     OPERATOR_EQ    shift, and go to state 82
     OPERATOR_DIF   shift, and go to state 83
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '>'            shift, and go to state 84
     '<'            shift, and go to state 85
     '.'            shift, and go to state 86
@@ -1450,6 +1446,39 @@ State 94
 
 
 State 95
+
+   36 cmd: TK_IDENTIFIER '[' expression . ']' '=' expression
+   57 expression: expression . OPERATOR_EQ expression
+   58           | expression . OPERATOR_DIF expression
+   59           | expression . OPERATOR_GE expression
+   60           | expression . OPERATOR_LE expression
+   61           | expression . '+' expression
+   62           | expression . '-' expression
+   63           | expression . '*' expression
+   64           | expression . '/' expression
+   65           | expression . '<' expression
+   66           | expression . '>' expression
+   67           | expression . '.' expression
+   68           | expression . 'v' expression
+   69           | expression . '~' expression
+
+    OPERATOR_LE   shift, and go to state 80
+    OPERATOR_GE   shift, and go to state 81
+    OPERATOR_EQ   shift, and go to state 82
+    OPERATOR_DIF  shift, and go to state 83
+    '>'           shift, and go to state 84
+    '<'           shift, and go to state 85
+    '.'           shift, and go to state 86
+    'v'           shift, and go to state 87
+    '~'           shift, and go to state 88
+    '+'           shift, and go to state 89
+    '-'           shift, and go to state 90
+    '*'           shift, and go to state 91
+    '/'           shift, and go to state 92
+    ']'           shift, and go to state 122
+
+
+State 96
 
    35 cmd: TK_IDENTIFIER '=' expression .
    57 expression: expression . OPERATOR_EQ expression
@@ -1481,39 +1510,6 @@ State 95
     '/'           shift, and go to state 92
 
     $default  reduce using rule 35 (cmd)
-
-
-State 96
-
-   36 cmd: TK_IDENTIFIER '[' expression . ']' '=' expression
-   57 expression: expression . OPERATOR_EQ expression
-   58           | expression . OPERATOR_DIF expression
-   59           | expression . OPERATOR_GE expression
-   60           | expression . OPERATOR_LE expression
-   61           | expression . '+' expression
-   62           | expression . '-' expression
-   63           | expression . '*' expression
-   64           | expression . '/' expression
-   65           | expression . '<' expression
-   66           | expression . '>' expression
-   67           | expression . '.' expression
-   68           | expression . 'v' expression
-   69           | expression . '~' expression
-
-    OPERATOR_LE   shift, and go to state 80
-    OPERATOR_GE   shift, and go to state 81
-    OPERATOR_EQ   shift, and go to state 82
-    OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '~'           shift, and go to state 88
-    '+'           shift, and go to state 89
-    '-'           shift, and go to state 90
-    '*'           shift, and go to state 91
-    '/'           shift, and go to state 92
-    ']'           shift, and go to state 122
 
 
 State 97
@@ -1560,12 +1556,12 @@ State 100
    48 forfirst: TK_IDENTIFIER ':' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -1598,12 +1594,12 @@ State 102
    47 forlist: forfirst ',' . forsecond ',' forthird
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -2176,12 +2172,12 @@ State 131
    33 funrest: ',' . funpar funrest
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -2209,12 +2205,12 @@ State 134
    36 cmd: TK_IDENTIFIER '[' expression ']' '=' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
@@ -2237,12 +2233,12 @@ State 136
    47 forlist: forfirst ',' forsecond ',' . forthird
 
     TK_IDENTIFIER  shift, and go to state 59
-    LIT_INTEGER    shift, and go to state 17
-    LIT_FLOAT      shift, and go to state 18
-    LIT_TRUE       shift, and go to state 19
-    LIT_FALSE      shift, and go to state 20
-    LIT_CHAR       shift, and go to state 21
-    LIT_STRING     shift, and go to state 22
+    LIT_INTEGER    shift, and go to state 21
+    LIT_FLOAT      shift, and go to state 22
+    LIT_TRUE       shift, and go to state 23
+    LIT_FALSE      shift, and go to state 24
+    LIT_CHAR       shift, and go to state 25
+    LIT_STRING     shift, and go to state 26
     '('            shift, and go to state 60
 
     literal     go to state 61
