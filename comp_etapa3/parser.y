@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lex.yy.h"
+#include "hash_table.h"
+#include "astree.h"
 
 extern int lineNumber;
 int getLineNumber(void);

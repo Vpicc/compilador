@@ -7,14 +7,16 @@
 # and #include "main.c" in the last part of the scanner.l
 #
 
-etapa3: y.tab.o lex.yy.o main.o hash_table.o
+etapa3: y.tab.o lex.yy.o main.o hash_table.o astree.o
 	gcc -o etapa3 y.tab.o lex.yy.o main.o hash_table.o -Wall
 lex.yy.o: lex.yy.c
-	gcc -c lex.yy.c -Wall
+	gcc -c lex.yy.c
 y.tab.o: y.tab.c
 	gcc -c y.tab.c -Wall
 hash.o: hash_table.c
 	gcc -c hash.c -Wall
+astree.o: astree.c
+	gcc -c astree.c -Wall
 main.o: main.c lex.yy.c y.tab.c
 	gcc -c main.c -Wall
 y.tab.c: parser.y lex.yy.c
