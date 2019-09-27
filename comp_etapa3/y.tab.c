@@ -493,14 +493,14 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    61,    61,    63,    63,    66,    66,    68,    69,    72,
-      72,    72,    72,    72,    74,    75,    76,    77,    78,    79,
-      81,    81,    83,    83,    85,    87,    89,    89,    91,    91,
-      93,    95,    97,    97,    99,    99,   101,   102,   103,   104,
-     105,   106,   107,   108,   109,   110,   111,   111,   115,   117,
-     119,   121,   123,   125,   125,   127,   128,   129,   130,   131,
-     132,   133,   134,   135,   136,   137,   138,   139,   140,   141,
-     142,   143,   144,   146,   149,   151,   151
+       0,    60,    60,    62,    62,    65,    65,    67,    68,    71,
+      71,    71,    71,    71,    73,    74,    75,    76,    77,    78,
+      80,    80,    82,    82,    84,    86,    88,    88,    90,    90,
+      92,    94,    96,    96,    98,    98,   100,   101,   102,   103,
+     104,   105,   106,   107,   108,   109,   110,   110,   114,   116,
+     118,   120,   122,   124,   124,   126,   127,   128,   129,   130,
+     131,   132,   133,   134,   135,   136,   137,   138,   139,   140,
+     141,   142,   143,   145,   148,   150,   150
 };
 #endif
 
@@ -1385,8 +1385,44 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-      
-#line 1390 "y.tab.c" /* yacc.c:1646  */
+        case 14:
+#line 73 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1392 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 15:
+#line 74 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1398 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 16:
+#line 75 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1404 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 76 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1410 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 77 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1416 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 78 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1422 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1426 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1614,7 +1650,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 153 "parser.y" /* yacc.c:1906  */
+#line 152 "parser.y" /* yacc.c:1906  */
 
 
 int yyerror(char *msg) {

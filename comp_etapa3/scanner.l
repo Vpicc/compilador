@@ -49,7 +49,7 @@ FALSE       { hashInsert(yytext, LIT_FALSE); return LIT_FALSE; }
 
 
 [A-Za-z_][A-Za-z_0-9]*  { hashInsert(yytext, TK_IDENTIFIER);  return TK_IDENTIFIER;}
-{DIGIT}+                { hashInsert(yytext, LIT_INTEGER);    return LIT_INTEGER;}
+{DIGIT}+                { yylval.symbol = hashInsert(yytext, LIT_INTEGER);    return LIT_INTEGER;}
 {DIGIT}+"."{DIGIT}+|{DIGIT}+"."|"."{DIGIT}+     { hashInsert(yytext, LIT_FLOAT);      return LIT_FLOAT;}
 
 
