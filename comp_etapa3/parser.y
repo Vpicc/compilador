@@ -116,7 +116,7 @@ cmd:  TK_IDENTIFIER '=' expression |
     ;
 
 
-forlist: TK_IDENTIFIER ':' expression ',' expression ',' expression;
+forlist: TK_IDENTIFIER ':' expression ',' expression ',' expression ;
 
 printlist: expression printrest;
 
