@@ -1,5 +1,5 @@
-#ifndef ASTREE
-#define ASTREE
+#ifndef ASTREE_H
+#define ASTREE_H
 #include <stdio.h>
 #include <string.h>
 #include "hash_table.h"

@@ -3,15 +3,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "lex.yy.h"
 #include "hash_table.h"
 #include "astree.h"
+#include "lex.yy.h"
+
 
 extern int lineNumber;
 int getLineNumber(void);
 int yyerror(char*);
 
 %}
+
+%union {
+    AST *ast;
+    HASH_NODE *symbol;
+}
 
 %token KW_BYTE       
 %token KW_INT        
@@ -38,6 +44,10 @@ int yyerror(char*);
 %token LIT_FALSE     
 %token LIT_CHAR
 %token LIT_STRING
+
+%left OPERATOR_DIF OPERATOR_EQ OPERATOR_GE OPERATOR_LE '>' '<'
+%left '+' '-'
+%left '*' '/'
 
 
 %%

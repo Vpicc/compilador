@@ -2,9 +2,10 @@
 %{
 int lineNumber = 1;
 int running = 1;
-
-#include "y.tab.h"
 #include "hash_table.h"
+#include "astree.h"
+#include "y.tab.h"
+
 // //#include "tokens.h"
 
 

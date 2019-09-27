@@ -8,17 +8,17 @@
 #
 
 etapa3: y.tab.o lex.yy.o main.o hash_table.o astree.o
-	gcc -o etapa3 y.tab.o lex.yy.o main.o hash_table.o -Wall
+	gcc -o etapa3 y.tab.o lex.yy.o main.o hash_table.o astree.o -Wall
 lex.yy.o: lex.yy.c
 	gcc -c lex.yy.c
 y.tab.o: y.tab.c
 	gcc -c y.tab.c -Wall
 hash.o: hash_table.c
 	gcc -c hash.c -Wall
-astree.o: astree.c
-	gcc -c astree.c -Wall
 main.o: main.c lex.yy.c y.tab.c
 	gcc -c main.c -Wall
+astree.o: astree.c
+	gcc -c astree.c -Wall
 y.tab.c: parser.y lex.yy.c
 	yacc -d parser.y
 lex.yy.c: scanner.l
