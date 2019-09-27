@@ -37,22 +37,29 @@ int yyerror(char*);
 %token OPERATOR_GE   
 %token OPERATOR_EQ   
 %token OPERATOR_DIF  
-%token TK_IDENTIFIER 
-%token LIT_INTEGER   
-%token LIT_FLOAT     
-%token LIT_TRUE      
-%token LIT_FALSE     
-%token LIT_CHAR
-%token LIT_STRING
+%token <symbol> TK_IDENTIFIER 
+%token <symbol> LIT_INTEGER   
+%token <symbol> LIT_FLOAT     
+%token <symbol> LIT_TRUE      
+%token <symbol> LIT_FALSE     
+%token <symbol> LIT_CHAR
+%token <symbol> LIT_STRING
+
+
+
 
 %left OPERATOR_DIF OPERATOR_EQ OPERATOR_GE OPERATOR_LE '>' '<'
+%left '.' 'v' '~'
 %left '+' '-'
 %left '*' '/'
-
+%right KW_THEN KW_ELSE
 
 %%
 
-programa: programa decl  |   ;
+begin: programa ;
+
+programa: programa decl |   ;
+
 
 decl: vardec | fundec;
 
@@ -95,14 +102,13 @@ cmd:  TK_IDENTIFIER '=' expression |
     KW_READ TK_IDENTIFIER |
     KW_WHILE '(' expression ')' cmd |  
     KW_FOR '(' forlist ')' cmd |
-    KW_IF '(' expression ')' KW_THEN cmd else |
+    KW_IF '(' expression ')' KW_THEN cmd |
+    KW_IF '(' expression ')' KW_THEN cmd KW_ELSE cmd |
     KW_BREAK |
     block |
     KW_RETURN expression |
     ;
 
-else: KW_ELSE cmd |
-    ;
 
 forlist: forfirst ',' forsecond ',' forthird;
 

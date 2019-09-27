@@ -20,7 +20,7 @@ main.o: main.c lex.yy.c y.tab.c
 astree.o: astree.c
 	gcc -c astree.c -Wall
 y.tab.c: parser.y lex.yy.c
-	yacc -d parser.y
+	yacc -d -v parser.y
 lex.yy.c: scanner.l
 	lex --header-file=lex.yy.h scanner.l
 
