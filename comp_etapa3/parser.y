@@ -69,18 +69,18 @@ vardec: vartype  TK_IDENTIFIER '=' literal ';' |
     vartype TK_IDENTIFIER '[' LIT_INTEGER ']' veclist ';'
     ;
 
-vartype: KW_INT {$$=astCreate(AST_TYPEINT,0,0,0,0,0,0);} |
-KW_BOOL {$$=astCreate(AST_TYPEBOOL,0,0,0,0,0,0);} |
-KW_BYTE {$$=astCreate(AST_TYPEBYTE,0,0,0,0,0,0);} |
-KW_LONG {$$=astCreate(AST_TYPELONG,0,0,0,0,0,0);} |
-KW_FLOAT {$$=astCreate(AST_TYPELONG,0,0,0,0,0,0);} ;
+vartype: KW_INT {$$=astCreate(AST_TYPEINT,0,0,0,0,0);} |
+KW_BOOL {$$=astCreate(AST_TYPEBOOL,0,0,0,0,0);} |
+KW_BYTE {$$=astCreate(AST_TYPEBYTE,0,0,0,0,0);} |
+KW_LONG {$$=astCreate(AST_TYPELONG,0,0,0,0,0);} |
+KW_FLOAT {$$=astCreate(AST_TYPELONG,0,0,0,0,0);} ;
 
-literal: LIT_INTEGER {$$=astCreate(AST_SYMBOL,$1,0,0,0,0,0);} |
-LIT_FLOAT  {$$=astCreate(AST_SYMBOL,$1,0,0,0,0,0);} |
-LIT_TRUE   {$$=astCreate(AST_SYMBOL,$1,0,0,0,0,0);} |
-LIT_FALSE  {$$=astCreate(AST_SYMBOL,$1,0,0,0,0,0);} |
-LIT_CHAR   {$$=astCreate(AST_SYMBOL,$1,0,0,0,0,0);} |
-LIT_STRING {$$=astCreate(AST_SYMBOL,$1,0,0,0,0,0);} ;
+literal: LIT_INTEGER {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} |
+LIT_FLOAT  {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} |
+LIT_TRUE   {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} |
+LIT_FALSE  {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} |
+LIT_CHAR   {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} |
+LIT_STRING {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} ;
 
 veclist: ':' literal vecrest | ;
 

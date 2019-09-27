@@ -1394,67 +1394,67 @@ yyreduce:
     {
         case 9:
 #line 72 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_TYPEINT,0,0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_TYPEINT,0,0,0,0,0);}
 #line 1399 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
 #line 73 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_TYPEBOOL,0,0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_TYPEBOOL,0,0,0,0,0);}
 #line 1405 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
 #line 74 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_TYPEBYTE,0,0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_TYPEBYTE,0,0,0,0,0);}
 #line 1411 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
 #line 75 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_TYPELONG,0,0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_TYPELONG,0,0,0,0,0);}
 #line 1417 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 76 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_TYPELONG,0,0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_TYPELONG,0,0,0,0,0);}
 #line 1423 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 78 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0);}
 #line 1429 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 79 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0);}
 #line 1435 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
 #line 80 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0);}
 #line 1441 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 81 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0);}
 #line 1447 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 82 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0);}
 #line 1453 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 83 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0);}
 #line 1459 "y.tab.c" /* yacc.c:1646  */
     break;
 
