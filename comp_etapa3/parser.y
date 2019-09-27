@@ -116,13 +116,7 @@ cmd:  TK_IDENTIFIER '=' expression |
     ;
 
 
-forlist: forfirst ',' forsecond ',' forthird;
-
-forfirst: TK_IDENTIFIER ':' expression;
-
-forsecond: expression;
-
-forthird: expression;
+forlist: TK_IDENTIFIER ':' expression ',' expression ',' expression;
 
 printlist: expression printrest;
 
