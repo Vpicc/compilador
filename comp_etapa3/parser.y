@@ -46,6 +46,7 @@ int yyerror(char*);
 %token <symbol> LIT_STRING
 
 %type <ast> literal
+%type <ast> vartype
 
 
 %left OPERATOR_DIF OPERATOR_EQ OPERATOR_GE OPERATOR_LE '>' '<'
@@ -68,7 +69,11 @@ vardec: vartype  TK_IDENTIFIER '=' literal ';' |
     vartype TK_IDENTIFIER '[' LIT_INTEGER ']' veclist ';'
     ;
 
-vartype: KW_INT | KW_BOOL | KW_BYTE | KW_LONG | KW_FLOAT;
+vartype: KW_INT {$$=astCreate(AST_TYPEINT,0,0,0,0,0,0);} |
+KW_BOOL {$$=astCreate(AST_TYPEBOOL,0,0,0,0,0,0);} |
+KW_BYTE {$$=astCreate(AST_TYPEBYTE,0,0,0,0,0,0);} |
+KW_LONG {$$=astCreate(AST_TYPELONG,0,0,0,0,0,0);} |
+KW_FLOAT {$$=astCreate(AST_TYPELONG,0,0,0,0,0,0);} ;
 
 literal: LIT_INTEGER {$$=astCreate(AST_SYMBOL,$1,0,0,0,0,0);} |
 LIT_FLOAT  {$$=astCreate(AST_SYMBOL,$1,0,0,0,0,0);} |

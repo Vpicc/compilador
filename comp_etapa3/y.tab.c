@@ -493,14 +493,14 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    60,    60,    62,    62,    65,    65,    67,    68,    71,
-      71,    71,    71,    71,    73,    74,    75,    76,    77,    78,
-      80,    80,    82,    82,    84,    86,    88,    88,    90,    90,
-      92,    94,    96,    96,    98,    98,   100,   101,   102,   103,
-     104,   105,   106,   107,   108,   109,   110,   110,   114,   116,
-     118,   120,   122,   124,   124,   126,   127,   128,   129,   130,
-     131,   132,   133,   134,   135,   136,   137,   138,   139,   140,
-     141,   142,   143,   145,   148,   150,   150
+       0,    61,    61,    63,    63,    66,    66,    68,    69,    72,
+      73,    74,    75,    76,    78,    79,    80,    81,    82,    83,
+      85,    85,    87,    87,    89,    91,    93,    93,    95,    95,
+      97,    99,   101,   101,   103,   103,   105,   106,   107,   108,
+     109,   110,   111,   112,   113,   114,   115,   115,   119,   121,
+     123,   125,   127,   129,   129,   131,   132,   133,   134,   135,
+     136,   137,   138,   139,   140,   141,   142,   143,   144,   145,
+     146,   147,   148,   150,   153,   155,   155
 };
 #endif
 
@@ -1385,44 +1385,74 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 14:
-#line 73 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+        case 9:
+#line 72 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_TYPEINT,0,0,0,0,0,0);}
 #line 1392 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 15:
-#line 74 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+  case 10:
+#line 73 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_TYPEBOOL,0,0,0,0,0,0);}
 #line 1398 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 16:
-#line 75 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+  case 11:
+#line 74 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_TYPEBYTE,0,0,0,0,0,0);}
 #line 1404 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 17:
-#line 76 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+  case 12:
+#line 75 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_TYPELONG,0,0,0,0,0,0);}
 #line 1410 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 18:
-#line 77 "parser.y" /* yacc.c:1646  */
-    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+  case 13:
+#line 76 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_TYPELONG,0,0,0,0,0,0);}
 #line 1416 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 19:
+  case 14:
 #line 78 "parser.y" /* yacc.c:1646  */
     {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
 #line 1422 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 15:
+#line 79 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1428 "y.tab.c" /* yacc.c:1646  */
+    break;
 
-#line 1426 "y.tab.c" /* yacc.c:1646  */
+  case 16:
+#line 80 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1434 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 81 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1440 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 82 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1446 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 83 "parser.y" /* yacc.c:1646  */
+    {(yyval.ast)=astCreate(AST_SYMBOL,(yyvsp[0].symbol),0,0,0,0,0);}
+#line 1452 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1456 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1650,7 +1680,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 152 "parser.y" /* yacc.c:1906  */
+#line 157 "parser.y" /* yacc.c:1906  */
 
 
 int yyerror(char *msg) {

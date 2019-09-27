@@ -18,8 +18,8 @@
 #define AST_TYPEINT 11
 #define AST_TYPEFLOAT 12
 #define AST_TYPEBOOL 13
-#define AST_TYPECHAR 14
-#define AST_TYPESTRING 15
+#define AST_TYPEBYTE 14
+#define AST_TYPELONG 15
 #define AST_LDEC 16
 
 typedef struct astree_node
