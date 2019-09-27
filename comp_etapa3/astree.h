@@ -33,5 +33,5 @@ AST *astCreate(int type, HASH_NODE *symbol, AST *s0, AST *s1, AST *s2, AST *s3, 
 
 void astPrint(AST *s0, int level);
 
-void astDecompile(AST *s0);
+void astDecompile(AST *s0, FILE *output);
 #endif

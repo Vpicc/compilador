@@ -35,3 +35,15 @@ void astPrint(AST *node, int level)
     for (i = 0; i < MAX_SONS; ++i)
         astPrint(node->son[i], level + 1);
 }
+
+void astDecompile(AST *s0, FILE *output)
+{
+    if (s0 != NULL)
+    {
+        switch (s0->type)
+        {
+        default:
+            break;
+        }
+    }
+}
