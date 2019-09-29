@@ -389,6 +389,9 @@ void astDecompile(AST *s0)
             fprintf(out," != "); 
             astDecompile(s0->son[1]);
             break;
+        case AST_BREAK:
+            fprintf(out, "break");
+            break;
         case AST_POINT : //TODO: Nem ideia do q colocar aqui
             fprintf(stderr,"AST_POINT,");
             break;
@@ -415,7 +418,7 @@ void astDecompile(AST *s0)
             break;
         //OK
         case AST_PRINT :
-            fprintf(out,"print");
+            fprintf(out,"print ");
             astDecompile(s0->son[0]);
             break;
         //OK
@@ -477,13 +480,12 @@ void astDecompile(AST *s0)
                 }
             }	
             else{
-                if(s0->son[1] != NULL)
+                if(s0->son[0] != NULL)
                     astDecompile(s0->son[0]);
             }
             break;
         //ACHO Q TA CERTO
         case AST_PARLIST_REST :
-            fprintf(out,","); 
             if(s0->son[1] != NULL)
             {
                 if(s0->son[0] != NULL){
@@ -493,7 +495,7 @@ void astDecompile(AST *s0)
                 }
             }	
             else{
-                if(s0->son[1] != NULL)
+                if(s0->son[0] != NULL)
                     astDecompile(s0->son[0]);
             }
             break;
@@ -501,21 +503,31 @@ void astDecompile(AST *s0)
         case AST_FUNLIST :
             if(s0->son[1] != NULL)
             {
-                astDecompile(s0->son[0]); 
-                astDecompile(s0->son[1]);
+                if(s0->son[0] != NULL){
+                    astDecompile(s0->son[0]); 
+                    fprintf(out,","); 
+                    astDecompile(s0->son[1]);
+                }
             }	
-            else
-                astDecompile(s0->son[0]);
+            else{
+                if(s0->son[0] != NULL)
+                    astDecompile(s0->son[0]);
+            }
             break;
         //ACHO Q TA CERTO
         case AST_FUNLIST_REST :
             if(s0->son[1] != NULL)
             {
-                astDecompile(s0->son[0]); 
-                astDecompile(s0->son[1]);
+                if(s0->son[0] != NULL){
+                    astDecompile(s0->son[0]); 
+                    fprintf(out,","); 
+                    astDecompile(s0->son[1]);
+                }
             }	
-            else
-                astDecompile(s0->son[0]);
+            else{
+                if(s0->son[0] != NULL)
+                    astDecompile(s0->son[0]);
+            }
             break;
         //ACHO Q TA CERTO
         case AST_PROG :
@@ -551,7 +563,7 @@ void astDecompile(AST *s0)
             if(s0->son[1] != NULL)
             {
                 astDecompile(s0->son[0]); 
-                fprintf(out,","); 
+                //fprintf(out,","); 
                 astDecompile(s0->son[1]);
             }	
             else
@@ -562,7 +574,7 @@ void astDecompile(AST *s0)
             if(s0->son[1] != NULL)
             {
                 astDecompile(s0->son[0]); 
-                fprintf(out,","); 
+                //fprintf(out,","); 
                 astDecompile(s0->son[1]);
             }	
             else

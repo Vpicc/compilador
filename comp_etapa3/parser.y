@@ -134,14 +134,14 @@ funrest: ',' funpar funrest { $$ = astCreate(AST_FUNLIST_REST, 0, $2, $3, 0, 0);
          {$$ = 0;};
 
 cmd:  TK_IDENTIFIER '=' expression {$$=astCreate(AST_ASS,$1,$3,0,0,0);}| 
-    TK_IDENTIFIER '[' expression ']' '=' expression {$$=astCreate(AST_VECTORASS,$1,$3,0,0,0);}|
+    TK_IDENTIFIER '[' expression ']' '=' expression {$$=astCreate(AST_VECTORASS,$1,$3,$6,0,0);}|
     KW_PRINT printlist {$$=astCreate(AST_PRINT,0,$2,0,0,0);}|
     KW_READ TK_IDENTIFIER  { $$ = astCreate(AST_READ, $2, 0, 0, 0, 0); }|
     KW_WHILE '(' expression ')' cmd {$$=astCreate(AST_WHILE,0,$3,$5,0,0);}|  
     KW_FOR '(' TK_IDENTIFIER ':' expression ',' expression ',' expression ')' cmd {$$=astCreate(AST_FOR,$3,$5,$7,$9,$11);}|
     KW_IF '(' expression ')' KW_THEN cmd {$$=astCreate(AST_IF,0,$3,$6,0,0);} |
     KW_IF '(' expression ')' KW_THEN cmd KW_ELSE cmd {$$=astCreate(AST_IFELSE,0,$3,$6,$8,0);} |
-    KW_BREAK |
+    KW_BREAK {$$=astCreate(AST_BREAK,0,0,0,0,0);}|
     block {$$ = $1;} |
     KW_RETURN expression {$$=astCreate(AST_RETURN,0,$2,0,0,0);} | {$$ = 0;};
     ;

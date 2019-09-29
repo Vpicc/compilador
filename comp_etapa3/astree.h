@@ -66,6 +66,7 @@
 #define AST_PARLIST_REST 50
 #define AST_CMDEND 51
 #define AST_TIL 52 //Não achei pra serve isso
+#define AST_BREAK 53
 
 
 FILE *out;
