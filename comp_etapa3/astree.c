@@ -393,10 +393,14 @@ void astDecompile(AST *s0)
             fprintf(out, "break");
             break;
         case AST_POINT : //TODO: Nem ideia do q colocar aqui
-            fprintf(stderr,"AST_POINT,");
+            astDecompile(s0->son[0]);
+            fprintf(out," . "); 
+            astDecompile(s0->son[1]);;
             break;
         case AST_TIL : //TODO: Nem ideia do q colocar aqui
-            fprintf(stderr,"AST_TIL,");
+            astDecompile(s0->son[0]);
+            fprintf(out," ~ "); 
+            astDecompile(s0->son[1]);;
             break;
         //OK
         case AST_OR :

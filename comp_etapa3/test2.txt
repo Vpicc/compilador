@@ -16,6 +16,8 @@ int main ()
   a = 5;
   list[a] = 55;
   print list[55];
+  a = 4 . 6;
+  d = 6 ~ 7;
 
   print "Digite um numero: \n";
   read a;
