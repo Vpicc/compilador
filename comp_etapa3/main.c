@@ -13,6 +13,7 @@ extern int isRunning(void);
 extern void initMe(void);
 extern int getLineNumber();
 
+
 int main(int argc, char **argv)
 {
     if (argc != 2)
@@ -22,7 +23,13 @@ int main(int argc, char **argv)
     }
 
     FILE *file;
+    
     if (!(file = fopen(argv[1], "r")))
+    {
+        printf("Erro ao abrir arquivo, ERROR2");
+        exit(2);
+    }
+        if (!(out = fopen(argv[2],"w"))) 
     {
         printf("Erro ao abrir arquivo, ERROR2");
         exit(2);
@@ -35,8 +42,8 @@ int main(int argc, char **argv)
 
     fprintf(stderr, "Sucesso!\n");
 
-    hashPrint();
-
+    //hashPrint();
+    fclose(out);
     exit(0);
 
     return 0;
