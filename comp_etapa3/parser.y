@@ -78,7 +78,7 @@ AST *root;
 %left '.' 'v' '~'
 %left '+' '-'
 %left '*' '/'
-%right KW_THEN KW_ELSE
+%right KW_THEN KW_ELSE 
 %right TK_IDENTIFIER '[' '(' // talvez esteja errado
 
 %%
