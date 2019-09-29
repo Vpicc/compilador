@@ -145,11 +145,11 @@ void astPrint(AST *node, int level)
         case AST_FUNLIST :
             fprintf(stderr,"AST_FUNLIST,");
             break;
+        case AST_FUNLIST_REST :
+            fprintf(stderr,"AST_FUNLIST_REST,");
+            break;
         case AST_PROG :
             fprintf(stderr,"AST_PROG,");
-            break;
-        case AST_REST :
-            fprintf(stderr,"AST_REST,");
             break;
         case AST_VECLIST :
             fprintf(stderr,"AST_VECLIST,");
@@ -171,6 +171,15 @@ void astPrint(AST *node, int level)
             break;
         case AST_VECSIZE :
             fprintf(stderr,"AST_VECSIZE,");
+            break;
+        case AST_PARLIST_REST :
+            fprintf(stderr,"AST_PARLIST_REST,");
+            break;
+        case AST_CMDEND :
+            fprintf(stderr,"AST_CMDEND,");
+            break;
+        case AST_TIL :
+            fprintf(stderr,"AST_TIL,");
             break;
         
         default:
@@ -195,29 +204,35 @@ void astDecompile(AST *s0)
     {
         switch (s0->type)
         {
+        //OK
         case AST_SYMBOL :
             fprintf(out,"%s", s0->symbol->text);
             break;
+        //OK
         case AST_ADD :
             astDecompile(s0->son[0]);
             fprintf(out," + ");
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_MUL :
             astDecompile(s0->son[0]);
             fprintf(out," * ");
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_SUB :
             astDecompile(s0->son[0]); 
             fprintf(out," - "); 
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_DIV :
             astDecompile(s0->son[0]); 
             fprintf(out,"/ "); 
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_DECL :
             astDecompile(s0->son[0]);  
             fprintf(out," "); 
@@ -227,11 +242,13 @@ void astDecompile(AST *s0)
             fprintf(out,";"); 
             astDecompile(s0->son[2]);
             break;
+        //OK
         case AST_ASS :
             fprintf(out,"%s", s0->symbol->text);
             fprintf(out," = "); 
             astDecompile(s0->son[0]);
             break;
+        //OK
         case AST_VECREAD :
             fprintf(out,"%s", s0->symbol->text); 
             fprintf(out,"["); 	
@@ -243,9 +260,35 @@ void astDecompile(AST *s0)
 				astDecompile(s0->son[2]);
 
             break;
+        //ACHO q ta certo
         case AST_LCMD :
-            fprintf(stderr,"AST_LCMD,");
+            if(s0->son[1] != NULL)
+            {   
+                if(s0->son[0] != NULL){
+                    astDecompile(s0->son[0]); 
+                    fprintf(out,";\n"); 
+                    astDecompile(s0->son[1]);
+                }
+            }
+            else
+                if(s0->son[0] != NULL)
+           	 	    astDecompile(s0->son[0]);
             break;
+        //ACHO Q TA CERTO
+        case AST_CMDEND :
+            if(s0->son[1] != NULL)
+            {   
+                if(s0->son[0] != NULL){
+                    astDecompile(s0->son[0]); 
+                    fprintf(out,";\n"); 
+                    astDecompile(s0->son[1]);
+                }
+            }
+            else
+                if(s0->son[0] != NULL)
+           	 	    astDecompile(s0->son[0]);
+            break;
+        //ACHO Q TA CERTO
         case AST_FUNDEC :
             astDecompile(s0->son[0]); 
             fprintf(out," "); 
@@ -255,21 +298,27 @@ void astDecompile(AST *s0)
             fprintf(out,")"); 
             astDecompile(s0->son[2]);
             break;
+        //OK
         case AST_TYPEINT :
             fprintf(out,"int");
             break;
+        //OK
         case AST_TYPEFLOAT :
             fprintf(out,"float");
             break;
+        //OK
         case AST_TYPEBOOL :
             fprintf(out,"bool");
             break;
+        //OK
         case AST_TYPEBYTE :
             fprintf(out,"byte");
             break;
+        //OK
         case AST_TYPELONG :
             fprintf(out,"long");
             break;
+        //OK
         case AST_IF :
             fprintf(out,"if(");
             astDecompile(s0->son[0]);
@@ -277,6 +326,7 @@ void astDecompile(AST *s0)
             fprintf(out," \n");
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_IFELSE :
             fprintf(out,"if("); 
             astDecompile(s0->son[0]); 
@@ -285,85 +335,95 @@ void astDecompile(AST *s0)
             fprintf(out,"else "); 
             astDecompile(s0->son[2]);
             break;
+        //OK
         case AST_WHILE :
             fprintf(out,"while(");
             astDecompile(s0->son[0]);
             fprintf(out,")");
             astDecompile(s0->son[1]);
             break;
+        //ACHO Q TA CERTO
         case AST_FOR :
-            fprintf(out,"for (%s = ", s0->symbol->text);
+            fprintf(out,"for (%s:", s0->symbol->text);
             astDecompile(s0->son[0]);
-            fprintf(out," to ");
+            fprintf(out,",");
             astDecompile(s0->son[1]);
-            fprintf(out,") \n");
+            fprintf(out,",");
             astDecompile(s0->son[2]);
+            fprintf(out,") \n");
+            astDecompile(s0->son[3]);
             break;
+        //OK
         case AST_LESS :
             astDecompile(s0->son[0]);
             fprintf(out," < "); 
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_GREATER :
             astDecompile(s0->son[0]);
             fprintf(out," > "); 
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_LE :
             astDecompile(s0->son[0]);
             fprintf(out," <= "); 
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_GE :
             astDecompile(s0->son[0]);
             fprintf(out," >= "); 
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_EQ :
             astDecompile(s0->son[0]);
             fprintf(out," == "); 
             astDecompile(s0->son[1]);;
             break;
+        //OK
         case AST_DIFF :
             astDecompile(s0->son[0]);
             fprintf(out," != "); 
             astDecompile(s0->son[1]);
             break;
-        case AST_POINT ://TODO: Nem ideia do q colocar aqui
+        case AST_POINT : //TODO: Nem ideia do q colocar aqui
             fprintf(stderr,"AST_POINT,");
             break;
-        case AST_TIL ://TODO: Nem ideia do q colocar aqui
+        case AST_TIL : //TODO: Nem ideia do q colocar aqui
             fprintf(stderr,"AST_TIL,");
             break;
+        //OK
         case AST_OR :
             astDecompile(s0->son[0]);
             fprintf(out," v "); 
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_PARENTHESIS :
             fprintf(out,"(");
             astDecompile(s0->son[0]);
             fprintf(out,")");
             break;
+        //OK
         case AST_BLOCK :
             fprintf(out,"\n{\n"); 
             astDecompile(s0->son[0]); 
             fprintf(out,"}");
             break;
+        //OK
         case AST_PRINT :
-            if(s0->son[1] != NULL)
-            {
-        		astDecompile(s0->son[0]); 
-                fprintf(out,","); 
-                astDecompile(s0->son[1]);
-            }
-            else
-           	 	astDecompile(s0->son[0]);
+            fprintf(out,"print");
+            astDecompile(s0->son[0]);
             break;
+        //OK
         case AST_RETURN :
             fprintf(out,"return "); 
             astDecompile(s0->son[0]);
             break;
+        //OK
         case AST_ARRDECL :
             astDecompile(s0->son[0]); 
             fprintf(out," %s", s0->symbol->text); 
@@ -379,16 +439,19 @@ void astDecompile(AST *s0)
 
 			fprintf(out,";");
             break;
+        //ACHO Q TA CERTO
         case AST_FUNCALL :
             fprintf(out,"%s", s0->symbol->text); 
             fprintf(out,"("); 
             astDecompile(s0->son[0]); 
             fprintf(out,")");
             break;
+        //OK
         case AST_READ :
             fprintf(out,"read "); 
             fprintf(out,"%s", s0->symbol->text);
             break;
+        //OK
         case AST_VECTORASS :
             fprintf(out, "%s", s0->symbol->text); 
             fprintf(out, "["); 
@@ -397,31 +460,64 @@ void astDecompile(AST *s0)
             fprintf(out, " = "); 
             astDecompile(s0->son[1]);
             break;
+        //OK
         case AST_PAR :
             astDecompile(s0->son[0]); 
             fprintf(out," "); 
             fprintf(out,"%s", s0->symbol->text); 
             break;
+        //ACHO Q TA CERTO
         case AST_PARLIST :
             if(s0->son[1] != NULL)
             {
-                astDecompile(s0->son[0]); 
-                fprintf(out," \n"); 
-                astDecompile(s0->son[1]);
+                if(s0->son[0] != NULL){
+                    astDecompile(s0->son[0]); 
+                    fprintf(out,","); 
+                    astDecompile(s0->son[1]);
+                }
             }	
-            else
-                astDecompile(s0->son[0]);
+            else{
+                if(s0->son[1] != NULL)
+                    astDecompile(s0->son[0]);
+            }
             break;
+        //ACHO Q TA CERTO
+        case AST_PARLIST_REST :
+            fprintf(out,","); 
+            if(s0->son[1] != NULL)
+            {
+                if(s0->son[0] != NULL){
+                    astDecompile(s0->son[0]); 
+                    fprintf(out,","); 
+                    astDecompile(s0->son[1]);
+                }
+            }	
+            else{
+                if(s0->son[1] != NULL)
+                    astDecompile(s0->son[0]);
+            }
+            break;
+        //ACHO Q TA CERTO
         case AST_FUNLIST :
             if(s0->son[1] != NULL)
             {
                 astDecompile(s0->son[0]); 
-                fprintf(out," \n"); 
                 astDecompile(s0->son[1]);
             }	
             else
                 astDecompile(s0->son[0]);
             break;
+        //ACHO Q TA CERTO
+        case AST_FUNLIST_REST :
+            if(s0->son[1] != NULL)
+            {
+                astDecompile(s0->son[0]); 
+                astDecompile(s0->son[1]);
+            }	
+            else
+                astDecompile(s0->son[0]);
+            break;
+        //ACHO Q TA CERTO
         case AST_PROG :
             if(s0->son[1] != NULL)
             {
@@ -432,29 +528,56 @@ void astDecompile(AST *s0)
             else
                 astDecompile(s0->son[0]);
             break;
-        case AST_REST :
-            fprintf(stderr,"AST_REST,");
-            break;
+        //OK
         case AST_VECLIST :
-            fprintf(stderr,"AST_VECLIST,");
+            astDecompile(s0->son[0]);
+            if(s0->son[1] != NULL)
+            {
+                fprintf(out," "); 
+                astDecompile(s0->son[1]);
+        	}
             break;
+        //OK
         case AST_VECREST :
-            fprintf(stderr,"AST_VECREST,");
+            astDecompile(s0->son[0]);
+            if(s0->son[1] != NULL)
+            {
+                fprintf(out," "); 
+                astDecompile(s0->son[1]);
+        	}
             break;
+        //ACHO Q TA CERTO
         case AST_PRINTLIST :
-            fprintf(stderr,"AST_PRINTLIST,");
+            if(s0->son[1] != NULL)
+            {
+                astDecompile(s0->son[0]); 
+                fprintf(out,","); 
+                astDecompile(s0->son[1]);
+            }	
+            else
+                astDecompile(s0->son[0]);
             break;
+        //ACHO Q TA CERTO
         case AST_PRINTLIST_REST :
-            fprintf(stderr,"AST_PRINTLIST_REST,");
+            if(s0->son[1] != NULL)
+            {
+                astDecompile(s0->son[0]); 
+                fprintf(out,","); 
+                astDecompile(s0->son[1]);
+            }	
+            else
+                astDecompile(s0->son[0]);
             break;
         case AST_PROG_VARDECL :
-            fprintf(stderr,"AST_PROG_VARDECL,");
+            fprintf(out," \n"); 
+            astDecompile(s0->son[0]); 
             break;
         case AST_PROG_FUNCDECL :
-            fprintf(stderr,"AST_PROG_FUNCDECL,");
+            fprintf(out," \n"); 
+            astDecompile(s0->son[0]); 
             break;
         case AST_VECSIZE :
-            fprintf(stderr,"AST_VECSIZE,");
+            fprintf(out,"%s", s0->symbol->text);
             break;
         
         default:

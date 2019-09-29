@@ -28,43 +28,44 @@
 #define AST_TYPELONG 16
 //#define AST_LDEC 17
 
-#define AST_IF 18
-#define AST_IFELSE 19
-#define AST_WHILE 20
-#define AST_FOR 21
+#define AST_IF 17
+#define AST_IFELSE 18
+#define AST_WHILE 19
+#define AST_FOR 20
 
-#define AST_LESS 22
-#define AST_GREATER 23
-#define AST_LE 24
-#define AST_GE 25
-#define AST_NE 26
-#define AST_EQ 27
-#define AST_DIFF 28
-#define AST_POINT 29 //Não achei pra serve isso
-#define AST_OR 30
+#define AST_LESS 21
+#define AST_GREATER 22
+#define AST_LE 23
+#define AST_GE 24
+#define AST_NE 25
+#define AST_EQ 26
+#define AST_DIFF 27
+#define AST_POINT 28 //Não achei pra serve isso
+#define AST_OR 29
 
-#define AST_BLOCK 31
-#define AST_PRINT 32
-#define AST_RETURN 33
-#define AST_ARRDECL 34
-#define AST_FUNCALL 35
-#define AST_READ 36
-#define AST_VECTORASS 37
-#define AST_PAR 38
-#define AST_PARLIST 39
-#define AST_FUNLIST 40
+#define AST_BLOCK 30
+#define AST_PRINT 31
+#define AST_RETURN 32
+#define AST_ARRDECL 33
+#define AST_FUNCALL 34
+#define AST_READ 35
+#define AST_VECTORASS 36
+#define AST_PAR 37
+#define AST_PARLIST 38
+#define AST_FUNLIST 39
+#define AST_FUNLIST_REST 40
 #define AST_PROG 41
-#define AST_REST 42
-#define AST_VECLIST 43
-#define AST_VECREST 44
-#define AST_PRINTLIST 45
-#define AST_PRINTLIST_REST 46
-#define AST_PROG_VARDECL 47
-#define AST_PROG_FUNCDECL 48
-#define AST_VECSIZE 49
-#define AST_PARENTHESIS 50
-
-#define AST_TIL 51 //Não achei pra serve isso
+#define AST_VECLIST 42
+#define AST_VECREST 43
+#define AST_PRINTLIST 44
+#define AST_PRINTLIST_REST 45
+#define AST_PROG_VARDECL 46
+#define AST_PROG_FUNCDECL 47
+#define AST_VECSIZE 48
+#define AST_PARENTHESIS 49
+#define AST_PARLIST_REST 50
+#define AST_CMDEND 51
+#define AST_TIL 52 //Não achei pra serve isso
 
 
 FILE *out;

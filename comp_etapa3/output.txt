@@ -1,0 +1,46 @@
+ 
+ 
+bool b = FALSE; 
+ 
+byte c = 'x'; 
+ 
+int a = 0; 
+ 
+int i = 0; 
+ 
+long l = 0; 
+ 
+float f = 0.0; 
+ 
+int mat1[10]; 
+ 
+int mat[10]; 
+ 
+int list[10]: 0 0 0 0 0 0 0 0 0 0; 
+ 
+int main()
+{
+a = 5;
+list[a] = ;
+printlist[55];
+print"Digite um numero: \n";
+read a;
+while(i < 10)
+{
+x = incn();
+i = incn(i1);
+a = incn(a1);
+};
+print"Incrementado algumas vezes a fica ",a,"\n";
+for (l:1,10,1) 
+print".";
+print"\n";
+if(a == 15) then  
+print"A=15\n";
+if(a == 15 v a == 17) then  
+print"A igual a 15 ou 17\n";
+} 
+ 
+int incn(float x,,)
+{
+return x + n}
