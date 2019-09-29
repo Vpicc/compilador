@@ -98,7 +98,7 @@ vartype: KW_INT {$$=astCreate(AST_TYPEINT,0,0,0,0,0);} |
 KW_BOOL {$$=astCreate(AST_TYPEBOOL,0,0,0,0,0);} |
 KW_BYTE {$$=astCreate(AST_TYPEBYTE,0,0,0,0,0);} |
 KW_LONG {$$=astCreate(AST_TYPELONG,0,0,0,0,0);} |
-KW_FLOAT {$$=astCreate(AST_TYPELONG,0,0,0,0,0);} ;
+KW_FLOAT {$$=astCreate(AST_TYPEFLOAT,0,0,0,0,0);} ;
 
 literal: LIT_INTEGER {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} |
 LIT_FLOAT  {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} |
@@ -107,32 +107,38 @@ LIT_FALSE  {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} |
 LIT_CHAR   {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} |
 LIT_STRING {$$=astCreate(AST_SYMBOL,$1,0,0,0,0);} ;
 
-veclist: ':' literal vecrest {$$ = astCreate(AST_VECLIST,0,$2,$3,0,0);} | {$$ = 0;};
+veclist: ':' literal vecrest {$$ = astCreate(AST_VECLIST,0,$2,$3,0,0);} |
+         {$$ = 0;};
 
-vecrest: literal vecrest {$$ = astCreate(AST_VECLIST,0,$1,$2,0,0);} | {$$ = 0;};
+vecrest: literal vecrest {$$ = astCreate(AST_VECREST,0,$1,$2,0,0);} |
+         {$$ = 0;};
 
 fundec: vartype TK_IDENTIFIER '(' parlist ')' block {$$=astCreate(AST_FUNDEC,$2,$1,$4,$6,0);} ;
 
 par: vartype TK_IDENTIFIER { $$ = astCreate(AST_PAR, $2, $1, 0, 0, 0);};
 
-parlist:  par rest { $$ = astCreate(AST_PARLIST, 0, $1, $2, 0, 0);} |  {$$ = 0;};
+parlist:  par rest { $$ = astCreate(AST_PARLIST, 0, $1, $2, 0, 0);} |
+          {$$ = 0;};
 
-rest: ',' par rest  { $$ = astCreate(AST_PARLIST, 0, $2, $3, 0, 0);} | {$$ = 0;};
+rest: ',' par rest  { $$ = astCreate(AST_PARLIST_REST, 0, $2, $3, 0, 0);} |
+         {$$ = 0;};
 
 funcall: TK_IDENTIFIER '(' funlist ')' {$$ = astCreate(AST_FUNCALL,$1,$3,0,0,0);} ;
 
 funpar: expression {$$ = $1;};
 
-funlist: funpar funrest {$$ = astCreate(AST_FUNLIST, 0,$1,$2,0,0);} | {$$ = 0;};
+funlist: funpar funrest {$$ = astCreate(AST_FUNLIST, 0,$1,$2,0,0);} |
+         {$$ = 0;};
 
-funrest: ',' funpar funrest { $$ = astCreate(AST_FUNLIST, 0, $2, $3, 0, 0); } | {$$ = 0;};
+funrest: ',' funpar funrest { $$ = astCreate(AST_FUNLIST_REST, 0, $2, $3, 0, 0); } |
+         {$$ = 0;};
 
 cmd:  TK_IDENTIFIER '=' expression {$$=astCreate(AST_ASS,$1,$3,0,0,0);}| 
     TK_IDENTIFIER '[' expression ']' '=' expression {$$=astCreate(AST_VECTORASS,$1,$3,0,0,0);}|
     KW_PRINT printlist {$$=astCreate(AST_PRINT,0,$2,0,0,0);}|
     KW_READ TK_IDENTIFIER  { $$ = astCreate(AST_READ, $2, 0, 0, 0, 0); }|
     KW_WHILE '(' expression ')' cmd {$$=astCreate(AST_WHILE,0,$3,$5,0,0);}|  
-    KW_FOR '(' TK_IDENTIFIER ':' expression ',' expression ',' expression ')' cmd {$$=astCreate(AST_FOR,$3,$5,$7,$9,0);}|
+    KW_FOR '(' TK_IDENTIFIER ':' expression ',' expression ',' expression ')' cmd {$$=astCreate(AST_FOR,$3,$5,$7,$9,$11);}|
     KW_IF '(' expression ')' KW_THEN cmd {$$=astCreate(AST_IF,0,$3,$6,0,0);} |
     KW_IF '(' expression ')' KW_THEN cmd KW_ELSE cmd {$$=astCreate(AST_IFELSE,0,$3,$6,$8,0);} |
     KW_BREAK |
@@ -162,14 +168,14 @@ expression: TK_IDENTIFIER '[' expression ']' { $$ = astCreate(AST_VECREAD, $1, $
     expression 'v' expression {$$=astCreate(AST_OR,0,$1,$3,0,0);}|
     expression '~' expression {$$=astCreate(AST_TIL,0,$1,$3,0,0);}|
     '(' expression ')'        {$$=astCreate(AST_PARENTHESIS,0,$2,0,0,0);}|
-    funcall;
+    funcall {$$ = $1;};
 
 block:  '{' lcmd '}' {$$=astCreate(AST_BLOCK,0,$2,0,0,0);}
     ;
 
 lcmd:  cmd cmdend {$$=astCreate(AST_LCMD,0,$1,$2,0,0);};
 
-cmdend: ';' cmd cmdend {$$=astCreate(AST_LCMD,0,$2,$3,0,0);} | {$$ = 0;};
+cmdend: ';' cmd cmdend {$$=astCreate(AST_CMDEND,0,$2,$3,0,0);} | {$$ = 0;};
 
 %%
 
