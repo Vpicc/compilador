@@ -73,9 +73,6 @@ void astPrint(AST *node, int level)
         case AST_TYPELONG :
             fprintf(stderr,"AST_TYPELONG,");
             break;
-        case AST_LDEC :
-            fprintf(stderr,"AST_LDEC,");
-            break;
         case AST_IF :
             fprintf(stderr,"AST_IF,");
             break;
@@ -281,7 +278,7 @@ void astDecompile(AST *s0)
             astDecompile(s0->son[1]);
             break;
         case AST_IFELSE :
-            ffprintf(out,"if("); 
+            fprintf(out,"if("); 
             astDecompile(s0->son[0]); 
             fprintf(out,") then "); astDecompile(s0->son[1]); 
             fprintf(out," "); 

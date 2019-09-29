@@ -48,8 +48,8 @@ AST *root;
 %token <symbol> LIT_CHAR
 %token <symbol> LIT_STRING
 
-%start begin
-
+//%start begin
+%type <ast> begin
 %type <ast> literal
 %type <ast> vartype
 %type <ast> programa
