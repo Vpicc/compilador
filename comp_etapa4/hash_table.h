@@ -20,11 +20,16 @@
 #define DATATYPE_BOOL 803
 #define DATATYPE_BYTE 804
 #define DATATYPE_LONG 805
+#define DATATYPE_STRING 806
+#define DATATYPE_CHAR 807
+#define DATATYPE_ERROR 808
+
 
 typedef struct hash_node
 {
     int type;
     int datatype;
+    int numparameters;
     char *text;
     struct hash_node *next;
 } HASH_NODE;
