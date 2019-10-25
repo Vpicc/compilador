@@ -7,5 +7,9 @@
 #include "hash_table.h"
 
 void checkAndSetTypes(AST *node);
+void setTypes(AST *node);
 void checkUndeclared(void);
+int getSemanticError();
+int getType(AST *node);
+void checkOperands(AST *node);
 #endif

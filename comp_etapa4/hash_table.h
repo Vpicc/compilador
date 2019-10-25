@@ -24,7 +24,6 @@
 #define DATATYPE_CHAR 807
 #define DATATYPE_ERROR 808
 
-
 typedef struct hash_node
 {
     int type;
@@ -43,5 +42,5 @@ int hashAddres(char *text);
 HASH_NODE *hashFind(char *text);
 HASH_NODE *hashInsert(char *text, int type);
 void hashPrint(void);
-void hashCheckUndeclared(void);
+int hashCheckUndeclared(void);
 #endif

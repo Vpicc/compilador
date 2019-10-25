@@ -84,9 +84,13 @@ AST *root;
 %%
 
 begin: programa {root = $$;
-                    astDecompile($$);
-                    astPrint($$,0);
-                    /*checkSemantic($$);*/
+                astDecompile($$);
+                astPrint($$,0);
+                checkAndSetTypes($1);
+                checkUndeclared();
+                checkOperands($1);
+                fprintf(stderr,"%d Semantic errors\n", getSemanticError());
+                /*checkSemantic($$);*/
                 };
 
 programa: programa decl {$$=astCreate(AST_PROG, 0,$1,$2,0,0, getLineNumber());} | {$$ = 0;};

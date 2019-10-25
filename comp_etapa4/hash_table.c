@@ -34,10 +34,12 @@ HASH_NODE *hashFind(char *text)
 
 	while (node != NULL)
 	{
-		if (strcmp(node->text, text) != 0)
+		if (strcmp(node->text, text))
 			node = node->next;
 		else
+		{
 			return node;
+		}
 	}
 
 	return NULL;
@@ -56,13 +58,21 @@ HASH_NODE *hashInsert(char *text, int type)
 	newnode->type = type;
 	newnode->text = (char *)calloc(strlen(text) + 1, sizeof(char));
 	strcpy(newnode->text, text);
-	
-	switch(type){
-		case SYMBOL_LIT_INT: newnode->datatype = DATATYPE_INT; break;
-		case SYMBOL_LIT_FLOAT: newnode->datatype = DATATYPE_FLOAT; break;
-		case SYMBOL_LIT_CHAR: newnode->datatype = DATATYPE_BYTE; break;
-		case SYMBOL_LIT_STRING: newnode->datatype = DATATYPE_STRING; break;
 
+	switch (type)
+	{
+	case SYMBOL_LIT_INT:
+		newnode->datatype = DATATYPE_INT;
+		break;
+	case SYMBOL_LIT_FLOAT:
+		newnode->datatype = DATATYPE_FLOAT;
+		break;
+	case SYMBOL_LIT_CHAR:
+		newnode->datatype = DATATYPE_BYTE;
+		break;
+	case SYMBOL_LIT_STRING:
+		newnode->datatype = DATATYPE_STRING;
+		break;
 	}
 
 	newnode->next = Table[address];
@@ -85,16 +95,18 @@ void hashPrint(void)
 	}
 }
 
-void hashCheckUndeclared()
+int hashCheckUndeclared()
 {
-    int i;
+	int i;
+	int errors = 0;
+	HASH_NODE *node;
 
-    HASH_NODE *node;
-
-    for(i = 0; i < HASH_SIZE; ++i)
-        for(node = Table[i]; node; node=node->next)
-            if(node->type == SYMBOL_TK_IDENTIFIER)
-            {
-                fprintf(stderr," Undeclared identifier %s\n", node->text);
-            }
+	for (i = 0; i < HASH_SIZE; ++i)
+		for (node = Table[i]; node; node = node->next)
+			if (node->type == SYMBOL_TK_IDENTIFIER)
+			{
+				fprintf(stderr, "SemanticError: Undeclared identifier %s\n", node->text);
+				++errors;
+			}
+	return errors;
 }
