@@ -1,4 +1,10 @@
+int a = 2;
+int vec[2];
+int v1[2]: 1 2;
 int main () {
-
-    return 1+TRUE;
+    a = a + v1[1] + f();
+    return 1;
+}
+bool f() {
+    return FALSE;
 }

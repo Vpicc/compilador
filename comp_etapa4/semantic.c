@@ -353,8 +353,34 @@ void checkOperands(AST *node)
         }
 
         break;
-        break;
+    case AST_VECREAD:
+        if (node->symbol->datatype == DATATYPE_INT)
+        {
+            node->datatype = AST_DATATYPE_INT;
+        }
+        else if (node->symbol->datatype == DATATYPE_BYTE)
+        {
+            node->datatype = AST_DATATYPE_BYTE;
+        }
+        else if (node->symbol->datatype == DATATYPE_FLOAT)
+        {
+            node->datatype = AST_DATATYPE_FLOAT;
+        }
 
+        if (node->symbol->type != SYMBOL_VECTOR)
+        {
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s is not a vector.\n", node->lineNumber, node->symbol->text);
+            semanticError++;
+            node->datatype = DATATYPE_ERROR;
+        }
+        //fprintf(stderr, "INDEX TYPE: %d \n", node->son[0]->symbol->datatype);
+        if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE)
+        {
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in array, must be byte or int.\n", node->lineNumber);
+            semanticError++;
+            node->datatype = DATATYPE_ERROR;
+        }
+        break;
     case AST_ADD:
     case AST_SUB:
     case AST_MUL:
@@ -372,15 +398,28 @@ void checkOperands(AST *node)
                 node->son[i]->type == AST_TIL ||
                 node->son[i]->type == AST_POINT ||
                 ((node->son[i]->type == AST_SYMBOL) &&
-                 (node->son[i]->symbol->type == SYMBOL_SCALAR &&
-                  node->son[i]->symbol->datatype != DATATYPE_BOOL)) ||
-                ((node->son[i]->type == AST_SYMBOL) && (node->son[i]->type == AST_SYMBOL &&
-                                                            node->son[i]->symbol->type == SYMBOL_LIT_INT ||
-                                                        node->son[i]->symbol->type == SYMBOL_LIT_FLOAT ||
-                                                        node->son[i]->symbol->type == SYMBOL_LIT_CHAR)))
+                 ((node->son[i]->symbol->type == SYMBOL_SCALAR) &&
+                  node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)) ||
+                ((node->son[i]->type == AST_SYMBOL) &&
+                 (node->son[i]->type == AST_SYMBOL &&
+                      node->son[i]->symbol->type == SYMBOL_LIT_INT ||
+                  node->son[i]->symbol->type == SYMBOL_LIT_FLOAT ||
+                  node->son[i]->symbol->type == SYMBOL_LIT_CHAR)) ||
+                ((node->son[i]->type == AST_VECREAD) &&
+                 ((node->son[i]->symbol->type == SYMBOL_VECTOR) &&
+                  node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)) ||
+                ((node->son[i]->type == AST_FUNCALL) &&
+                 ((node->son[i]->symbol->type == SYMBOL_FUNCTION) &&
+                  node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)))
+            {
+
                 fprintf(stderr, "LINE %d - SON %d - CORRECT \n", node->lineNumber, i);
+            }
             else
             {
+                fprintf(stderr, "SON %d TYPE: %d \n", i, node->son[i]->type);
+                fprintf(stderr, "SON %d SYMBOL TYPE: %d \n", i, node->son[i]->symbol->type);
+                fprintf(stderr, "SON %d DATATYPE: %d \n", i, node->son[i]->symbol->datatype);
                 fprintf(stderr, "LINE %d - SON %d - SemanticError: Operands not compatible \n", node->lineNumber, i);
                 semanticError++;
             }
@@ -413,14 +452,14 @@ int checkVector(AST *node, int datatype)
 int validReturn(AST *nodeDec, AST *node)
 {
     int decType = nodeDec->symbol->datatype;
-    fprintf(stderr, "DECLARATION TYPE : %d\n", nodeDec->symbol->datatype);
+    //fprintf(stderr, "DECLARATION TYPE : %d\n", nodeDec->symbol->datatype);
     int returnType;
     if (node->type == AST_RETURN)
     {
         if (node->son[0]->symbol)
         {
             returnType = node->son[0]->symbol->datatype;
-            fprintf(stderr, "RETURN TYPE : %d\n", node->son[0]->symbol->datatype);
+            //fprintf(stderr, "RETURN TYPE : %d\n", node->son[0]->symbol->datatype);
             if ((decType != returnType) &&
                 (((decType == DATATYPE_INT || decType == DATATYPE_BYTE || decType == DATATYPE_FLOAT || decType == DATATYPE_LONG) &&
                   (returnType == DATATYPE_BOOL || returnType == DATATYPE_STRING)) ||
