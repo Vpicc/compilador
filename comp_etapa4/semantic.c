@@ -381,6 +381,43 @@ void checkOperands(AST *node)
             node->datatype = DATATYPE_ERROR;
         }
         break;
+    case AST_VECTORASS:
+        if (node->symbol->type != SYMBOL_VECTOR)
+        {
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s is not a vector.\n", node->lineNumber, node->symbol->text);
+            semanticError++;
+        }
+
+        if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE)
+        {
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in assignment, must be byte or int.\n", node->lineNumber);
+            semanticError++;
+        }
+
+        if (node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_BYTE)
+        {
+            if (node->son[1] != NULL)
+            {
+                if (node->son[1]->symbol->datatype != DATATYPE_INT && node->son[1]->symbol->datatype != DATATYPE_BYTE)
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte or int.\n", node->lineNumber, node->symbol->text);
+                    semanticError++;
+                }
+            }
+        }
+        else if (node->symbol->datatype == DATATYPE_FLOAT)
+        {
+            if (node->son[1] != NULL)
+            {
+                if (node->son[1]->symbol->datatype != DATATYPE_FLOAT)
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to float.\n", node->lineNumber, node->symbol->text);
+                    semanticError++;
+                }
+            }
+        }
+        break;
+        break;
     case AST_ADD:
     case AST_SUB:
     case AST_MUL:
@@ -435,12 +472,12 @@ int checkVector(AST *node, int datatype)
 {
     if (node != NULL)
     {
-        //fprintf(stderr, "DATATYPE - %d\n", datatype);
-        //fprintf(stderr, "SON DATATYPE - %d\n", node->son[0]->symbol->datatype);
+        // fprintf(stderr, "DATATYPE - %d\n", datatype);
+        // fprintf(stderr, "SON DATATYPE - %d\n", node->son[0]->symbol->datatype);
         if (((node->son[0]->symbol->datatype != datatype) &&
              ((datatype == DATATYPE_INT || datatype == DATATYPE_BYTE || datatype == DATATYPE_FLOAT || datatype == DATATYPE_LONG) &&
-              (node->son[0]->symbol->datatype == DATATYPE_BOOL))) ||
-            (datatype == DATATYPE_BOOL && node->son[0]->symbol->datatype != DATATYPE_STRING))
+              (node->son[0]->symbol->datatype == DATATYPE_BOOL || node->son[0]->symbol->datatype != DATATYPE_STRING))) ||
+            (datatype == DATATYPE_BOOL && node->son[0]->symbol->datatype != DATATYPE_BOOL))
             return 0;
         if (node->son[1] != NULL)
             return checkVector(node->son[1], datatype);
