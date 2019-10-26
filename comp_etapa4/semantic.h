@@ -12,4 +12,6 @@ void checkUndeclared(void);
 int getSemanticError();
 int getType(AST *node);
 void checkOperands(AST *node);
+int checkVector(AST *node, int datatype);
+int validReturn(AST *nodeDec, AST *node);
 #endif

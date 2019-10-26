@@ -1,8 +1,9 @@
 // UFRGS - Compiladores - Marcelo Johann - 2019/2
 
-bool b = FALSE;
+bool b = TRUE;
 byte c = 'x';
 int a = 0;
+int d = 1;
 int i = 0;
 long l = 0;
 float f = 0.0;
@@ -24,4 +25,6 @@ int main () {
   i = 2 . 2.3;
   i = 2 + TRUE; // deve dar erro de semantica
   i = 2 + b; // deve dar erro de semantica
+  d = 6 ~ 7;
+  b = 3; // tem que fazer dar errado
 }
