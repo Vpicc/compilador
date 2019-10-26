@@ -73,6 +73,9 @@ HASH_NODE *hashInsert(char *text, int type)
 	case SYMBOL_LIT_STRING:
 		newnode->datatype = DATATYPE_STRING;
 		break;
+	case SYMBOL_LIT_BOOL:
+		newnode->datatype = DATATYPE_BOOL;
+		break;
 	}
 
 	newnode->next = Table[address];
