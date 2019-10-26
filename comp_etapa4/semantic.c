@@ -417,6 +417,39 @@ void checkOperands(AST *node)
             }
         }
         break;
+    case AST_ASS:
+        if (node && node->symbol && node->symbol->datatype && node->symbol->type)
+        {
+            if (node->symbol->type != SYMBOL_SCALAR)
+            {
+                fprintf(stderr, "SEMANTIC ERROR in line %d. Symbol %s must be scalar.\n", node->lineNumber, node->symbol->text);
+                semanticError++;
+            }
+            if (node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_BYTE || node->symbol->datatype == DATATYPE_FLOAT || node->symbol->datatype == DATATYPE_LONG)
+            {
+                if (node->son[0] != NULL)
+                {
+                    if (node->son[0]->symbol && node->son[0]->symbol->datatype)
+                        if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE && node->son[0]->symbol->datatype != DATATYPE_FLOAT && node->son[0]->symbol->datatype != DATATYPE_LONG)
+                        {
+                            fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte or int.\n", node->lineNumber, node->symbol->text);
+                            semanticError++;
+                        }
+                }
+            }
+            else if (node->symbol->datatype == DATATYPE_BOOL)
+            {
+                if (node->son[0] != NULL)
+                {
+                    if (node->son[0]->symbol && node->son[0]->symbol->datatype)
+                        if (node->son[0]->symbol->datatype != DATATYPE_BOOL)
+                        {
+                            fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to float.\n", node->lineNumber, node->symbol->text);
+                            semanticError++;
+                        }
+                }
+            }
+        }
         break;
     case AST_ADD:
     case AST_SUB:
