@@ -115,6 +115,9 @@ void astPrint(AST *node, int level)
     case AST_OR:
         fprintf(stderr, "AST_OR,");
         break;
+    case AST_AND:
+        fprintf(stderr, "AST_AND,");
+        break;
     case AST_PARENTHESIS:
         fprintf(stderr, "AST_PARENTHESIS,");
         break;
@@ -403,15 +406,20 @@ void astDecompile(AST *s0)
             ;
             break;
         case AST_TIL: //TODO: Nem ideia do q colocar aqui
-            astDecompile(s0->son[0]);
             fprintf(out, " ~ ");
-            astDecompile(s0->son[1]);
+            astDecompile(s0->son[0]);
             ;
             break;
         //OK
         case AST_OR:
             astDecompile(s0->son[0]);
             fprintf(out, " v ");
+            astDecompile(s0->son[1]);
+            break;
+        //OK
+        case AST_AND:
+            astDecompile(s0->son[0]);
+            fprintf(out, " & ");
             astDecompile(s0->son[1]);
             break;
         //OK

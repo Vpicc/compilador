@@ -6,11 +6,16 @@ long b = 2;
  
 int vec[2]; 
  
-bool v1[2]: TRUE TRUE; 
+bool x = TRUE; 
  
 int main()
 {
-v1[1] = TRUE;
 a = b;
+x =  ~ x;
 return 1;
+} 
+ 
+bool f()
+{
+return (1 > 2) &  ~  ~ TRUE;
 }

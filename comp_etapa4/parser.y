@@ -75,7 +75,7 @@ AST *root;
 
 
 %left OPERATOR_DIF OPERATOR_EQ OPERATOR_GE OPERATOR_LE '>' '<'
-%left '.' 'v' '~'
+%left '.' 'v' '~' '&'
 %left '+' '-'
 %left '*' '/'
 %right KW_THEN KW_ELSE 
@@ -175,7 +175,8 @@ expression: TK_IDENTIFIER '[' expression ']' { $$ = astCreate(AST_VECREAD, $1, $
     expression '>' expression {$$=astCreate(AST_GREATER,0,$1,$3,0,0,getLineNumber());}|
     expression '.' expression {$$=astCreate(AST_POINT,0,$1,$3,0,0,getLineNumber());}|
     expression 'v' expression {$$=astCreate(AST_OR,0,$1,$3,0,0,getLineNumber());}|
-    expression '~' expression {$$=astCreate(AST_TIL,0,$1,$3,0,0,getLineNumber());}|
+    expression '&' expression {$$=astCreate(AST_AND,0,$1,$3,0,0,getLineNumber());}|
+    '~' expression {$$=astCreate(AST_TIL,0,$2,0,0,0,getLineNumber());}|
     '(' expression ')'        {$$=astCreate(AST_PARENTHESIS,0,$2,0,0,0,getLineNumber());}|
     funcall {$$ = $1;};
 

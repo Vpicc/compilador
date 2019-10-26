@@ -455,7 +455,6 @@ void checkOperands(AST *node)
     case AST_SUB:
     case AST_MUL:
     case AST_DIV:
-    case AST_TIL:
     case AST_POINT:
         // Check correctness
         for (i = 0; i < 2; ++i)
@@ -494,6 +493,52 @@ void checkOperands(AST *node)
                 semanticError++;
             }
         }
+        break;
+    case AST_LESS:
+    case AST_GREATER:
+    case AST_LE:
+    case AST_GE:
+    case AST_EQ:
+    case AST_NE:
+        if (node->son[0]->symbol && node->son[0]->symbol->datatype && node->son[1]->symbol && node->son[1]->symbol->datatype)
+            if (node->son[0] != NULL && node->son[1] != NULL)
+            {
+                node->datatype = DATATYPE_BOOL;
+                if ((node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE && node->son[0]->symbol->datatype != DATATYPE_FLOAT && node->son[0]->symbol->datatype != DATATYPE_LONG) ||
+                    (node->son[1]->symbol->datatype != DATATYPE_INT && node->son[1]->symbol->datatype != DATATYPE_BYTE && node->son[1]->symbol->datatype != DATATYPE_FLOAT && node->son[0]->symbol->datatype != DATATYPE_LONG))
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be int, byte, float or long. \n", node->lineNumber);
+                    semanticError++;
+                }
+            }
+        break;
+    case AST_AND:
+    case AST_OR:
+        if (node->son[0]->symbol && node->son[0]->symbol->datatype && node->son[1]->symbol && node->son[1]->symbol->datatype)
+            if (node->son[0] != NULL && node->son[1] != NULL)
+            {
+                node->datatype = DATATYPE_BOOL;
+                if (node->son[0]->symbol->datatype != DATATYPE_BOOL || node->son[1]->symbol->datatype != DATATYPE_BOOL)
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be bool.\n", node->lineNumber);
+                    semanticError++;
+                    node->datatype = DATATYPE_ERROR;
+                }
+            }
+        break;
+    case AST_TIL:
+        if (node->son[0] != NULL)
+        {
+            node->datatype = DATATYPE_BOOL;
+            if (node->son[0]->symbol && node->son[0]->symbol->datatype)
+                if (node->son[0]->symbol->datatype != DATATYPE_BOOL)
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be bool.\n", node->lineNumber);
+                    semanticError++;
+                }
+        }
+        break;
+    default:
         break;
     }
 

@@ -42,6 +42,7 @@
 #define AST_DIFF 27
 #define AST_POINT 28 //Não achei pra serve isso
 #define AST_OR 29
+#define AST_AND 99
 
 #define AST_BLOCK 30
 #define AST_PRINT 31
@@ -68,7 +69,6 @@
 #define AST_TIL 52 //Não achei pra serve isso
 #define AST_BREAK 53
 
-
 #define AST_DATATYPE_INT 54
 #define AST_DATATYPE_BYTE 55
 #define AST_DATATYPE_BOOL 56
@@ -78,8 +78,6 @@
 #define AST_DATATYPE_ERROR 60
 #define AST_DATATYPE_FLOAT 61
 #define AST_DATATYPE_LONG 62
-
-
 
 FILE *out;
 
