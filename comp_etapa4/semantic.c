@@ -563,6 +563,35 @@ void checkOperands(AST *node)
             }
         }
         break;
+    case AST_IF:
+    case AST_IFELSE:
+    case AST_WHILE:
+        if (node->son[0] != NULL)
+        {
+            if (node->son[0]->symbol && node->son[0]->symbol->datatype)
+            {
+                // fprintf(stderr, "PRINT SON TYPE: %d\n", node->son[0]->type);
+                // fprintf(stderr, "PRINT SON SYMBOL TYPE: %d\n", node->son[0]->symbol->type);
+                // fprintf(stderr, "PRINT SON DATATYPE: %d\n", node->son[0]->symbol->datatype);
+                if ((node->son[0]->type == AST_SYMBOL) && (node->son[0]->symbol->type == SYMBOL_FUNCTION))
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Condition type must be bool.\n", node->lineNumber);
+                    semanticError++;
+                }
+
+                if ((node->son[0]->type == AST_SYMBOL) && (node->son[0]->symbol->type == SYMBOL_VECTOR))
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Condition type must be bool.\n", node->lineNumber);
+                    semanticError++;
+                }
+                if (node->son[0]->symbol->datatype != DATATYPE_BOOL)
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Condition type must be bool.\n", node->lineNumber);
+                    semanticError++;
+                }
+            }
+        }
+        break;
     default:
         break;
     }
