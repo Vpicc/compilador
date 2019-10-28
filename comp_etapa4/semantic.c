@@ -234,7 +234,9 @@ void checkOperands(AST *node)
     int op1;
     int op2;
     int exp;
-    int expType;
+    int exp1 = 0;
+    int exp2 = 0;
+    int exp3 = 0;
     if (!node)
         return;
 
@@ -352,13 +354,13 @@ void checkOperands(AST *node)
         }
 
         //fprintf(stderr, "INDEX TYPE: %d \n", node->son[0]->symbol->datatype);
-        if (node->son[0] && node->son[0]->symbol && node->son[0]->symbol->datatype)
-            if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE && node->son[0]->symbol->datatype != DATATYPE_LONG)
-            {
-                // Poderia ser qualquer tipo desde que seja numero
-                fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in array, must be byte or int.\n", node->lineNumber);
-                semanticError++;
-            }
+        exp = validExpression(node->son[0]);
+        if ((exp != DATATYPE_INT && exp != DATATYPE_BYTE && exp != DATATYPE_LONG) || exp == DATATYPE_ERROR)
+        {
+            // Poderia ser qualquer tipo desde que seja numero
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in array, must be byte, int or long.\n", node->lineNumber);
+            semanticError++;
+        }
         break;
     case AST_VECTORASS:
         if (node->symbol->type != SYMBOL_VECTOR)
@@ -610,10 +612,38 @@ void checkOperands(AST *node)
             exp = validExpression(node->son[0]);
             if (exp != DATATYPE_BOOL || exp == DATATYPE_ERROR)
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be boolean.\n", node->lineNumber, node->symbol->text);
+                fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be boolean.\n", node->lineNumber);
                 semanticError++;
             }
         }
+        break;
+    case AST_FOR:
+
+        if (node->son[0])
+            exp1 = validExpression(node->son[0]);
+        if (node->son[1])
+            exp2 = validExpression(node->son[1]);
+        if (node->son[2])
+            exp3 = validExpression(node->son[2]);
+        fprintf(stderr, "FOR: 0 ******* %d\n", exp1);
+        fprintf(stderr, "FOR: 1 ******* %d\n", exp2);
+        fprintf(stderr, "FOR: 2 ******* %d\n", exp3);
+        if (exp1 == DATATYPE_BOOL || exp1 == DATATYPE_ERROR)
+        {
+            fprintf(stderr, "SEMANTIC ERROR in line %d. First For Expression must be byte, int, long or float\n", node->lineNumber);
+            semanticError++;
+        }
+        if (exp2 != DATATYPE_BOOL || exp2 == DATATYPE_ERROR)
+        {
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Second For Expression must be boolean\n", node->lineNumber);
+            semanticError++;
+        }
+        if (exp3 == DATATYPE_BOOL || exp3 == DATATYPE_ERROR)
+        {
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Third For Expression must be byte, int, long or float\n", node->lineNumber);
+            semanticError++;
+        }
+
         break;
     default:
         break;
