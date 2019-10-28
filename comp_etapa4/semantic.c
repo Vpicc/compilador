@@ -231,6 +231,8 @@ int checkParams(AST *node)
 void checkOperands(AST *node)
 {
     int i;
+        int op1;
+int op2;
     if (!node)
         return;
 
@@ -476,41 +478,50 @@ void checkOperands(AST *node)
     case AST_MUL:
     case AST_DIV:
     case AST_POINT:
-        for(int i=0; i<MAX_SONS ; ++i){
-        if (node->son[i] != NULL && node->son[i+1] != NULL)
+        op1 = getType(node->son[0]);
+        op2 = getType(node->son[1]);
+        if (addExpressionTypes(op1,op2) ==DATATYPE_ERROR)
         {
-            if (node->son[i]->symbol && node->son[i]->symbol->datatype && node->son[i+1]->symbol && node->son[i+1]->symbol->datatype)
-            {
-                fprintf(stderr, "SON 0 DATAYPE: %d SON 1 DATATYPE: %d \n", node->son[i]->symbol->datatype, node->son[i+1]->symbol->datatype);
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be int, byte or float. \n", node->lineNumber);
+            semanticError++;
+        };
+        break;
 
-                if ((node->son[i]->symbol->datatype == DATATYPE_FLOAT && node->son[i+1]->symbol->datatype == DATATYPE_FLOAT) ||
-                    (node->son[i]->symbol->datatype == DATATYPE_FLOAT && node->son[i+1]->symbol->datatype == DATATYPE_INT) ||
-                    (node->son[i]->symbol->datatype == DATATYPE_INT && node->son[i+1]->symbol->datatype == DATATYPE_FLOAT))
-                {
-                    node->datatype = DATATYPE_FLOAT;
-                }
-                else
-                {
-                    if (node->son[i]->symbol->datatype == DATATYPE_INT || node->son[i+1]->symbol->datatype == DATATYPE_INT)
-                    {
-                        node->datatype = DATATYPE_INT;
-                    }
-                    else
-                    {
-                        node->datatype = DATATYPE_BYTE;
-                    }
-                    if ((node->son[i]->symbol->datatype != DATATYPE_INT && node->son[i]->symbol->datatype != DATATYPE_BYTE) ||
-                        (node->son[i+1]->symbol->datatype != DATATYPE_INT && node->son[i+1]->symbol->datatype != DATATYPE_BYTE))
-                    {
-                        fprintf(stderr, "SON 0 DATAYPE: %d SON 1 DATATYPE: %d \n", node->son[i]->symbol->datatype, node->son[i+1]->symbol->datatype);
-                        fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be int, byte or float. \n", node->lineNumber);
-                        semanticError++;
-                        node->datatype = DATATYPE_ERROR;
-                    }
-                }
-            }
-            }
-        }
+        // for(int i=0; i<MAX_SONS ; ++i){
+        // if (node->son[i] != NULL && node->son[i+1] != NULL)
+        // {
+        //     if (node->son[i]->symbol && node->son[i]->symbol->datatype && node->son[i+1]->symbol && node->son[i+1]->symbol->datatype)
+        //     {
+        //         fprintf(stderr, "SON 0 DATAYPE: %d SON 1 DATATYPE: %d TAM SONS\n", node->son[i]->symbol->datatype, node->son[i+1]->symbol->datatype);
+
+        //         if ((node->son[i]->symbol->datatype == DATATYPE_FLOAT && node->son[i+1]->symbol->datatype == DATATYPE_FLOAT) ||
+        //             (node->son[i]->symbol->datatype == DATATYPE_FLOAT && node->son[i+1]->symbol->datatype == DATATYPE_INT) ||
+        //             (node->son[i]->symbol->datatype == DATATYPE_INT && node->son[i+1]->symbol->datatype == DATATYPE_FLOAT))
+        //         {
+        //             node->datatype = DATATYPE_FLOAT;
+        //         }
+        //         else
+        //         {
+        //             if (node->son[i]->symbol->datatype == DATATYPE_INT || node->son[i+1]->symbol->datatype == DATATYPE_INT)
+        //             {
+        //                 node->datatype = DATATYPE_INT;
+        //             }
+        //             else
+        //             {
+        //                 node->datatype = DATATYPE_BYTE;
+        //             }
+        //             if ((node->son[i]->symbol->datatype != DATATYPE_INT && node->son[i]->symbol->datatype != DATATYPE_BYTE) ||
+        //                 (node->son[i+1]->symbol->datatype != DATATYPE_INT && node->son[i+1]->symbol->datatype != DATATYPE_BYTE))
+        //             {
+        //                 fprintf(stderr, "SON 0 DATAYPE: %d SON 1 DATATYPE: %d \n", node->son[i]->symbol->datatype, node->son[i+1]->symbol->datatype);
+        //                 fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be int, byte or float. \n", node->lineNumber);
+        //                 semanticError++;
+        //                 node->datatype = DATATYPE_ERROR;
+        //             }
+        //         }
+        //     }
+        //     }
+        // }
         break;
 /*FIM DA NOVA PARTE*/
     case AST_LESS:
@@ -824,4 +835,93 @@ AST *search(AST *node, char *name)
                 return fun;
         }
     return 0;
+}
+
+
+int getType(AST* node) 
+{
+	int op1, op2;
+	
+	/*if(!node)
+		return;*/
+	
+	switch(node->type) 
+	{
+		case AST_SYMBOL: 
+			return node->symbol->datatype;
+		case AST_FUNCALL:
+			return node->son[0]->symbol->datatype;
+		case AST_ADD:
+		case AST_SUB:
+		case AST_DIV:
+		case AST_MUL:
+				op1 = getType(node->son[0]);
+			    op2 = getType(node->son[1]);
+				return addExpressionTypes(op1,op2);
+		case AST_LE:
+		case AST_GE:
+		case AST_EQ:
+		case AST_NE:
+		case AST_AND:
+		case AST_OR: 
+		case AST_GREATER:
+		case AST_LESS: 
+			return DATATYPE_BOOL;
+	}
+}
+
+
+int addExpressionTypes (int type1, int type2) 
+{
+    switch (type1) 
+	{
+        case DATATYPE_BOOL:
+            switch (type2) 
+			{
+                case DATATYPE_BOOL:
+                    return DATATYPE_BOOL;
+                default:
+                    return DATATYPE_ERROR;
+            }
+			//break;
+        case DATATYPE_INT:
+            switch (type2) 
+			{
+                case DATATYPE_INT:
+                    return DATATYPE_INT;
+                case DATATYPE_CHAR:
+                    return DATATYPE_INT;
+                case DATATYPE_FLOAT:
+                    return DATATYPE_FLOAT;
+                default:
+                    return DATATYPE_ERROR;
+            }
+			//break;
+        case DATATYPE_CHAR:
+            switch (type2) 
+			{
+                case DATATYPE_INT:
+                    return DATATYPE_INT;
+                case DATATYPE_CHAR:
+                    return DATATYPE_CHAR;
+                case DATATYPE_FLOAT:
+                    return DATATYPE_FLOAT;
+                default:
+                    return DATATYPE_ERROR;
+            }
+			//break;
+        case DATATYPE_FLOAT:
+            switch (type2) 
+			{
+                case DATATYPE_BOOL:
+                    return DATATYPE_ERROR;
+                case DATATYPE_ERROR:
+                    return DATATYPE_ERROR;
+                default:
+                    return DATATYPE_FLOAT;
+            }
+			//break;
+        default:
+            return DATATYPE_ERROR;
+    }
 }
