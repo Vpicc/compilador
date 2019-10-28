@@ -40,8 +40,8 @@ break       return KW_BREAK;
 "=="        return OPERATOR_EQ;
 "!="        return OPERATOR_DIF;
 
-TRUE        { yylval.symbol = hashInsert(yytext, SYMBOL_LIT_BOOL); return LIT_TRUE; }
-FALSE       { yylval.symbol = hashInsert(yytext, SYMBOL_LIT_BOOL); return LIT_FALSE; }
+"TRUE"        { yylval.symbol = hashInsert(yytext, SYMBOL_LIT_BOOL); return LIT_TRUE; }
+"FALSE"       { yylval.symbol = hashInsert(yytext, SYMBOL_LIT_BOOL); return LIT_FALSE; }
 \'(.|\\.)\'       { yylval.symbol = hashInsert(yytext, SYMBOL_LIT_CHAR); return LIT_CHAR; }
 \"(\\.|[^\\"])*\"     {yylval.symbol =  hashInsert(yytext, SYMBOL_LIT_STRING); return LIT_STRING; }
 

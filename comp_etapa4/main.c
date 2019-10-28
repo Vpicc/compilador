@@ -6,6 +6,7 @@
 #include "astree.h"
 #include "lex.yy.h"
 #include "y.tab.h"
+#include "semantic.h"
 
 //#include "tokens.h"
 
@@ -39,9 +40,15 @@ int main(int argc, char **argv)
 
     yyparse();
 
+    if (getSemanticError() != 0)
+    {
+        fprintf(stderr, "\nErros de semantica, ERROR4\n");
+        exit(4);
+    }
+
     fprintf(stderr, "\nSucesso!\n");
 
-    //hashPrint();
+    hashPrint();
     fclose(out);
     exit(0);
 

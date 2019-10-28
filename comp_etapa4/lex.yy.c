@@ -909,23 +909,23 @@ return OPERATOR_DIF;
 case 19:
 YY_RULE_SETUP
 #line 43 "scanner.l"
-{ yylval.symbol = hashInsert(yytext, LIT_TRUE); return LIT_TRUE; }
+{ yylval.symbol = hashInsert(yytext, SYMBOL_LIT_BOOL); return LIT_TRUE; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 44 "scanner.l"
-{ yylval.symbol = hashInsert(yytext, LIT_FALSE); return LIT_FALSE; }
+{ yylval.symbol = hashInsert(yytext, SYMBOL_LIT_BOOL); return LIT_FALSE; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 45 "scanner.l"
-{ yylval.symbol = hashInsert(yytext, LIT_CHAR); return LIT_CHAR; }
+{ yylval.symbol = hashInsert(yytext, SYMBOL_LIT_CHAR); return LIT_CHAR; }
 	YY_BREAK
 case 22:
 /* rule 22 can match eol */
 YY_RULE_SETUP
 #line 46 "scanner.l"
-{yylval.symbol =  hashInsert(yytext, LIT_STRING); return LIT_STRING; }
+{yylval.symbol =  hashInsert(yytext, SYMBOL_LIT_STRING); return LIT_STRING; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
@@ -935,17 +935,17 @@ return yytext[0];
 case 24:
 YY_RULE_SETUP
 #line 51 "scanner.l"
-{ yylval.symbol = hashInsert(yytext, TK_IDENTIFIER);  return TK_IDENTIFIER;}
+{ yylval.symbol = hashInsert(yytext, SYMBOL_TK_IDENTIFIER);  return TK_IDENTIFIER;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 52 "scanner.l"
-{ yylval.symbol = hashInsert(yytext, LIT_INTEGER);    return LIT_INTEGER;}
+{ yylval.symbol = hashInsert(yytext, SYMBOL_LIT_INT);    return LIT_INTEGER;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 53 "scanner.l"
-{ yylval.symbol = hashInsert(yytext, LIT_FLOAT);      return LIT_FLOAT;}
+{ yylval.symbol = hashInsert(yytext, SYMBOL_LIT_FLOAT);      return LIT_FLOAT;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP

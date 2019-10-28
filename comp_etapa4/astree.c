@@ -1,15 +1,18 @@
 #include "astree.h"
 
-AST *astCreate(int type, HASH_NODE *symbol, AST *s0, AST *s1, AST *s2, AST *s3)
+AST *astCreate(int type, HASH_NODE *symbol, AST *s0, AST *s1, AST *s2, AST *s3, int lineNumber)
 {
     AST *newnode = 0;
     newnode = (AST *)calloc(1, sizeof(AST));
+
     newnode->type = type;
     newnode->symbol = symbol;
     newnode->son[0] = s0;
     newnode->son[1] = s1;
     newnode->son[2] = s2;
     newnode->son[3] = s3;
+    newnode->lineNumber = lineNumber;
+
     return newnode;
 }
 
@@ -111,6 +114,9 @@ void astPrint(AST *node, int level)
         break;
     case AST_OR:
         fprintf(stderr, "AST_OR,");
+        break;
+    case AST_AND:
+        fprintf(stderr, "AST_AND,");
         break;
     case AST_PARENTHESIS:
         fprintf(stderr, "AST_PARENTHESIS,");
@@ -400,15 +406,20 @@ void astDecompile(AST *s0)
             ;
             break;
         case AST_TIL: //TODO: Nem ideia do q colocar aqui
-            astDecompile(s0->son[0]);
             fprintf(out, " ~ ");
-            astDecompile(s0->son[1]);
+            astDecompile(s0->son[0]);
             ;
             break;
         //OK
         case AST_OR:
             astDecompile(s0->son[0]);
             fprintf(out, " v ");
+            astDecompile(s0->son[1]);
+            break;
+        //OK
+        case AST_AND:
+            astDecompile(s0->son[0]);
+            fprintf(out, " & ");
             astDecompile(s0->son[1]);
             break;
         //OK
