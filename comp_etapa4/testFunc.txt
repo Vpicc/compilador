@@ -1,12 +1,20 @@
 int a = 1;
 bool b = TRUE;
-
+int f = 2;
+int h = 3;
+bool v1[2]: TRUE TRUE;
+int v2[2]: 1 2; 
 
 int main () {
-    a = testFunc(1, 2, TRUE)
-}
 
+    a = f + h;
+    f = 1 + 1.1;
+    h = 1 + v2[0];
+    b = 1;  //Tem q dar erro
+    a = 1 + 1.1 + 5 + FALSE; //Tem q dar erro
+    a = 1 + 1.1 + 1.5;
+    h = 1 + v1[0]; //Tem q dar erro e dá
+    a = 1 + FALSE; //Tem q dar erro e dá
 
-int testFunc(int t, int h,bool c){
-   return 1 
+    f = 1 + 1.1 + FALSE //Tem q dar erro e não da, parece q n ta verificando os Argumentos superiores ao 2..
 }

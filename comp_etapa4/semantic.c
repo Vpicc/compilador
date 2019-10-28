@@ -13,16 +13,13 @@ void checkAndSetTypes(AST *node)
 {
     int i;
 
-        
-    if(nodeDeclared==NULL)
-		nodeDeclared=node;
+    if (nodeDeclared == NULL)
+        nodeDeclared = node;
 
     if (!node)
     {
         return;
     }
-
-
 
     if (node->type == AST_DECL || node->type == AST_FUNDEC || node->type == AST_ARRDECL || node->type == AST_PAR)
     {
@@ -35,14 +32,16 @@ void checkAndSetTypes(AST *node)
             }
             if (node->type == AST_DECL)
                 node->symbol->type = SYMBOL_SCALAR;
-            if (node->type == AST_FUNDEC){
+            if (node->type == AST_FUNDEC)
+            {
                 node->symbol->type = SYMBOL_FUNCTION;
                 node->symbol->numparameters = numParamsFunc(node->son[1]);
             }
             if (node->type == AST_ARRDECL)
                 node->symbol->type = SYMBOL_VECTOR;
 
-            if (node->type == AST_PAR){
+            if (node->type == AST_PAR)
+            {
                 //printf("Entrei aqui\n");
                 //stderr, "Node type = %d\n", node->son[0]->type);
                 node->symbol->type = SYMBOL_SCALAR;
@@ -60,8 +59,8 @@ void checkAndSetTypes(AST *node)
 //We have five types, they are INT, BOOL, FLOAT, LONG and BYTE
 void setTypes(AST *node)
 {
-    if(nodeDeclared==NULL)
-		nodeDeclared=node;
+    if (nodeDeclared == NULL)
+        nodeDeclared = node;
     if (node && node->son[0] != NULL)
     {
         if (node->son[0]->type == AST_TYPEINT)
@@ -232,6 +231,8 @@ int checkParams(AST *node)
 void checkOperands(AST *node)
 {
     int i;
+        int op1;
+int op2;
     if (!node)
         return;
 
@@ -429,48 +430,100 @@ void checkOperands(AST *node)
             }
         }
         break;
+    // case AST_ADD:
+    // case AST_SUB:
+    // case AST_MUL:
+    // case AST_DIV:
+    // case AST_POINT:
+    //     // Check correctness
+    //     for (i = 0; i < 2; ++i)
+    //     {
+    //         if (
+    //             node->son[i]->type == AST_ADD ||
+    //             node->son[i]->type == AST_SUB ||
+    //             node->son[i]->type == AST_MUL ||
+    //             node->son[i]->type == AST_DIV ||
+    //             node->son[i]->type == AST_POINT ||
+    //             ((node->son[i]->type == AST_SYMBOL) &&
+    //              ((node->son[i]->symbol->type == SYMBOL_SCALAR) &&
+    //               node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)) ||
+    //             ((node->son[i]->type == AST_SYMBOL) &&
+    //              (node->son[i]->type == AST_SYMBOL &&
+    //                   node->son[i]->symbol->type == SYMBOL_LIT_INT ||
+    //               node->son[i]->symbol->type == SYMBOL_LIT_FLOAT ||
+    //               node->son[i]->symbol->type == SYMBOL_LIT_CHAR)) ||
+    //             ((node->son[i]->type == AST_VECREAD) &&
+    //              ((node->son[i]->symbol->type == SYMBOL_VECTOR) &&
+    //               node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)) ||
+    //             ((node->son[i]->type == AST_FUNCALL) &&
+    //              ((node->son[i]->symbol->type == SYMBOL_FUNCTION) &&
+    //               node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)))
+    //         {
+
+    //             fprintf(stderr, "LINE %d - SON %d - CORRECT \n", node->lineNumber, i);
+    //         }
+    //         else
+    //         {
+    //             // fprintf(stderr, "SON %d TYPE: %d \n", i, node->son[i]->type);
+    //             // fprintf(stderr, "SON %d SYMBOL TYPE: %d \n", i, node->son[i]->symbol->type);
+    //             // fprintf(stderr, "SON %d DATATYPE: %d \n", i, node->son[i]->symbol->datatype);
+    //             fprintf(stderr, "LINE %d - SON %d - SemanticError: Operands not compatible \n", node->lineNumber, i);
+    //             semanticError++;
+    //         }
+    //     }
+    //     break;
+/*NOVA PARTE*/
     case AST_ADD:
     case AST_SUB:
     case AST_MUL:
     case AST_DIV:
     case AST_POINT:
-        // Check correctness
-        for (i = 0; i < 2; ++i)
+        op1 = getType(node->son[0]);
+        op2 = getType(node->son[1]);
+        if (addExpressionTypes(op1,op2) ==DATATYPE_ERROR)
         {
-            if (
-                node->son[i]->type == AST_ADD ||
-                node->son[i]->type == AST_SUB ||
-                node->son[i]->type == AST_MUL ||
-                node->son[i]->type == AST_DIV ||
-                node->son[i]->type == AST_POINT ||
-                ((node->son[i]->type == AST_SYMBOL) &&
-                 ((node->son[i]->symbol->type == SYMBOL_SCALAR) &&
-                  node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)) ||
-                ((node->son[i]->type == AST_SYMBOL) &&
-                 (node->son[i]->type == AST_SYMBOL &&
-                      node->son[i]->symbol->type == SYMBOL_LIT_INT ||
-                  node->son[i]->symbol->type == SYMBOL_LIT_FLOAT ||
-                  node->son[i]->symbol->type == SYMBOL_LIT_CHAR)) ||
-                ((node->son[i]->type == AST_VECREAD) &&
-                 ((node->son[i]->symbol->type == SYMBOL_VECTOR) &&
-                  node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)) ||
-                ((node->son[i]->type == AST_FUNCALL) &&
-                 ((node->son[i]->symbol->type == SYMBOL_FUNCTION) &&
-                  node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)))
-            {
-
-                fprintf(stderr, "LINE %d - SON %d - CORRECT \n", node->lineNumber, i);
-            }
-            else
-            {
-                // fprintf(stderr, "SON %d TYPE: %d \n", i, node->son[i]->type);
-                // fprintf(stderr, "SON %d SYMBOL TYPE: %d \n", i, node->son[i]->symbol->type);
-                // fprintf(stderr, "SON %d DATATYPE: %d \n", i, node->son[i]->symbol->datatype);
-                fprintf(stderr, "LINE %d - SON %d - SemanticError: Operands not compatible \n", node->lineNumber, i);
-                semanticError++;
-            }
-        }
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be int, byte or float. \n", node->lineNumber);
+            semanticError++;
+        };
         break;
+
+        // for(int i=0; i<MAX_SONS ; ++i){
+        // if (node->son[i] != NULL && node->son[i+1] != NULL)
+        // {
+        //     if (node->son[i]->symbol && node->son[i]->symbol->datatype && node->son[i+1]->symbol && node->son[i+1]->symbol->datatype)
+        //     {
+        //         fprintf(stderr, "SON 0 DATAYPE: %d SON 1 DATATYPE: %d TAM SONS\n", node->son[i]->symbol->datatype, node->son[i+1]->symbol->datatype);
+
+        //         if ((node->son[i]->symbol->datatype == DATATYPE_FLOAT && node->son[i+1]->symbol->datatype == DATATYPE_FLOAT) ||
+        //             (node->son[i]->symbol->datatype == DATATYPE_FLOAT && node->son[i+1]->symbol->datatype == DATATYPE_INT) ||
+        //             (node->son[i]->symbol->datatype == DATATYPE_INT && node->son[i+1]->symbol->datatype == DATATYPE_FLOAT))
+        //         {
+        //             node->datatype = DATATYPE_FLOAT;
+        //         }
+        //         else
+        //         {
+        //             if (node->son[i]->symbol->datatype == DATATYPE_INT || node->son[i+1]->symbol->datatype == DATATYPE_INT)
+        //             {
+        //                 node->datatype = DATATYPE_INT;
+        //             }
+        //             else
+        //             {
+        //                 node->datatype = DATATYPE_BYTE;
+        //             }
+        //             if ((node->son[i]->symbol->datatype != DATATYPE_INT && node->son[i]->symbol->datatype != DATATYPE_BYTE) ||
+        //                 (node->son[i+1]->symbol->datatype != DATATYPE_INT && node->son[i+1]->symbol->datatype != DATATYPE_BYTE))
+        //             {
+        //                 fprintf(stderr, "SON 0 DATAYPE: %d SON 1 DATATYPE: %d \n", node->son[i]->symbol->datatype, node->son[i+1]->symbol->datatype);
+        //                 fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be int, byte or float. \n", node->lineNumber);
+        //                 semanticError++;
+        //                 node->datatype = DATATYPE_ERROR;
+        //             }
+        //         }
+        //     }
+        //     }
+        // }
+        break;
+/*FIM DA NOVA PARTE*/
     case AST_LESS:
     case AST_GREATER:
     case AST_LE:
@@ -550,7 +603,7 @@ void checkOperands(AST *node)
     case AST_FUNCALL:
         checkTypeParam(node);
         break;
-    
+
     case AST_IF:
     case AST_IFELSE:
     case AST_WHILE:
@@ -704,80 +757,171 @@ int validReturn(AST *nodeDec, AST *node)
     return 999;
 }
 
-void checkTypeParam(AST* nodecall) 
+void checkTypeParam(AST *nodecall)
 {
-	if(!nodecall) return;
-	AST* nodedef;
+    if (!nodecall)
+        return;
+    AST *nodedef;
     int dec_type;
     int call_type;
 
-     if (!checkParams(nodecall)){
-        fprintf(stderr, "ERRO: number of arguments wrong at line: %d\n",nodecall->lineNumber );
+    if (!checkParams(nodecall))
+    {
+        fprintf(stderr, "ERRO: number of arguments wrong at line: %d\n", nodecall->lineNumber);
         semanticError++;
         return;
     }
-	if(nodecall->symbol != NULL) nodedef = search(nodeDeclared, nodecall->symbol->text);	
+    if (nodecall->symbol != NULL)
+        nodedef = search(nodeDeclared, nodecall->symbol->text);
 
-	if(nodecall->son[0] != NULL && nodedef->son[1] != NULL)
-	{
-		nodecall = nodecall->son[0];	
-		nodedef = nodedef->son[1];	
-	
-		while(nodecall != NULL && nodedef != NULL)
-		{	
-			if(nodecall->son[0]->symbol != NULL && nodedef->son[0]->symbol != NULL) 
-				{
-                    dec_type = nodecall->son[0]->symbol->datatype;
-                    call_type = nodedef->son[0]->symbol->datatype;
-                    fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
-                    fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
-                    if  (
-                        (dec_type == DATATYPE_INT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_LONG || call_type == DATATYPE_INT))||
-                        (dec_type == DATATYPE_FLOAT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_INT || call_type == DATATYPE_LONG || call_type == DATATYPE_FLOAT))||
-                        (dec_type == DATATYPE_LONG && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_INT || call_type == DATATYPE_LONG )) ||
-                        (dec_type == DATATYPE_BYTE && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_INT || call_type == DATATYPE_LONG )) ||
-                        (dec_type == DATATYPE_BOOL && call_type == DATATYPE_BOOL)
-                        ){
-                            //fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
-                            //fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
-                            //printf("Entrei");
-                        }
-                    else{
-                        fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
-                        fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
-					 	fprintf(stderr, "ERRO: One or more parameters type wrong at line: %d\n", nodecall->lineNumber);
-					 	semanticError++;
-                    }
+    if (nodecall->son[0] != NULL && nodedef->son[1] != NULL)
+    {
+        nodecall = nodecall->son[0];
+        nodedef = nodedef->son[1];
 
-				}
-				nodecall = nodecall->son[1];
-				nodedef = nodedef->son[1];			
-		}
-	}
+        while (nodecall != NULL && nodedef != NULL)
+        {
+            if (nodecall->son[0]->symbol != NULL && nodedef->son[0]->symbol != NULL)
+            {
+                dec_type = nodecall->son[0]->symbol->datatype;
+                call_type = nodedef->son[0]->symbol->datatype;
+                fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
+                fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
+                if (
+                    (dec_type == DATATYPE_INT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_LONG || call_type == DATATYPE_INT)) ||
+                    (dec_type == DATATYPE_FLOAT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_INT || call_type == DATATYPE_LONG || call_type == DATATYPE_FLOAT)) ||
+                    (dec_type == DATATYPE_LONG && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_INT || call_type == DATATYPE_LONG)) ||
+                    (dec_type == DATATYPE_BYTE && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_INT || call_type == DATATYPE_LONG)) ||
+                    (dec_type == DATATYPE_BOOL && call_type == DATATYPE_BOOL))
+                {
+                    //fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
+                    //fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
+                    //printf("Entrei");
+                }
+                else
+                {
+                    //fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
+                    //fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
+                    fprintf(stderr, "ERRO: One or more parameters type wrong at line: %d\n", nodecall->lineNumber);
+                    semanticError++;
+                }
+            }
+            nodecall = nodecall->son[1];
+            nodedef = nodedef->son[1];
+        }
+    }
 }
 
 AST *search(AST *node, char *name)
 {
-	int i;
-	AST *fun;
-	
-	if(!node) return 0;
+    int i;
+    AST *fun;
 
-	
-		if(node->type == AST_FUNDEC)
-			if(node->symbol != NULL)
-			{			
-				if(strcmp(node->symbol->text, name) == 0)
-					return node;
-			}
+    if (!node)
+        return 0;
 
-		for(i=0; i < MAX_SONS; i++)
-			if(node->son[i] != NULL) 
-			{
-				fun = search(node->son[i], name);
-				if(fun) 
-					return fun;
-			}
-	return 0;
+    if (node->type == AST_FUNDEC)
+        if (node->symbol != NULL)
+        {
+            if (strcmp(node->symbol->text, name) == 0)
+                return node;
+        }
+
+    for (i = 0; i < MAX_SONS; i++)
+        if (node->son[i] != NULL)
+        {
+            fun = search(node->son[i], name);
+            if (fun)
+                return fun;
+        }
+    return 0;
 }
 
+
+int getType(AST* node) 
+{
+	int op1, op2;
+	
+	/*if(!node)
+		return;*/
+	
+	switch(node->type) 
+	{
+		case AST_SYMBOL: 
+			return node->symbol->datatype;
+		case AST_FUNCALL:
+			return node->son[0]->symbol->datatype;
+		case AST_ADD:
+		case AST_SUB:
+		case AST_DIV:
+		case AST_MUL:
+				op1 = getType(node->son[0]);
+			    op2 = getType(node->son[1]);
+				return addExpressionTypes(op1,op2);
+		case AST_LE:
+		case AST_GE:
+		case AST_EQ:
+		case AST_NE:
+		case AST_AND:
+		case AST_OR: 
+		case AST_GREATER:
+		case AST_LESS: 
+			return DATATYPE_BOOL;
+	}
+}
+
+
+int addExpressionTypes (int type1, int type2) 
+{
+    switch (type1) 
+	{
+        case DATATYPE_BOOL:
+            switch (type2) 
+			{
+                case DATATYPE_BOOL:
+                    return DATATYPE_BOOL;
+                default:
+                    return DATATYPE_ERROR;
+            }
+			//break;
+        case DATATYPE_INT:
+            switch (type2) 
+			{
+                case DATATYPE_INT:
+                    return DATATYPE_INT;
+                case DATATYPE_CHAR:
+                    return DATATYPE_INT;
+                case DATATYPE_FLOAT:
+                    return DATATYPE_FLOAT;
+                default:
+                    return DATATYPE_ERROR;
+            }
+			//break;
+        case DATATYPE_CHAR:
+            switch (type2) 
+			{
+                case DATATYPE_INT:
+                    return DATATYPE_INT;
+                case DATATYPE_CHAR:
+                    return DATATYPE_CHAR;
+                case DATATYPE_FLOAT:
+                    return DATATYPE_FLOAT;
+                default:
+                    return DATATYPE_ERROR;
+            }
+			//break;
+        case DATATYPE_FLOAT:
+            switch (type2) 
+			{
+                case DATATYPE_BOOL:
+                    return DATATYPE_ERROR;
+                case DATATYPE_ERROR:
+                    return DATATYPE_ERROR;
+                default:
+                    return DATATYPE_FLOAT;
+            }
+			//break;
+        default:
+            return DATATYPE_ERROR;
+    }
+}
