@@ -6,12 +6,19 @@ int main () {
     vec[1] = 4;
     a = a + vec[1];
     read a;
-    print x;
+    //print x;
     x = ~x;
     return 1;
+
+    a = testFunc(1 ,2, 4);
+
 }
 
 
 bool f() {
     return (1 > 2) & ~TRUE;
+}
+
+int testFunc(int y, int u){
+    return 1;
 }

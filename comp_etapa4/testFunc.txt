@@ -1,0 +1,12 @@
+int a = 1;
+bool b = TRUE;
+
+
+int main () {
+    a = testFunc(1,2, TRUE)
+}
+
+
+int testFunc(int t, int h, int c){
+   return 1 
+}
