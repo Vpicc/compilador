@@ -5,7 +5,7 @@ int vec[2];
 bool x = TRUE;
 int main () {
     vec[1] = 4;
-    a = a + vec[1];
+    a = a + func();
     read a;
     //print x;
     if (f()) then {
@@ -20,7 +20,9 @@ int main () {
     a = testFunc(1 ,2, 4);
 
 }
-
+int func() {
+    return 1;
+}
 
 bool f() {
     return (1 > 2) & ~TRUE;
