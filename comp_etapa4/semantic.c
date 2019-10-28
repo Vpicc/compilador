@@ -736,9 +736,10 @@ int validReturn(AST *nodeDec, AST *node)
     int returnType;
     if (node->type == AST_RETURN)
     {
-        if (node->son[0]->symbol)
+
+        if (node->son[0])
         {
-            returnType = node->son[0]->symbol->datatype;
+            returnType = validExpression(node->son[0]);
             //fprintf(stderr, "RETURN TYPE : %d\n", node->son[0]->symbol->datatype);
             if ((decType != returnType) &&
                 (((decType == DATATYPE_INT || decType == DATATYPE_BYTE || decType == DATATYPE_FLOAT || decType == DATATYPE_LONG) &&
@@ -1014,14 +1015,32 @@ int validExpression(AST *nodeSon)
     case AST_LESS:
     case AST_LE:
     case AST_GREATER:
-        return DATATYPE_BOOL;
+        op1 = validExpression(nodeSon->son[0]);
+        op2 = validExpression(nodeSon->son[1]);
+        if ((op1 != DATATYPE_BOOL || op1 != DATATYPE_STRING) && op1 != DATATYPE_ERROR && (op2 != DATATYPE_BOOL || op2 != DATATYPE_STRING) && op2 != DATATYPE_ERROR)
+        {
+            return DATATYPE_BOOL;
+        }
+        else
+        {
+            return DATATYPE_ERROR;
+        }
     case AST_OR:
     case AST_AND:
         op1 = validExpression(nodeSon->son[0]);
         op2 = validExpression(nodeSon->son[1]);
         return addExpressionTypes(op1, op2);
     case AST_TIL:
-        return DATATYPE_BOOL;
+        op1 = validExpression(nodeSon->son[0]);
+        if (op1 == DATATYPE_BOOL)
+        {
+            return DATATYPE_BOOL;
+        }
+        else
+        {
+            return DATATYPE_ERROR;
+        }
+
     case AST_PARENTHESIS:
         return validExpression(nodeSon->son[0]);
     default:
