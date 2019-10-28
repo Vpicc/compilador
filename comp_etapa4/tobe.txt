@@ -1,41 +1,24 @@
  
  
-bool b = 1; 
- 
-byte c = 'x'; 
- 
-int a = 0; 
- 
-int d = 1; 
- 
-int i = 0; 
- 
-long l = 0; 
- 
-float f = 0.0; 
- 
-int mat1[10]; 
- 
-int mat[10]; 
- 
-int list[10]: 0 0 0 0 0 0 0 0 0 0; 
- 
 int a = 2; 
+ 
+long b = 2; 
+ 
+int vec[2]; 
+ 
+bool x = TRUE; 
  
 int main()
 {
-i = 2 + 2;
-i = 2 + 2.3;
-i = 2 - 2;
-i = 2 - 2.3;
-i = 2 * 2;
-i = 2 * 2.3;
-i = 2/ 2;
-i = 2/ 2.3;
-i = 2 . 2;
-i = 2 . 2.3;
-i = 2 + TRUE;
-i = 2 + b;
-d = 6 ~ 7;
-b = 3;
+vec[1] = 4;
+a = a + vec[1];
+read a;
+print x;
+x =  ~ x;
+return 1;
+} 
+ 
+bool f()
+{
+return (1 > 2) &  ~ TRUE;
 }

@@ -371,15 +371,16 @@ void checkOperands(AST *node)
         {
             fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s is not a vector.\n", node->lineNumber, node->symbol->text);
             semanticError++;
-            node->datatype = DATATYPE_ERROR;
         }
+
         //fprintf(stderr, "INDEX TYPE: %d \n", node->son[0]->symbol->datatype);
-        if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE)
-        {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in array, must be byte or int.\n", node->lineNumber);
-            semanticError++;
-            node->datatype = DATATYPE_ERROR;
-        }
+        if (node->son[0] && node->son[0]->symbol && node->son[0]->symbol->datatype)
+            if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE && node->son[0]->symbol->datatype != DATATYPE_LONG)
+            {
+                // Poderia ser qualquer tipo desde que seja numero
+                fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in array, must be byte or int.\n", node->lineNumber);
+                semanticError++;
+            }
         break;
     case AST_VECTORASS:
         if (node->symbol->type != SYMBOL_VECTOR)
@@ -387,22 +388,24 @@ void checkOperands(AST *node)
             fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s is not a vector.\n", node->lineNumber, node->symbol->text);
             semanticError++;
         }
-
-        if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE)
-        {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in assignment, must be byte or int.\n", node->lineNumber);
-            semanticError++;
-        }
+        if (node->son[0] && node->son[0]->symbol && node->son[0]->symbol->datatype)
+            if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE && node->son[0]->symbol->datatype != DATATYPE_LONG)
+            {
+                // Poderia ser qualquer tipo desde que seja numero
+                fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in assignment, must be byte or int.\n", node->lineNumber);
+                semanticError++;
+            }
 
         if (node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_BYTE)
         {
             if (node->son[1] != NULL)
             {
-                if (node->son[1]->symbol->datatype != DATATYPE_INT && node->son[1]->symbol->datatype != DATATYPE_BYTE)
-                {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte or int.\n", node->lineNumber, node->symbol->text);
-                    semanticError++;
-                }
+                if (node->son[1] && node->son[1]->symbol && node->son[1]->symbol->datatype)
+                    if (node->son[1]->symbol->datatype != DATATYPE_INT && node->son[1]->symbol->datatype != DATATYPE_BYTE)
+                    {
+                        fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte or int.\n", node->lineNumber, node->symbol->text);
+                        semanticError++;
+                    }
             }
         }
         else if (node->symbol->datatype == DATATYPE_FLOAT)
@@ -464,7 +467,6 @@ void checkOperands(AST *node)
                 node->son[i]->type == AST_SUB ||
                 node->son[i]->type == AST_MUL ||
                 node->son[i]->type == AST_DIV ||
-                node->son[i]->type == AST_TIL ||
                 node->son[i]->type == AST_POINT ||
                 ((node->son[i]->type == AST_SYMBOL) &&
                  ((node->son[i]->symbol->type == SYMBOL_SCALAR) &&
@@ -538,12 +540,93 @@ void checkOperands(AST *node)
                 }
         }
         break;
+    case AST_READ:
+        if (node->symbol->type != SYMBOL_SCALAR)
+        {
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Symbol %s must be scalar\n", node->lineNumber, node->symbol->text);
+            semanticError++;
+        }
+        break;
+    case AST_PRINT:
+        if (node->son[0] != NULL)
+        {
+            if (node->son[0]->type != AST_PRINTLIST)
+            {
+                fprintf(stderr, "PRINT SON TYPE: %d\n", node->son[0]->type);
+                fprintf(stderr, "SEMANTIC ERROR in line %d. Not a print list\n", node->lineNumber);
+                semanticError++;
+            }
+            else if (checkPrint(node->son[0]))
+            {
+                fprintf(stderr, "SEMANTIC ERROR in line %d. Incompatible type found in print\n", node->lineNumber);
+                semanticError++;
+            }
+        }
+        break;
     default:
         break;
     }
 
     for (i = 0; i < MAX_SONS; ++i)
         checkOperands(node->son[i]);
+}
+
+int checkPrint(AST *node)
+{
+    if (node != NULL)
+    {
+        if (node->son[0] != NULL)
+        {
+
+            // fprintf(stderr, "PRINT SON TYPE: %d\n", node->son[0]->type);
+            // fprintf(stderr, "PRINT SON SYMBOL TYPE: %d\n", node->son[0]->symbol->type);
+            // fprintf(stderr, "PRINT SON DATATYPE: %d\n", node->son[0]->symbol->datatype);
+            if (node->son[0]->symbol)
+            {
+                if (
+                    ((node->son[0]->type == AST_SYMBOL) &&
+                     ((node->son[0]->symbol->type == SYMBOL_SCALAR) &&
+                      node->son[0]->symbol->datatype != DATATYPE_BOOL)) ||
+                    ((node->son[0]->type == AST_SYMBOL) &&
+                     (node->son[0]->type == AST_SYMBOL &&
+                          node->son[0]->symbol->type == SYMBOL_LIT_INT ||
+                      node->son[0]->symbol->type == SYMBOL_LIT_FLOAT ||
+                      node->son[0]->symbol->type == SYMBOL_LIT_CHAR)) ||
+                    ((node->son[0]->type == AST_VECREAD) &&
+                     ((node->son[0]->symbol->type == SYMBOL_VECTOR) &&
+                      node->son[0]->symbol->datatype != DATATYPE_BOOL)) ||
+                    ((node->son[0]->type == AST_FUNCALL) &&
+                     ((node->son[0]->symbol->type == SYMBOL_FUNCTION) &&
+                      node->son[0]->symbol->datatype != DATATYPE_BOOL)) ||
+                    node->son[0]->symbol->datatype == DATATYPE_STRING)
+                {
+                    fprintf(stderr, "PRINT SON DATATYPE: %d\n", node->son[0]->symbol->datatype);
+
+                    if (node->son[1])
+                        return checkPrint(node->son[1]);
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            }
+            else if (node->son[0]->type == AST_ADD ||
+                     node->son[0]->type == AST_SUB ||
+                     node->son[0]->type == AST_MUL ||
+                     node->son[0]->type == AST_DIV ||
+                     node->son[0]->type == AST_POINT)
+            {
+                if (node->son[1])
+                    return checkPrint(node->son[1]);
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+    }
+
+    return 1;
 }
 
 int checkVector(AST *node, int datatype)
