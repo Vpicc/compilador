@@ -4,8 +4,9 @@ bool v1[2]: TRUE TRUE;
 int vec[2];
 bool x = TRUE;
 int main () {
-    vec[1] = 4;
-    a = a + func();
+    vec[1] = 4 + 3 <= 4;
+    v1[1] = 4 + 3;
+    a = 1 + 2 > 3;
     read a;
     //print x;
     if (f()) then {

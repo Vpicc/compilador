@@ -233,6 +233,7 @@ void checkOperands(AST *node)
     int i;
     int op1;
     int op2;
+    int assign;
     if (!node)
         return;
 
@@ -372,41 +373,44 @@ void checkOperands(AST *node)
                 semanticError++;
             }
 
-        if (node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_BYTE)
+        assign = validAssign(node->son[1]);
+        if (node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_BYTE || node->symbol->datatype == DATATYPE_FLOAT || node->symbol->datatype == DATATYPE_LONG)
         {
-            if (node->son[1] != NULL)
+            if (assign == DATATYPE_BOOL || assign == DATATYPE_ERROR)
             {
-                if (node->son[1] && node->son[1]->symbol && node->son[1]->symbol->datatype)
-                    if (node->son[1]->symbol->datatype != DATATYPE_INT && node->son[1]->symbol->datatype != DATATYPE_BYTE)
-                    {
-                        fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte or int.\n", node->lineNumber, node->symbol->text);
-                        semanticError++;
-                    }
+                fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte, int, long or float.\n", node->lineNumber, node->symbol->text);
+                semanticError++;
             }
         }
-        else if (node->symbol->datatype == DATATYPE_FLOAT)
+        else if (node->symbol->datatype == DATATYPE_BOOL)
         {
-            if (node->son[1] != NULL)
+            if (assign != DATATYPE_BOOL || assign == DATATYPE_ERROR)
             {
-                if (node->son[1]->symbol->datatype != DATATYPE_FLOAT)
-                {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to float.\n", node->lineNumber, node->symbol->text);
-                    semanticError++;
-                }
+                fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to boolean.\n", node->lineNumber, node->symbol->text);
+                semanticError++;
             }
         }
         break;
     case AST_ASS:
-        if (node && node->symbol && node->symbol->datatype && node->symbol->type)
+        if (node)
         {
             if (node->symbol->type != SYMBOL_SCALAR)
             {
                 fprintf(stderr, "SEMANTIC ERROR in line %d. Symbol %s must be scalar.\n", node->lineNumber, node->symbol->text);
                 semanticError++;
             }
+
+            assign = validAssign(node->son[0]);
+
             if (node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_BYTE || node->symbol->datatype == DATATYPE_FLOAT || node->symbol->datatype == DATATYPE_LONG)
             {
+                if (assign == DATATYPE_BOOL || assign == DATATYPE_ERROR)
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte, int, long or float.\n", node->lineNumber, node->symbol->text);
+                    semanticError++;
+                }
 
+                /*
                 if (node->son[0] != NULL)
                 {
                     if (node->son[0]->symbol && node->son[0]->symbol->datatype)
@@ -415,18 +419,14 @@ void checkOperands(AST *node)
                             fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte or int.\n", node->lineNumber, node->symbol->text);
                             semanticError++;
                         }
-                }
+                }*/
             }
             else if (node->symbol->datatype == DATATYPE_BOOL)
             {
-                if (node->son[0] != NULL)
+                if (assign != DATATYPE_BOOL || assign == DATATYPE_ERROR)
                 {
-                    if (node->son[0]->symbol && node->son[0]->symbol->datatype)
-                        if (node->son[0]->symbol->datatype != DATATYPE_BOOL)
-                        {
-                            fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to float.\n", node->lineNumber, node->symbol->text);
-                            semanticError++;
-                        }
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to boolean.\n", node->lineNumber, node->symbol->text);
+                    semanticError++;
                 }
             }
         }
@@ -866,7 +866,10 @@ int getType(AST *node)
     case AST_SUB:
     case AST_DIV:
     case AST_MUL:
-    case AST_LE:
+    case AST_POINT:
+        op1 = getType(node->son[0]);
+        op2 = getType(node->son[1]);
+        return addExpressionTypes(op1, op2);
     case AST_GE:
     case AST_EQ:
     case AST_NE:
@@ -874,9 +877,9 @@ int getType(AST *node)
     case AST_OR:
     case AST_GREATER:
     case AST_LESS:
-        op1 = getType(node->son[0]);
-        op2 = getType(node->son[1]);
-        return addExpressionTypes(op1, op2);
+    case AST_LE:
+    case AST_TIL:
+        return DATATYPE_BOOL;
     }
 }
 
@@ -955,5 +958,55 @@ int addExpressionTypes(int type1, int type2)
     //break;
     default:
         return DATATYPE_ERROR;
+    }
+}
+
+int validAssign(AST *nodeSon)
+{
+    int op1, op2;
+    if (!nodeSon)
+    {
+        return DATATYPE_ERROR;
+    }
+    switch (nodeSon->type)
+    {
+    case AST_SYMBOL:
+        if (nodeSon->symbol->type == SYMBOL_VECTOR)
+        {
+            return DATATYPE_ERROR;
+        }
+        if (nodeSon->symbol->type == SYMBOL_FUNCTION)
+        {
+            return DATATYPE_ERROR;
+        }
+        return nodeSon->symbol->datatype;
+    case AST_VECREAD:
+        return nodeSon->symbol->datatype;
+    case AST_FUNCALL:
+        return nodeSon->symbol->datatype;
+    case AST_ADD:
+    case AST_SUB:
+    case AST_DIV:
+    case AST_MUL:
+    case AST_POINT:
+        op1 = validAssign(nodeSon->son[0]);
+        op2 = validAssign(nodeSon->son[1]);
+        return addExpressionTypes(op1, op2);
+    case AST_GE:
+    case AST_EQ:
+    case AST_NE:
+    case AST_LESS:
+    case AST_LE:
+    case AST_GREATER:
+        return DATATYPE_BOOL;
+    case AST_OR:
+    case AST_AND:
+        op1 = validAssign(nodeSon->son[0]);
+        op2 = validAssign(nodeSon->son[1]);
+        return addExpressionTypes(op1, op2);
+    case AST_TIL:
+        return DATATYPE_BOOL;
+    default:
+        return 0;
     }
 }
