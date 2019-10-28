@@ -4,10 +4,19 @@ int a = 1;
  
 bool b = TRUE; 
  
+int f = 2; 
+ 
+int h = 3; 
+ 
+bool v1[2]: TRUE TRUE; 
+ 
+int v2[2]: 1 2; 
+ 
 int main()
 {
-a = testFunc(1,2,TRUE)} 
- 
-int testFunc(int t,int h,bool c)
-{
-return 1}
+a = f + h;
+f = 1 + 1.1;
+h = 1 + v2[0];
+h = 1 + v1[0];
+a = 1 + FALSE;
+f = 1 + 1.1 + FALSE}
