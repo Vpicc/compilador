@@ -233,7 +233,8 @@ void checkOperands(AST *node)
     int i;
     int op1;
     int op2;
-    int assign;
+    int exp;
+    int expType;
     if (!node)
         return;
 
@@ -373,10 +374,10 @@ void checkOperands(AST *node)
                 semanticError++;
             }
 
-        assign = validAssign(node->son[1]);
+        exp = validExpression(node->son[1]);
         if (node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_BYTE || node->symbol->datatype == DATATYPE_FLOAT || node->symbol->datatype == DATATYPE_LONG)
         {
-            if (assign == DATATYPE_BOOL || assign == DATATYPE_ERROR)
+            if (exp == DATATYPE_BOOL || exp == DATATYPE_ERROR)
             {
                 fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte, int, long or float.\n", node->lineNumber, node->symbol->text);
                 semanticError++;
@@ -384,7 +385,7 @@ void checkOperands(AST *node)
         }
         else if (node->symbol->datatype == DATATYPE_BOOL)
         {
-            if (assign != DATATYPE_BOOL || assign == DATATYPE_ERROR)
+            if (exp != DATATYPE_BOOL || exp == DATATYPE_ERROR)
             {
                 fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to boolean.\n", node->lineNumber, node->symbol->text);
                 semanticError++;
@@ -400,11 +401,11 @@ void checkOperands(AST *node)
                 semanticError++;
             }
 
-            assign = validAssign(node->son[0]);
+            exp = validExpression(node->son[0]);
 
             if (node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_BYTE || node->symbol->datatype == DATATYPE_FLOAT || node->symbol->datatype == DATATYPE_LONG)
             {
-                if (assign == DATATYPE_BOOL || assign == DATATYPE_ERROR)
+                if (exp == DATATYPE_BOOL || exp == DATATYPE_ERROR)
                 {
                     fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte, int, long or float.\n", node->lineNumber, node->symbol->text);
                     semanticError++;
@@ -423,7 +424,7 @@ void checkOperands(AST *node)
             }
             else if (node->symbol->datatype == DATATYPE_BOOL)
             {
-                if (assign != DATATYPE_BOOL || assign == DATATYPE_ERROR)
+                if (exp != DATATYPE_BOOL || exp == DATATYPE_ERROR)
                 {
                     fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to boolean.\n", node->lineNumber, node->symbol->text);
                     semanticError++;
@@ -545,17 +546,13 @@ void checkOperands(AST *node)
         break;
     case AST_AND:
     case AST_OR:
-        if (node->son[0]->symbol && node->son[0]->symbol->datatype && node->son[1]->symbol && node->son[1]->symbol->datatype)
-            if (node->son[0] != NULL && node->son[1] != NULL)
-            {
-                node->datatype = DATATYPE_BOOL;
-                if (node->son[0]->symbol->datatype != DATATYPE_BOOL || node->son[1]->symbol->datatype != DATATYPE_BOOL)
-                {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be bool.\n", node->lineNumber);
-                    semanticError++;
-                    node->datatype = DATATYPE_ERROR;
-                }
-            }
+        exp = validExpression(node);
+        node->datatype = DATATYPE_BOOL;
+        if (exp != DATATYPE_BOOL || exp == DATATYPE_ERROR)
+        {
+            fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be bool \n", node->lineNumber);
+            semanticError++;
+        };
         break;
     case AST_TIL:
         if (node->son[0] != NULL)
@@ -610,27 +607,11 @@ void checkOperands(AST *node)
     case AST_WHILE:
         if (node->son[0] != NULL)
         {
-            if (node->son[0]->symbol && node->son[0]->symbol->datatype)
+            exp = validExpression(node->son[0]);
+            if (exp != DATATYPE_BOOL || exp == DATATYPE_ERROR)
             {
-                // fprintf(stderr, "PRINT SON TYPE: %d\n", node->son[0]->type);
-                // fprintf(stderr, "PRINT SON SYMBOL TYPE: %d\n", node->son[0]->symbol->type);
-                // fprintf(stderr, "PRINT SON DATATYPE: %d\n", node->son[0]->symbol->datatype);
-                if ((node->son[0]->type == AST_SYMBOL) && (node->son[0]->symbol->type == SYMBOL_FUNCTION))
-                {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Condition type must be bool.\n", node->lineNumber);
-                    semanticError++;
-                }
-
-                if ((node->son[0]->type == AST_SYMBOL) && (node->son[0]->symbol->type == SYMBOL_VECTOR))
-                {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Condition type must be bool.\n", node->lineNumber);
-                    semanticError++;
-                }
-                if (node->son[0]->symbol->datatype != DATATYPE_BOOL)
-                {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Condition type must be bool.\n", node->lineNumber);
-                    semanticError++;
-                }
+                fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be boolean.\n", node->lineNumber, node->symbol->text);
+                semanticError++;
             }
         }
         break;
@@ -880,6 +861,10 @@ int getType(AST *node)
     case AST_LE:
     case AST_TIL:
         return DATATYPE_BOOL;
+    case AST_PARENTHESIS:
+        return validExpression(node->son[0]);
+    default:
+        return 0;
     }
 }
 
@@ -961,13 +946,14 @@ int addExpressionTypes(int type1, int type2)
     }
 }
 
-int validAssign(AST *nodeSon)
+int validExpression(AST *nodeSon)
 {
     int op1, op2;
     if (!nodeSon)
     {
         return DATATYPE_ERROR;
     }
+
     switch (nodeSon->type)
     {
     case AST_SYMBOL:
@@ -989,8 +975,8 @@ int validAssign(AST *nodeSon)
     case AST_DIV:
     case AST_MUL:
     case AST_POINT:
-        op1 = validAssign(nodeSon->son[0]);
-        op2 = validAssign(nodeSon->son[1]);
+        op1 = validExpression(nodeSon->son[0]);
+        op2 = validExpression(nodeSon->son[1]);
         return addExpressionTypes(op1, op2);
     case AST_GE:
     case AST_EQ:
@@ -1001,11 +987,13 @@ int validAssign(AST *nodeSon)
         return DATATYPE_BOOL;
     case AST_OR:
     case AST_AND:
-        op1 = validAssign(nodeSon->son[0]);
-        op2 = validAssign(nodeSon->son[1]);
+        op1 = validExpression(nodeSon->son[0]);
+        op2 = validExpression(nodeSon->son[1]);
         return addExpressionTypes(op1, op2);
     case AST_TIL:
         return DATATYPE_BOOL;
+    case AST_PARENTHESIS:
+        return validExpression(nodeSon->son[0]);
     default:
         return 0;
     }

@@ -873,12 +873,12 @@ State 65
     LIT_FALSE      shift, and go to state 24
     LIT_CHAR       shift, and go to state 25
     LIT_STRING     shift, and go to state 26
-    '>'            shift, and go to state 84
-    '<'            shift, and go to state 85
-    '.'            shift, and go to state 86
-    'v'            shift, and go to state 87
+    '.'            shift, and go to state 84
+    'v'            shift, and go to state 85
     '~'            shift, and go to state 60
-    '&'            shift, and go to state 88
+    '&'            shift, and go to state 86
+    '>'            shift, and go to state 87
+    '<'            shift, and go to state 88
     '+'            shift, and go to state 89
     '-'            shift, and go to state 90
     '*'            shift, and go to state 91
@@ -914,11 +914,11 @@ State 66
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -1028,11 +1028,11 @@ State 73
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -1061,11 +1061,11 @@ State 74
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -1139,10 +1139,16 @@ State 78
    65           | expression . '&' expression
    66           | '~' expression .
 
-    '+'  shift, and go to state 89
-    '-'  shift, and go to state 90
-    '*'  shift, and go to state 91
-    '/'  shift, and go to state 92
+    OPERATOR_LE   shift, and go to state 80
+    OPERATOR_GE   shift, and go to state 81
+    OPERATOR_EQ   shift, and go to state 82
+    OPERATOR_DIF  shift, and go to state 83
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
+    '+'           shift, and go to state 89
+    '-'           shift, and go to state 90
+    '*'           shift, and go to state 91
+    '/'           shift, and go to state 92
 
     $default  reduce using rule 66 (expression)
 
@@ -1168,11 +1174,11 @@ State 79
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -1258,7 +1264,7 @@ State 83
 
 State 84
 
-   62 expression: expression '>' . expression
+   63 expression: expression '.' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
     LIT_INTEGER    shift, and go to state 21
@@ -1277,7 +1283,7 @@ State 84
 
 State 85
 
-   61 expression: expression '<' . expression
+   64 expression: expression 'v' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
     LIT_INTEGER    shift, and go to state 21
@@ -1296,7 +1302,7 @@ State 85
 
 State 86
 
-   63 expression: expression '.' . expression
+   65 expression: expression '&' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
     LIT_INTEGER    shift, and go to state 21
@@ -1315,7 +1321,7 @@ State 86
 
 State 87
 
-   64 expression: expression 'v' . expression
+   62 expression: expression '>' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
     LIT_INTEGER    shift, and go to state 21
@@ -1334,7 +1340,7 @@ State 87
 
 State 88
 
-   65 expression: expression '&' . expression
+   61 expression: expression '<' . expression
 
     TK_IDENTIFIER  shift, and go to state 59
     LIT_INTEGER    shift, and go to state 21
@@ -1462,12 +1468,12 @@ State 94
     LIT_FALSE      shift, and go to state 24
     LIT_CHAR       shift, and go to state 25
     LIT_STRING     shift, and go to state 26
-    '>'            shift, and go to state 84
-    '<'            shift, and go to state 85
-    '.'            shift, and go to state 86
-    'v'            shift, and go to state 87
+    '.'            shift, and go to state 84
+    'v'            shift, and go to state 85
     '~'            shift, and go to state 60
-    '&'            shift, and go to state 88
+    '&'            shift, and go to state 86
+    '>'            shift, and go to state 87
+    '<'            shift, and go to state 88
     '+'            shift, and go to state 89
     '-'            shift, and go to state 90
     '*'            shift, and go to state 91
@@ -1503,11 +1509,11 @@ State 95
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -1536,11 +1542,11 @@ State 96
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -1628,11 +1634,11 @@ State 101
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -1679,11 +1685,11 @@ State 104
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -1716,9 +1722,6 @@ State 106
    64           | expression . 'v' expression
    65           | expression . '&' expression
 
-    '.'  shift, and go to state 86
-    'v'  shift, and go to state 87
-    '&'  shift, and go to state 88
     '+'  shift, and go to state 89
     '-'  shift, and go to state 90
     '*'  shift, and go to state 91
@@ -1744,9 +1747,6 @@ State 107
    64           | expression . 'v' expression
    65           | expression . '&' expression
 
-    '.'  shift, and go to state 86
-    'v'  shift, and go to state 87
-    '&'  shift, and go to state 88
     '+'  shift, and go to state 89
     '-'  shift, and go to state 90
     '*'  shift, and go to state 91
@@ -1772,9 +1772,6 @@ State 108
    64           | expression . 'v' expression
    65           | expression . '&' expression
 
-    '.'  shift, and go to state 86
-    'v'  shift, and go to state 87
-    '&'  shift, and go to state 88
     '+'  shift, and go to state 89
     '-'  shift, and go to state 90
     '*'  shift, and go to state 91
@@ -1800,9 +1797,6 @@ State 109
    64           | expression . 'v' expression
    65           | expression . '&' expression
 
-    '.'  shift, and go to state 86
-    'v'  shift, and go to state 87
-    '&'  shift, and go to state 88
     '+'  shift, and go to state 89
     '-'  shift, and go to state 90
     '*'  shift, and go to state 91
@@ -1823,76 +1817,26 @@ State 110
    60           | expression . '/' expression
    61           | expression . '<' expression
    62           | expression . '>' expression
-   62           | expression '>' expression .
-   63           | expression . '.' expression
-   64           | expression . 'v' expression
-   65           | expression . '&' expression
-
-    '.'  shift, and go to state 86
-    'v'  shift, and go to state 87
-    '&'  shift, and go to state 88
-    '+'  shift, and go to state 89
-    '-'  shift, and go to state 90
-    '*'  shift, and go to state 91
-    '/'  shift, and go to state 92
-
-    $default  reduce using rule 62 (expression)
-
-
-State 111
-
-   53 expression: expression . OPERATOR_EQ expression
-   54           | expression . OPERATOR_DIF expression
-   55           | expression . OPERATOR_GE expression
-   56           | expression . OPERATOR_LE expression
-   57           | expression . '+' expression
-   58           | expression . '-' expression
-   59           | expression . '*' expression
-   60           | expression . '/' expression
-   61           | expression . '<' expression
-   61           | expression '<' expression .
-   62           | expression . '>' expression
-   63           | expression . '.' expression
-   64           | expression . 'v' expression
-   65           | expression . '&' expression
-
-    '.'  shift, and go to state 86
-    'v'  shift, and go to state 87
-    '&'  shift, and go to state 88
-    '+'  shift, and go to state 89
-    '-'  shift, and go to state 90
-    '*'  shift, and go to state 91
-    '/'  shift, and go to state 92
-
-    $default  reduce using rule 61 (expression)
-
-
-State 112
-
-   53 expression: expression . OPERATOR_EQ expression
-   54           | expression . OPERATOR_DIF expression
-   55           | expression . OPERATOR_GE expression
-   56           | expression . OPERATOR_LE expression
-   57           | expression . '+' expression
-   58           | expression . '-' expression
-   59           | expression . '*' expression
-   60           | expression . '/' expression
-   61           | expression . '<' expression
-   62           | expression . '>' expression
    63           | expression . '.' expression
    63           | expression '.' expression .
    64           | expression . 'v' expression
    65           | expression . '&' expression
 
-    '+'  shift, and go to state 89
-    '-'  shift, and go to state 90
-    '*'  shift, and go to state 91
-    '/'  shift, and go to state 92
+    OPERATOR_LE   shift, and go to state 80
+    OPERATOR_GE   shift, and go to state 81
+    OPERATOR_EQ   shift, and go to state 82
+    OPERATOR_DIF  shift, and go to state 83
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
+    '+'           shift, and go to state 89
+    '-'           shift, and go to state 90
+    '*'           shift, and go to state 91
+    '/'           shift, and go to state 92
 
     $default  reduce using rule 63 (expression)
 
 
-State 113
+State 111
 
    53 expression: expression . OPERATOR_EQ expression
    54           | expression . OPERATOR_DIF expression
@@ -1909,15 +1853,21 @@ State 113
    64           | expression 'v' expression .
    65           | expression . '&' expression
 
-    '+'  shift, and go to state 89
-    '-'  shift, and go to state 90
-    '*'  shift, and go to state 91
-    '/'  shift, and go to state 92
+    OPERATOR_LE   shift, and go to state 80
+    OPERATOR_GE   shift, and go to state 81
+    OPERATOR_EQ   shift, and go to state 82
+    OPERATOR_DIF  shift, and go to state 83
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
+    '+'           shift, and go to state 89
+    '-'           shift, and go to state 90
+    '*'           shift, and go to state 91
+    '/'           shift, and go to state 92
 
     $default  reduce using rule 64 (expression)
 
 
-State 114
+State 112
 
    53 expression: expression . OPERATOR_EQ expression
    54           | expression . OPERATOR_DIF expression
@@ -1934,12 +1884,68 @@ State 114
    65           | expression . '&' expression
    65           | expression '&' expression .
 
+    OPERATOR_LE   shift, and go to state 80
+    OPERATOR_GE   shift, and go to state 81
+    OPERATOR_EQ   shift, and go to state 82
+    OPERATOR_DIF  shift, and go to state 83
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
+    '+'           shift, and go to state 89
+    '-'           shift, and go to state 90
+    '*'           shift, and go to state 91
+    '/'           shift, and go to state 92
+
+    $default  reduce using rule 65 (expression)
+
+
+State 113
+
+   53 expression: expression . OPERATOR_EQ expression
+   54           | expression . OPERATOR_DIF expression
+   55           | expression . OPERATOR_GE expression
+   56           | expression . OPERATOR_LE expression
+   57           | expression . '+' expression
+   58           | expression . '-' expression
+   59           | expression . '*' expression
+   60           | expression . '/' expression
+   61           | expression . '<' expression
+   62           | expression . '>' expression
+   62           | expression '>' expression .
+   63           | expression . '.' expression
+   64           | expression . 'v' expression
+   65           | expression . '&' expression
+
     '+'  shift, and go to state 89
     '-'  shift, and go to state 90
     '*'  shift, and go to state 91
     '/'  shift, and go to state 92
 
-    $default  reduce using rule 65 (expression)
+    $default  reduce using rule 62 (expression)
+
+
+State 114
+
+   53 expression: expression . OPERATOR_EQ expression
+   54           | expression . OPERATOR_DIF expression
+   55           | expression . OPERATOR_GE expression
+   56           | expression . OPERATOR_LE expression
+   57           | expression . '+' expression
+   58           | expression . '-' expression
+   59           | expression . '*' expression
+   60           | expression . '/' expression
+   61           | expression . '<' expression
+   61           | expression '<' expression .
+   62           | expression . '>' expression
+   63           | expression . '.' expression
+   64           | expression . 'v' expression
+   65           | expression . '&' expression
+
+    '+'  shift, and go to state 89
+    '-'  shift, and go to state 90
+    '*'  shift, and go to state 91
+    '/'  shift, and go to state 92
+
+    $default  reduce using rule 61 (expression)
 
 
 State 115
@@ -2098,11 +2104,11 @@ State 124
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -2231,11 +2237,11 @@ State 133
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -2285,11 +2291,11 @@ State 135
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91
@@ -2351,11 +2357,11 @@ State 139
     OPERATOR_GE   shift, and go to state 81
     OPERATOR_EQ   shift, and go to state 82
     OPERATOR_DIF  shift, and go to state 83
-    '>'           shift, and go to state 84
-    '<'           shift, and go to state 85
-    '.'           shift, and go to state 86
-    'v'           shift, and go to state 87
-    '&'           shift, and go to state 88
+    '.'           shift, and go to state 84
+    'v'           shift, and go to state 85
+    '&'           shift, and go to state 86
+    '>'           shift, and go to state 87
+    '<'           shift, and go to state 88
     '+'           shift, and go to state 89
     '-'           shift, and go to state 90
     '*'           shift, and go to state 91

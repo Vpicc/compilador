@@ -21,5 +21,5 @@ int checkParams(AST *node);
 int addExpressionTypes(int type1, int type2);
 int getType(AST *node);
 AST *search(AST *node, char *name);
-int validAssign(AST *nodeSon);
+int validExpression(AST *nodeSon);
 #endif
