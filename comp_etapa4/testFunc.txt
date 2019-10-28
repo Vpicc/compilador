@@ -3,10 +3,10 @@ bool b = TRUE;
 
 
 int main () {
-    a = testFunc(1,2, TRUE)
+    a = testFunc(1, 2, TRUE)
 }
 
 
-int testFunc(int t, int h, int c){
+int testFunc(int t, int h,bool c){
    return 1 
 }

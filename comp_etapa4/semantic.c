@@ -551,6 +551,35 @@ void checkOperands(AST *node)
         checkTypeParam(node);
         break;
     
+    case AST_IF:
+    case AST_IFELSE:
+    case AST_WHILE:
+        if (node->son[0] != NULL)
+        {
+            if (node->son[0]->symbol && node->son[0]->symbol->datatype)
+            {
+                // fprintf(stderr, "PRINT SON TYPE: %d\n", node->son[0]->type);
+                // fprintf(stderr, "PRINT SON SYMBOL TYPE: %d\n", node->son[0]->symbol->type);
+                // fprintf(stderr, "PRINT SON DATATYPE: %d\n", node->son[0]->symbol->datatype);
+                if ((node->son[0]->type == AST_SYMBOL) && (node->son[0]->symbol->type == SYMBOL_FUNCTION))
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Condition type must be bool.\n", node->lineNumber);
+                    semanticError++;
+                }
+
+                if ((node->son[0]->type == AST_SYMBOL) && (node->son[0]->symbol->type == SYMBOL_VECTOR))
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Condition type must be bool.\n", node->lineNumber);
+                    semanticError++;
+                }
+                if (node->son[0]->symbol->datatype != DATATYPE_BOOL)
+                {
+                    fprintf(stderr, "SEMANTIC ERROR in line %d. Condition type must be bool.\n", node->lineNumber);
+                    semanticError++;
+                }
+            }
+        }
+        break;
     default:
         break;
     }
@@ -675,106 +704,6 @@ int validReturn(AST *nodeDec, AST *node)
     return 999;
 }
 
-int functionValidation(AST *nodeDeclared, AST *node)
-{
-   
-    if (nodeDeclared->type == AST_FUNDEC  && strcmp(nodeDeclared->symbol->text, node->symbol->text) == 0)
-    {
-        AST *declaration_param = NULL;
-        int dec_type, call_type;
-
-        if (nodeDeclared->type == AST_FUNDEC)
-            declaration_param = nodeDeclared->son[1];
-
-        AST *funccall_param = node->son[0];
-
-        if (declaration_param == NULL && funccall_param == NULL)
-            return 1;
-        if (!checkParams(node))
-            return 3;
-
-        while (declaration_param != NULL && funccall_param != NULL)
-        {
-            fprintf(stderr, "DECLARADO: SYMBOL TYPE= %d  TYPE = %d DATAYPE= %d\n", declaration_param->son[0]->symbol->type, declaration_param->son[0]->type, declaration_param->son[0]->datatype);
-            switch (declaration_param->son[0]->symbol->type)
-            {
-            case AST_TYPEINT:
-                dec_type = DATATYPE_INT;
-                break;
-
-            case AST_TYPEFLOAT:
-                dec_type = DATATYPE_FLOAT;
-                break;
-
-            case AST_TYPEBYTE:
-                dec_type = DATATYPE_BYTE;
-                break;
-
-            case AST_TYPEBOOL:
-                dec_type = DATATYPE_BOOL;
-                break;
-
-            case AST_TYPELONG:
-                dec_type = DATATYPE_LONG;
-                break;
-
-            default:
-                dec_type = DATATYPE_ERROR;
-                break;
-            }
-
-            call_type = funccall_param->son[0]->symbol->datatype;
-
-            if (dec_type != call_type)
-            {
-                fprintf(stderr, "Declarado= %d   Call = %d\n", dec_type, call_type);
-                if ((dec_type == DATATYPE_BYTE && (call_type == DATATYPE_INT || call_type == DATATYPE_FLOAT || call_type == DATATYPE_LONG)) || 
-                    (dec_type == DATATYPE_INT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_LONG))||
-                    (dec_type == DATATYPE_FLOAT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_INT || call_type == DATATYPE_LONG))||
-                    (dec_type == DATATYPE_LONG && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_INT)))
-                    return 1;
-                else
-                    return 2;
-            }
-            if (declaration_param->son[1])
-                declaration_param = declaration_param->son[1]->son[0];
-
-            else
-            {
-                declaration_param = NULL;
-            }
-
-            if (funccall_param->son[1])
-            {
-                funccall_param = funccall_param->son[1]->son[0];
-            }
-            else
-            {
-                funccall_param = NULL;
-            }
-        }
-
-       
-    }
-    else
-    {
-        int number_sons = 0;
-
-        for (number_sons = 0; number_sons < 4; number_sons++)
-        {
-            if (nodeDeclared->son[number_sons] != NULL)
-            {
-                int found;
-                found = functionValidation(nodeDeclared->son[number_sons], node);
-                if (found != 5)
-                    return found;
-            }
-        }
-    }
-
-    return 5;
-}
-
 void checkTypeParam(AST* nodecall) 
 {
 	if(!nodecall) return;
@@ -800,21 +729,22 @@ void checkTypeParam(AST* nodecall)
 				{
                     dec_type = nodecall->son[0]->symbol->datatype;
                     call_type = nodedef->son[0]->symbol->datatype;
-                    //fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
-                    //fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
+                    fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
+                    fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
                     if  (
                         (dec_type == DATATYPE_INT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_LONG || call_type == DATATYPE_INT))||
                         (dec_type == DATATYPE_FLOAT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_INT || call_type == DATATYPE_LONG || call_type == DATATYPE_FLOAT))||
                         (dec_type == DATATYPE_LONG && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_INT || call_type == DATATYPE_LONG )) ||
-                        (dec_type == DATATYPE_BYTE && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_INT || call_type == DATATYPE_LONG ))
+                        (dec_type == DATATYPE_BYTE && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_INT || call_type == DATATYPE_LONG )) ||
+                        (dec_type == DATATYPE_BOOL && call_type == DATATYPE_BOOL)
                         ){
                             //fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
                             //fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
                             //printf("Entrei");
                         }
                     else{
-                        // fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
-                        // fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
+                        fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
+                        fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
 					 	fprintf(stderr, "ERRO: One or more parameters type wrong at line: %d\n", nodecall->lineNumber);
 					 	semanticError++;
                     }

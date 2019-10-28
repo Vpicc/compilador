@@ -1,29 +1,13 @@
  
  
-int a = 2; 
+int a = 1; 
  
-long b = 2; 
- 
-int vec[2]; 
- 
-bool x = TRUE; 
+bool b = TRUE; 
  
 int main()
 {
-vec[1] = 4;
-a = a + vec[1];
-read a;
-x =  ~ x;
-return 1;
-a = testFunc(1,2,4);
-} 
+a = testFunc(1,2,TRUE)} 
  
-bool f()
+int testFunc(int t,int h,bool c)
 {
-return (1 > 2) &  ~ TRUE;
-} 
- 
-int testFunc(int y,int u)
-{
-return 1;
-}
+return 1}

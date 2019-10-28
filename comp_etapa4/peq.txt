@@ -1,5 +1,6 @@
 int a = 2;
 long b = 2;
+bool v1[2]: TRUE TRUE;
 int vec[2];
 bool x = TRUE;
 int main () {
@@ -7,6 +8,12 @@ int main () {
     a = a + vec[1];
     read a;
     //print x;
+    if (f()) then {
+        ;
+    };
+    while(1 < 2){
+        ;
+    };
     x = ~x;
     return 1;
 
