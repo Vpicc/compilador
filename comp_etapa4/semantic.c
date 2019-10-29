@@ -27,7 +27,7 @@ void checkAndSetTypes(AST *node)
         {
             if (node->symbol->type != SYMBOL_TK_IDENTIFIER)
             {
-                fprintf(stderr, "LINE %d - SemanticError: Symbol %s already declared\n", node->lineNumber, node->symbol->text);
+                fprintf(stderr, "Erro de semantica na linha %d: Variavel %s ja declarada\n", node->lineNumber, node->symbol->text);
                 semanticError++;
             }
             if (node->type == AST_DECL)
@@ -302,24 +302,24 @@ void checkOperands(AST *node)
             if ((node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_BYTE) &&
                 (node->son[1]->symbol->datatype != DATATYPE_INT && node->son[1]->symbol->datatype != DATATYPE_BYTE))
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. | Variable %s must recieve int or byte.\n", node->lineNumber, node->symbol->text);
+                fprintf(stderr, "Erro de semantica na linha %d. Variavel %s deve receber int, byte\n", node->lineNumber, node->symbol->text);
                 semanticError++;
             }
             else if (node->symbol->datatype == DATATYPE_FLOAT && node->son[1]->symbol->datatype != DATATYPE_FLOAT)
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. | Variable %s must recieve float.\n", node->lineNumber, node->symbol->text);
+                fprintf(stderr, "Erro de semantica na linha %d. Variavel %s deve receber float\n", node->lineNumber, node->symbol->text);
                 semanticError++;
             }
             else if (node->symbol->datatype == DATATYPE_BOOL && node->son[1]->symbol->datatype != DATATYPE_BOOL)
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. | Variable %s must recieve bool.\n", node->lineNumber, node->symbol->text);
+                fprintf(stderr, "Erro de semantica na linha %d. Variavel %s deve receber bool\n", node->lineNumber, node->symbol->text);
                 //fprintf(stderr,"DATATYPE RECEIVED %d.\n", node->son[1]->symbol->datatype);
 
                 semanticError++;
             }
             else if (node->symbol->datatype == DATATYPE_LONG && (node->son[1]->symbol->datatype != DATATYPE_LONG && node->son[1]->symbol->datatype != DATATYPE_FLOAT && node->son[1]->symbol->datatype != DATATYPE_INT))
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. | Variable %s must recieve long.\n", node->lineNumber, node->symbol->text);
+                fprintf(stderr, "Erro de semantica na linha %d. Variavel %s deve receber long\n", node->lineNumber, node->symbol->text);
                 semanticError++;
             }
         }
@@ -328,7 +328,7 @@ void checkOperands(AST *node)
     case AST_ARRDECL:
         if (checkVector(node->son[2], node->symbol->datatype) == 0)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid types in vector declaration\n", node->lineNumber);
+            fprintf(stderr, "Erro de semantica na linha %d. Um ou mais tipos declarados no vetor está errado\n", node->lineNumber);
             semanticError++;
         }
         break;
@@ -349,7 +349,7 @@ void checkOperands(AST *node)
 
         if (node->symbol->type != SYMBOL_VECTOR)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s is not a vector.\n", node->lineNumber, node->symbol->text);
+            fprintf(stderr, "Erro de semantica na linha %d. %s não é um vetor\n", node->lineNumber, node->symbol->text);
             semanticError++;
         }
 
@@ -357,22 +357,20 @@ void checkOperands(AST *node)
         exp = validExpression(node->son[0]);
         if ((exp != DATATYPE_INT && exp != DATATYPE_BYTE && exp != DATATYPE_LONG) || exp == DATATYPE_ERROR)
         {
-            // Poderia ser qualquer tipo desde que seja numero
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in array, must be byte, int or long.\n", node->lineNumber);
+            fprintf(stderr, "Erro de semantica na linha %d. Um ou mais tipo errado, devem ser byte, int, long ou float.\n", node->lineNumber);
             semanticError++;
         }
         break;
     case AST_VECTORASS:
         if (node->symbol->type != SYMBOL_VECTOR)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s is not a vector.\n", node->lineNumber, node->symbol->text);
+            fprintf(stderr, "Erro de semantica na linha %d. %s não é um vetor.\n", node->lineNumber,node->symbol->text);
             semanticError++;
         }
         if (node->son[0] && node->son[0]->symbol && node->son[0]->symbol->datatype)
             if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE && node->son[0]->symbol->datatype != DATATYPE_LONG)
             {
-                // Poderia ser qualquer tipo desde que seja numero
-                fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid index type in assignment, must be byte or int.\n", node->lineNumber);
+                fprintf(stderr, "Erro de semantica na linha %d. Tipo invalido na atribuição, o tipo deve ser byte, int, long ou float.\n", node->lineNumber);
                 semanticError++;
             }
 
@@ -381,7 +379,7 @@ void checkOperands(AST *node)
         {
             if (exp == DATATYPE_BOOL || exp == DATATYPE_ERROR)
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte, int, long or float.\n", node->lineNumber, node->symbol->text);
+                fprintf(stderr, "Erro de semantica na linha %d. Tipo invalido na atribuição, o idetificador (%s) deve ser atribuido aos tipos byte, int, long ou float.\n", node->lineNumber, node->symbol->text);
                 semanticError++;
             }
         }
@@ -389,7 +387,7 @@ void checkOperands(AST *node)
         {
             if (exp != DATATYPE_BOOL || exp == DATATYPE_ERROR)
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to boolean.\n", node->lineNumber, node->symbol->text);
+                fprintf(stderr, "Erro de semantica na linha %d. Tipo invalido na atribuição, o idetificador (%s) deve ser atribuido ao tipo booleano.\n", node->lineNumber, node->symbol->text);
                 semanticError++;
             }
         }
@@ -399,7 +397,7 @@ void checkOperands(AST *node)
         {
             if (node->symbol->type != SYMBOL_SCALAR)
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. Symbol %s must be scalar.\n", node->lineNumber, node->symbol->text);
+                fprintf(stderr, "Erro de semantica na linha %d. O simbolo (%s) deve ser um escalar.\n", node->lineNumber, node->symbol->text);
                 semanticError++;
             }
 
@@ -409,73 +407,21 @@ void checkOperands(AST *node)
             {
                 if (exp == DATATYPE_BOOL || exp == DATATYPE_ERROR)
                 {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte, int, long or float.\n", node->lineNumber, node->symbol->text);
+                    fprintf(stderr, "Erro de semantica na linha %d. Tipo invalido na atribuição, o idetificador (%s) deve ser atribuido aos tipos byte, int, long ou float.\n", node->lineNumber, node->symbol->text);
                     semanticError++;
                 }
-
-                /*
-                if (node->son[0] != NULL)
-                {
-                    if (node->son[0]->symbol && node->son[0]->symbol->datatype)
-                        if (node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE && node->son[0]->symbol->datatype != DATATYPE_FLOAT && node->son[0]->symbol->datatype != DATATYPE_LONG)
-                        {
-                            fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to byte or int.\n", node->lineNumber, node->symbol->text);
-                            semanticError++;
-                        }
-                }*/
             }
             else if (node->symbol->datatype == DATATYPE_BOOL)
             {
                 if (exp != DATATYPE_BOOL || exp == DATATYPE_ERROR)
                 {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Identifier %s must be assigned to boolean.\n", node->lineNumber, node->symbol->text);
+                    fprintf(stderr, "Erro de semantica na linha %d. Tipo invalido na atribuição, o idetificador (%s) deve ser atribuido ao tipo booleano.\n", node->lineNumber, node->symbol->text);
                     semanticError++;
                 }
             }
         }
         break;
-        // case AST_ADD:
-        // case AST_SUB:
-        // case AST_MUL:
-        // case AST_DIV:
-        // case AST_POINT:
-        //     // Check correctness
-        //     for (i = 0; i < 2; ++i)
-        //     {
-        //         if (
-        //             node->son[i]->type == AST_ADD ||
-        //             node->son[i]->type == AST_SUB ||
-        //             node->son[i]->type == AST_MUL ||
-        //             node->son[i]->type == AST_DIV ||
-        //             node->son[i]->type == AST_POINT ||
-        //             ((node->son[i]->type == AST_SYMBOL) &&
-        //              ((node->son[i]->symbol->type == SYMBOL_SCALAR) &&
-        //               node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)) ||
-        //             ((node->son[i]->type == AST_SYMBOL) &&
-        //              (node->son[i]->type == AST_SYMBOL &&
-        //                   node->son[i]->symbol->type == SYMBOL_LIT_INT ||
-        //               node->son[i]->symbol->type == SYMBOL_LIT_FLOAT ||
-        //               node->son[i]->symbol->type == SYMBOL_LIT_CHAR)) ||
-        //             ((node->son[i]->type == AST_VECREAD) &&
-        //              ((node->son[i]->symbol->type == SYMBOL_VECTOR) &&
-        //               node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)) ||
-        //             ((node->son[i]->type == AST_FUNCALL) &&
-        //              ((node->son[i]->symbol->type == SYMBOL_FUNCTION) &&
-        //               node->son[i]->symbol->datatype != DATATYPE_BOOL && node->son[i]->symbol->datatype != DATATYPE_STRING)))
-        //         {
 
-        //             fprintf(stderr, "LINE %d - SON %d - CORRECT \n", node->lineNumber, i);
-        //         }
-        //         else
-        //         {
-        //             // fprintf(stderr, "SON %d TYPE: %d \n", i, node->son[i]->type);
-        //             // fprintf(stderr, "SON %d SYMBOL TYPE: %d \n", i, node->son[i]->symbol->type);
-        //             // fprintf(stderr, "SON %d DATATYPE: %d \n", i, node->son[i]->symbol->datatype);
-        //             fprintf(stderr, "LINE %d - SON %d - SemanticError: Operands not compatible \n", node->lineNumber, i);
-        //             semanticError++;
-        //         }
-        //     }
-        //     break;
         /*NOVA PARTE*/
     case AST_ADD:
     case AST_SUB:
@@ -486,46 +432,9 @@ void checkOperands(AST *node)
         op2 = getType(node->son[1]);
         if (addExpressionTypes(op1, op2) == DATATYPE_ERROR)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be int, byte, long or float. \n", node->lineNumber);
+            fprintf(stderr, "Erro de semantica na linha %d. Os operadores devem ser int, byte, long ou float.\n", node->lineNumber);
             semanticError++;
         };
-        break;
-
-        // for(int i=0; i<MAX_SONS ; ++i){
-        // if (node->son[i] != NULL && node->son[i+1] != NULL)
-        // {
-        //     if (node->son[i]->symbol && node->son[i]->symbol->datatype && node->son[i+1]->symbol && node->son[i+1]->symbol->datatype)
-        //     {
-        //         fprintf(stderr, "SON 0 DATAYPE: %d SON 1 DATATYPE: %d TAM SONS\n", node->son[i]->symbol->datatype, node->son[i+1]->symbol->datatype);
-
-        //         if ((node->son[i]->symbol->datatype == DATATYPE_FLOAT && node->son[i+1]->symbol->datatype == DATATYPE_FLOAT) ||
-        //             (node->son[i]->symbol->datatype == DATATYPE_FLOAT && node->son[i+1]->symbol->datatype == DATATYPE_INT) ||
-        //             (node->son[i]->symbol->datatype == DATATYPE_INT && node->son[i+1]->symbol->datatype == DATATYPE_FLOAT))
-        //         {
-        //             node->datatype = DATATYPE_FLOAT;
-        //         }
-        //         else
-        //         {
-        //             if (node->son[i]->symbol->datatype == DATATYPE_INT || node->son[i+1]->symbol->datatype == DATATYPE_INT)
-        //             {
-        //                 node->datatype = DATATYPE_INT;
-        //             }
-        //             else
-        //             {
-        //                 node->datatype = DATATYPE_BYTE;
-        //             }
-        //             if ((node->son[i]->symbol->datatype != DATATYPE_INT && node->son[i]->symbol->datatype != DATATYPE_BYTE) ||
-        //                 (node->son[i+1]->symbol->datatype != DATATYPE_INT && node->son[i+1]->symbol->datatype != DATATYPE_BYTE))
-        //             {
-        //                 fprintf(stderr, "SON 0 DATAYPE: %d SON 1 DATATYPE: %d \n", node->son[i]->symbol->datatype, node->son[i+1]->symbol->datatype);
-        //                 fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be int, byte or float. \n", node->lineNumber);
-        //                 semanticError++;
-        //                 node->datatype = DATATYPE_ERROR;
-        //             }
-        //         }
-        //     }
-        //     }
-        // }
         break;
         /*FIM DA NOVA PARTE*/
     case AST_LESS:
@@ -541,7 +450,7 @@ void checkOperands(AST *node)
                 if ((node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE && node->son[0]->symbol->datatype != DATATYPE_FLOAT && node->son[0]->symbol->datatype != DATATYPE_LONG) ||
                     (node->son[1]->symbol->datatype != DATATYPE_INT && node->son[1]->symbol->datatype != DATATYPE_BYTE && node->son[1]->symbol->datatype != DATATYPE_FLOAT && node->son[0]->symbol->datatype != DATATYPE_LONG))
                 {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be int, byte, float or long. \n", node->lineNumber);
+                    fprintf(stderr, "Erro de semantica na linha %d. Os operadores devem ser int, byte, long ou float.\n", node->lineNumber);
                     semanticError++;
                 }
             }
@@ -552,7 +461,7 @@ void checkOperands(AST *node)
         node->datatype = DATATYPE_BOOL;
         if (exp != DATATYPE_BOOL || exp == DATATYPE_ERROR)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be bool \n", node->lineNumber);
+            fprintf(stderr, "Erro de semantica na linha %d. Os operadores devem ser do tipo booleano\n", node->lineNumber);
             semanticError++;
         };
         break;
@@ -563,7 +472,7 @@ void checkOperands(AST *node)
             if (node->son[0]->symbol && node->son[0]->symbol->datatype)
                 if (node->son[0]->symbol->datatype != DATATYPE_BOOL)
                 {
-                    fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be bool.\n", node->lineNumber);
+                    fprintf(stderr, "Erro de semantica na linha %d. Os operadores devem ser do tipo booleano\n", node->lineNumber);
                     semanticError++;
                 }
         }
@@ -571,7 +480,7 @@ void checkOperands(AST *node)
     case AST_READ:
         if (node->symbol->type != SYMBOL_SCALAR)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Symbol %s must be scalar\n", node->lineNumber, node->symbol->text);
+            fprintf(stderr, "Erro de semantica na linha %d. O simbolo (%s) devem ser escalar.\n", node->lineNumber, node->symbol->text);
             semanticError++;
         }
         break;
@@ -580,13 +489,13 @@ void checkOperands(AST *node)
         {
             if (node->son[0]->type != AST_PRINTLIST)
             {
-                fprintf(stderr, "PRINT SON TYPE: %d\n", node->son[0]->type);
-                fprintf(stderr, "SEMANTIC ERROR in line %d. Not a print list\n", node->lineNumber);
+                //fprintf(stderr, "PRINT SON TYPE: %d\n", node->son[0]->type);
+                fprintf(stderr, "Erro de semantica na linha %d. Not a print list.\n", node->lineNumber);
                 semanticError++;
             }
             else if (checkPrint(node->son[0]))
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. Incompatible type found in print\n", node->lineNumber);
+                fprintf(stderr, "Erro de semantica na linha %d. Tipos incompativeis encontrados no print\n", node->lineNumber);
                 semanticError++;
             }
         }
@@ -595,7 +504,7 @@ void checkOperands(AST *node)
     case AST_FUNDEC:
         if (validReturn(node, node) == 0)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Invalid return type in function %s.\n", node->lineNumber, node->symbol->text);
+            fprintf(stderr, "Erro de semantica na linha %d. Tipo de retorno invalido %s\n", node->lineNumber, node->symbol->text);
             semanticError++;
         }
         break;
@@ -612,7 +521,7 @@ void checkOperands(AST *node)
             exp = validExpression(node->son[0]);
             if (exp != DATATYPE_BOOL || exp == DATATYPE_ERROR)
             {
-                fprintf(stderr, "SEMANTIC ERROR in line %d. Operators must be boolean.\n", node->lineNumber);
+                fprintf(stderr, "Erro de semantica na linha %d. Os operadores devem ser booleanos\n", node->lineNumber);
                 semanticError++;
             }
         }
@@ -630,17 +539,17 @@ void checkOperands(AST *node)
         fprintf(stderr, "FOR: 2 ******* %d\n", exp3);
         if (exp1 == DATATYPE_BOOL || exp1 == DATATYPE_ERROR)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. First For Expression must be byte, int, long or float\n", node->lineNumber);
+            fprintf(stderr, "Erro de semantica na linha %d. A primeira expressao do for deve ser byte, int, long ou float\n", node->lineNumber);
             semanticError++;
         }
         if (exp2 != DATATYPE_BOOL || exp2 == DATATYPE_ERROR)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Second For Expression must be boolean\n", node->lineNumber);
+            fprintf(stderr, "Erro de semantica na linha %d. A segunda expressao do for deve ser booleana\n", node->lineNumber);
             semanticError++;
         }
         if (exp3 == DATATYPE_BOOL || exp3 == DATATYPE_ERROR)
         {
-            fprintf(stderr, "SEMANTIC ERROR in line %d. Third For Expression must be byte, int, long or float\n", node->lineNumber);
+            fprintf(stderr, "Erro de semantica na linha %d. A terceira expressao do for deve ser byte, int, long ou float\n", node->lineNumber);
             semanticError++;
         }
 
@@ -682,7 +591,7 @@ int checkPrint(AST *node)
                       node->son[0]->symbol->datatype != DATATYPE_BOOL)) ||
                     node->son[0]->symbol->datatype == DATATYPE_STRING)
                 {
-                    fprintf(stderr, "PRINT SON DATATYPE: %d\n", node->son[0]->symbol->datatype);
+                    //fprintf(stderr, "PRINT SON DATATYPE: %d\n", node->son[0]->symbol->datatype);
 
                     if (node->son[1])
                         return checkPrint(node->son[1]);
@@ -780,7 +689,7 @@ void checkTypeParam(AST *nodecall)
 
     if (!checkParams(nodecall))
     {
-        fprintf(stderr, "ERRO: number of arguments wrong at line: %d\n", nodecall->lineNumber);
+        fprintf(stderr, "Erro de semantica na linha %d. Numero de argumentos errados.\n", nodecall->lineNumber);
         semanticError++;
         return;
     }
@@ -798,8 +707,8 @@ void checkTypeParam(AST *nodecall)
             {
                 dec_type = nodecall->son[0]->symbol->datatype;
                 call_type = nodedef->son[0]->symbol->datatype;
-                fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
-                fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
+                //fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
+                //fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
                 if (
                     (dec_type == DATATYPE_INT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_FLOAT || call_type == DATATYPE_LONG || call_type == DATATYPE_INT)) ||
                     (dec_type == DATATYPE_FLOAT && (call_type == DATATYPE_BYTE || call_type == DATATYPE_INT || call_type == DATATYPE_LONG || call_type == DATATYPE_FLOAT)) ||
@@ -815,7 +724,7 @@ void checkTypeParam(AST *nodecall)
                 {
                     //fprintf(stderr, "PRINT NODDECALL  SYMBOL_DATA_TYPE: %d\n", nodecall->son[0]->symbol->datatype);
                     //fprintf(stderr, "PRINT NODEdef SYMBOL_DATA_TYPE: %d\n", nodedef->son[0]->symbol->datatype);
-                    fprintf(stderr, "ERRO: One or more parameters type wrong at line: %d\n", nodecall->lineNumber);
+                    fprintf(stderr, "Erro de semantica na linha %d. Um ou mais parametros com o tipo errado.\n", nodecall->lineNumber);
                     semanticError++;
                 }
             }
