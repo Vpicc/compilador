@@ -364,7 +364,7 @@ void checkOperands(AST *node)
     case AST_VECTORASS:
         if (node->symbol->type != SYMBOL_VECTOR)
         {
-            fprintf(stderr, "Erro de semantica na linha %d. %s não é um vetor.\n", node->lineNumber,node->symbol->text);
+            fprintf(stderr, "Erro de semantica na linha %d. %s não é um vetor.\n", node->lineNumber, node->symbol->text);
             semanticError++;
         }
         if (node->son[0] && node->son[0]->symbol && node->son[0]->symbol->datatype)
@@ -448,7 +448,7 @@ void checkOperands(AST *node)
             {
                 node->datatype = DATATYPE_BOOL;
                 if ((node->son[0]->symbol->datatype != DATATYPE_INT && node->son[0]->symbol->datatype != DATATYPE_BYTE && node->son[0]->symbol->datatype != DATATYPE_FLOAT && node->son[0]->symbol->datatype != DATATYPE_LONG) ||
-                    (node->son[1]->symbol->datatype != DATATYPE_INT && node->son[1]->symbol->datatype != DATATYPE_BYTE && node->son[1]->symbol->datatype != DATATYPE_FLOAT && node->son[0]->symbol->datatype != DATATYPE_LONG))
+                    (node->son[1]->symbol->datatype != DATATYPE_INT && node->son[1]->symbol->datatype != DATATYPE_BYTE && node->son[1]->symbol->datatype != DATATYPE_FLOAT && node->son[1]->symbol->datatype != DATATYPE_LONG))
                 {
                     fprintf(stderr, "Erro de semantica na linha %d. Os operadores devem ser int, byte, long ou float.\n", node->lineNumber);
                     semanticError++;
@@ -624,11 +624,11 @@ int checkVector(AST *node, int datatype)
 {
     if (node != NULL)
     {
-        // fprintf(stderr, "DATATYPE - %d\n", datatype);
-        // fprintf(stderr, "SON DATATYPE - %d\n", node->son[0]->symbol->datatype);
+        //fprintf(stderr, "DATATYPE - %d\n", datatype);
+        //fprintf(stderr, "SON DATATYPE - %d\n", node->son[0]->symbol->datatype);
         if (((node->son[0]->symbol->datatype != datatype) &&
              ((datatype == DATATYPE_INT || datatype == DATATYPE_BYTE || datatype == DATATYPE_FLOAT || datatype == DATATYPE_LONG) &&
-              (node->son[0]->symbol->datatype == DATATYPE_BOOL || node->son[0]->symbol->datatype != DATATYPE_STRING))) ||
+              (node->son[0]->symbol->datatype == DATATYPE_BOOL || node->son[0]->symbol->datatype == DATATYPE_STRING))) ||
             (datatype == DATATYPE_BOOL && node->son[0]->symbol->datatype != DATATYPE_BOOL))
             return 0;
         if (node->son[1] != NULL)
@@ -649,7 +649,10 @@ int validReturn(AST *nodeDec, AST *node)
         if (node->son[0])
         {
             returnType = validExpression(node->son[0]);
-            //fprintf(stderr, "RETURN TYPE : %d\n", node->son[0]->symbol->datatype);
+            if (returnType == DATATYPE_ERROR)
+            {
+                return 0;
+            }
             if ((decType != returnType) &&
                 (((decType == DATATYPE_INT || decType == DATATYPE_BYTE || decType == DATATYPE_FLOAT || decType == DATATYPE_LONG) &&
                   (returnType == DATATYPE_BOOL || returnType == DATATYPE_STRING)) ||
