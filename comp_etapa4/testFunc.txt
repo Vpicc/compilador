@@ -16,5 +16,5 @@ int main () {
     h = 1 + v1[0]; //Tem q dar erro e dá
     a = 1 + FALSE; //Tem q dar erro e dá
 
-    f = 1 + 1.1 + FALSE //Tem q dar erro e não da, parece q n ta verificando os Argumentos superiores ao 2..
+    f = 1 + 1.1 + FALSE; //Tem q dar erro e não da, parece q n ta verificando os Argumentos superiores ao 2..
 }
