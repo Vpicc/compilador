@@ -236,6 +236,8 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
         return tacJoin(tacJoin(code[0], code[1]), tacCreate(TAC_VECTORASS, ast->symbol, code[0] ? code[0]->res : 0, code[1] ? code[1]->res : 0));
     case AST_VECREAD:
         return tacJoin(code[0], tacCreate(TAC_VEC_READ, makeTemp(), ast->symbol, code[0] ? code[0]->res : 0));
+    case AST_WHILE:
+        return makeWhile(code[0], code[1], code[2]);
     default:
         return tacJoin(tacJoin(tacJoin(code[0], code[1]), code[2]), code[3]);
     }
@@ -309,6 +311,19 @@ TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2)
 
 TAC *makeWhile(TAC *code0, TAC *code1, TAC *code2)
 {
-    TAC *tacWhile = 0;
-    return tacWhile;
+    HASH_NODE *labelConditionJump = 0;
+    HASH_NODE *labelConditionFalse = 0;
+    TAC *tacLabelConditionJump = 0;
+    TAC *tacLabelConditionFalse = 0;
+    TAC *whileConditionIf = 0;
+    TAC *whileConditionJump = 0;
+
+    labelConditionJump = makeLabel();
+    labelConditionFalse = makeLabel();
+    tacLabelConditionJump = tacCreate(TAC_LABEL, labelConditionJump, 0, 0);
+    tacLabelConditionFalse = tacCreate(TAC_LABEL, labelConditionFalse, 0, 0);
+    whileConditionIf = tacCreate(TAC_IFZ, labelConditionFalse, code0 ? code0->res : 0, 0);
+    whileConditionJump = tacCreate(TAC_JUMP, labelConditionJump, code0 ? code0->res : 0, 0);
+
+    return tacJoin(tacJoin(tacJoin(tacJoin(tacJoin(tacLabelConditionJump, code0), whileConditionIf), code1), whileConditionJump), tacLabelConditionFalse);
 }

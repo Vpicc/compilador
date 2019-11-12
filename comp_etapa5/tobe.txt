@@ -11,5 +11,13 @@ int main()
 while(2 > 3)
 {
 arr[1] = arr[2];
+arr[1] = a + d;
+};
+if(1 > 2) then 
+{
+a = a + a;
+} else 
+{
+a = d + d;
 };
 }
