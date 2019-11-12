@@ -236,7 +236,7 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
     case AST_VECREAD:
         return tacJoin(code[0], tacCreate(TAC_VEC_READ, makeTemp(), ast->symbol, code[0] ? code[0]->res : 0));
     case AST_WHILE:
-        return makeWhile(code[0], code[1], code[2]);
+        return makeWhile(code[0], code[1]);
     default:
         return tacJoin(tacJoin(tacJoin(code[0], code[1]), code[2]), code[3]);
     }
