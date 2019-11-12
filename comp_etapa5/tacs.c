@@ -247,6 +247,14 @@ void tacPrintAll(TAC *tac) //print backwards
     }
 }
 
+void tacPrintAllForward(TAC *tac) //print Forwards
+{
+    if (tac)
+    {
+        tacPrintAllForward(tac->prev);
+        tacPrint(tac);
+    }
+}
 TAC *tacJoin(TAC *l1, TAC *l2)
 {
     TAC *tac;

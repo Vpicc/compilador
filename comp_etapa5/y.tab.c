@@ -1413,7 +1413,7 @@ yyreduce:
                 checkUndeclared();
                 checkOperands((yyvsp[0].ast));
                 fprintf(stderr,"%d Semantic errors\n", getSemanticError());
-                tacPrintAll(generateCode((yyvsp[0].ast),0));
+                tacPrintAllForward(generateCode((yyvsp[0].ast),0));
                 /*checkSemantic($$);*/
                 }
 #line 1420 "y.tab.c" /* yacc.c:1646  */

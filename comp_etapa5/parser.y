@@ -91,7 +91,7 @@ begin: programa {root = $$;
                 checkUndeclared();
                 checkOperands($1);
                 fprintf(stderr,"%d Semantic errors\n", getSemanticError());
-                tacPrintAll(generateCode($1,0));
+                tacPrintAllForward(generateCode($1,0));
                 /*checkSemantic($$);*/
                 };
 
