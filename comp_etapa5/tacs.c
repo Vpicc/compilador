@@ -3,6 +3,7 @@
 
 TAC *makeBinOp(int type, TAC *code0, TAC *code1);
 TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2);
+TAC *makeWhile(TAC *code0, TAC *code1, TAC *code2);
 //TAC* makeFunc(TAC* symbol, TAC* params, TAC* code);
 //TAC* makeLoop(TAC* result[], NODE* loopLabel);
 //TAC* makeLeap(TAC* result[], NODE* currentLabel);
@@ -233,6 +234,8 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
         return tacJoin(tacCreate(TAC_PRINT, code[0] ? code[0]->res : 0, 0, 0), code[1]);
     case AST_VECTORASS:
         return tacJoin(tacJoin(code[0], code[1]), tacCreate(TAC_VECTORASS, ast->symbol, code[0] ? code[0]->res : 0, code[1] ? code[1]->res : 0));
+    case AST_VECREAD:
+        return tacJoin(code[0], tacCreate(TAC_VEC_READ, makeTemp(), ast->symbol, code[0] ? code[0]->res : 0));
     default:
         return tacJoin(tacJoin(tacJoin(code[0], code[1]), code[2]), code[3]);
     }
@@ -302,4 +305,10 @@ TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2)
         return tacJoin(tacJoin(tacJoin(tacJoin(tacJoin(tacIf, code1), tacElse), tacLabelIf), code2), tacLabelElse);
     }
     return tacJoin(tacJoin(tacIf, code1), tacLabelIf);
+}
+
+TAC *makeWhile(TAC *code0, TAC *code1, TAC *code2)
+{
+    TAC *tacWhile = 0;
+    return tacWhile;
 }
