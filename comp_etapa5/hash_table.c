@@ -119,7 +119,7 @@ HASH_NODE *makeTemp()
 	static int serialNumber = 0;
 	static char name[100];
 
-	sprintf(name, "_Temp_%d", serialNumber++);
+	sprintf(name, "Temp_%d", serialNumber++);
 	return hashInsert(name, SYMBOL_TK_IDENTIFIER);
 }
 
@@ -128,6 +128,6 @@ HASH_NODE *makeLabel()
 	static int serialNumber = 0;
 	static char name[100];
 
-	sprintf(name, "_Label_%d", serialNumber++);
+	sprintf(name, "Label_%d", serialNumber++);
 	return hashInsert(name, SYMBOL_TK_IDENTIFIER);
 }

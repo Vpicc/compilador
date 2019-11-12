@@ -1,30 +1,28 @@
-// UFRGS - Compiladores - Marcelo Johann - 2019/2
-
-bool b = TRUE;
-byte c = 'x';
-int a = 0;
-int d = 1;
-int i = 0;
-long l = 0;
-float f = 0.0;
-int mat1[10]; 
-int mat [ 10]; 
-int list[10]: 0 0 0 0 0 0 0 0 0 0; 
-int a = 2; // deve dar erro de semantica
+int a = 1;
+int d = 2;
+int arr[2]: 2 1;
+//bool b = TRUE;
+//bool c = FALSE;
 
 int main () {
-  i = 2 + 2;
-  i = 2 + 2.3;
-  i = 2 - 2;
-  i = 2 - 2.3;
-  i = 2 * 2;
-  i = 2 * 2.3;
-  i = 2 / 2;
-  i = 2 / 2.3;
-  i = 2 . 2;
-  i = 2 . 2.3;
-  i = 2 + TRUE; // deve dar erro de semantica
-  i = 2 + b; // deve dar erro de semantica
-  d = 6 ~ 7;
-  b = 3; // tem que fazer dar errado
+arr[1] = a + d;
+//if(1>2) then {
+//  a = a + a;
+//} else {
+//  a = d + d;
+//};
+//  a = 2 + 2;
+//  a = 2 * 2;
+//  a = 2 / 2;
+//  a = 2 - 2;
+//  b = 2 > 2;
+//  b = 2 < 2;
+//  b = 2 == 2;
+//  b = 2 != 2;
+//  b = TRUE & TRUE;
+//  b = TRUE v TRUE;
+//  b = ~ b;
+//  read a;
+// print "hello" a d d d a "da" '\n';
+// return a + 2 + 2 - 3;
 }

@@ -443,6 +443,7 @@ void checkOperands(AST *node)
     case AST_GE:
     case AST_EQ:
     case AST_NE:
+    case AST_DIFF:
         if (node->son[0]->symbol && node->son[0]->symbol->datatype && node->son[1]->symbol && node->son[1]->symbol->datatype)
             if (node->son[0] != NULL && node->son[1] != NULL)
             {
@@ -927,6 +928,7 @@ int validExpression(AST *nodeSon)
     case AST_LESS:
     case AST_LE:
     case AST_GREATER:
+    case AST_DIFF:
         op1 = validExpression(nodeSon->son[0]);
         op2 = validExpression(nodeSon->son[1]);
         if ((op1 != DATATYPE_BOOL || op1 != DATATYPE_STRING) && op1 != DATATYPE_ERROR && (op2 != DATATYPE_BOOL || op2 != DATATYPE_STRING) && op2 != DATATYPE_ERROR)

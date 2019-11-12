@@ -2,7 +2,7 @@
 #include "tacs.h"
 
 TAC *makeBinOp(int type, TAC *code0, TAC *code1);
-//TAC* makeIfThenElse(TAC* result[]);
+TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2);
 //TAC* makeFunc(TAC* symbol, TAC* params, TAC* code);
 //TAC* makeLoop(TAC* result[], NODE* loopLabel);
 //TAC* makeLeap(TAC* result[], NODE* currentLabel);
@@ -60,7 +60,7 @@ void tacPrint(TAC *tac)
         fprintf(stderr, "TAC_LESS");
         break;
     case TAC_GREATER:
-        fprintf(stderr, "TAC_GREAT");
+        fprintf(stderr, "TAC_GREATER");
         break;
     case TAC_LE:
         fprintf(stderr, "TAC_LE");
@@ -128,6 +128,9 @@ void tacPrint(TAC *tac)
     case TAC_STACK_POP:
         fprintf(stderr, "TAC_STACK_POP");
         break;
+    case TAC_POINT:
+        fprintf(stderr, "TAC_POINT");
+        break;
     default:
         fprintf(stderr, "UNKNOWN_TAC_TYPE");
         break;
@@ -170,9 +173,9 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
     if (!ast)
         return 0;
 
-    // talvez tenhamos que fazer com ast->symbol->type ao inves de ast->type
     fprintf(stderr, "*****DEBUG**** AST_TYPE: %d\n", ast->type);
-    fprintf(stderr, "*****DEBUG**** AST_SYMBOL_TYPE: %d\n", ast->symbol->type);
+    if (ast->symbol && ast->symbol->type)
+        fprintf(stderr, "*****DEBUG**** AST_SYMBOL_TYPE: %d\n", ast->symbol->type);
     if (ast->type == AST_WHILE || ast->type == AST_FOR)
     {
         label = makeLabel();
@@ -191,6 +194,45 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
         return tacJoin(code[0], tacCreate(TAC_MOVE, ast->symbol, code[0] ? code[0]->res : 0, 0));
     case AST_ADD:
         return makeBinOp(TAC_ADD, code[0], code[1]);
+    case AST_MUL:
+        return makeBinOp(TAC_MULT, code[0], code[1]);
+    case AST_DIV:
+        return makeBinOp(TAC_MULT, code[0], code[1]);
+    case AST_POINT:
+        return makeBinOp(TAC_POINT, code[0], code[1]);
+    case AST_IF:
+    case AST_IFELSE:
+        return makeIfThenElse(code[0], code[1], code[2]);
+    case AST_LESS:
+        return makeBinOp(TAC_LESS, code[0], code[1]);
+    case AST_GREATER:
+        return makeBinOp(TAC_GREATER, code[0], code[1]);
+    case AST_LE:
+        return makeBinOp(TAC_LE, code[0], code[1]);
+    case AST_GE:
+        return makeBinOp(TAC_GE, code[0], code[1]);
+    case AST_EQ:
+        return makeBinOp(TAC_EQ, code[0], code[1]);
+    case AST_DIFF:
+        return makeBinOp(TAC_DIFF, code[0], code[1]);
+    case AST_AND:
+        return makeBinOp(TAC_AND, code[0], code[1]);
+    case AST_OR:
+        return makeBinOp(TAC_OR, code[0], code[1]);
+    case AST_TIL:
+        return makeBinOp(TAC_NOT, code[0], code[1]);
+    case AST_READ:
+        return tacCreate(TAC_READ, ast->symbol, 0, 0);
+    case AST_RETURN:
+        return tacJoin(code[0], tacCreate(TAC_RETURN, code[0] ? code[0]->res : 0, 0, 0));
+    case AST_DECL:
+        return tacJoin(code[0], code[1]);
+    case AST_PRINTLIST:
+        return tacJoin(tacCreate(TAC_PRINT, code[0] ? code[0]->res : 0, 0, 0), code[1]);
+    case AST_PRINTLIST_REST:
+        return tacJoin(tacCreate(TAC_PRINT, code[0] ? code[0]->res : 0, 0, 0), code[1]);
+    case AST_VECTORASS:
+        return tacJoin(tacJoin(code[0], code[1]), tacCreate(TAC_VECTORASS, ast->symbol, code[0] ? code[0]->res : 0, code[1] ? code[1]->res : 0));
     default:
         return tacJoin(tacJoin(tacJoin(code[0], code[1]), code[2]), code[3]);
     }
@@ -229,4 +271,27 @@ TAC *makeBinOp(int type, TAC *code0, TAC *code1)
     list = tacJoin(code0, code1);
     newTac->prev = list;
     return newTac;
+}
+
+TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2)
+{
+    HASH_NODE *labelIf = 0;
+    TAC *tacIf = 0;
+    TAC *tacLabelIf = 0;
+    HASH_NODE *labelElse = 0;
+    TAC *tacElse = 0;
+    TAC *tacLabelElse = 0;
+
+    labelIf = makeLabel();
+    tacIf = tacJoin(code0, tacCreate(TAC_IFZ, labelIf, code0 ? code0->res : 0, 0));
+    tacLabelIf = tacCreate(TAC_LABEL, labelIf, 0, 0);
+
+    if (code2) // tem else
+    {
+        labelElse = makeLabel();
+        tacLabelElse = tacCreate(TAC_LABEL, labelElse, 0, 0);
+        tacElse = tacCreate(TAC_JUMP, labelElse, 0, 0);
+        return tacJoin(tacJoin(tacJoin(tacJoin(tacJoin(tacIf, code1), tacElse), tacLabelIf), code2), tacLabelElse);
+    }
+    return tacJoin(tacJoin(tacIf, code1), tacLabelIf);
 }

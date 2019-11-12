@@ -38,6 +38,8 @@
 #define TAC_PRINT_LIST 531
 #define TAC_STACK_PUSH 532
 #define TAC_STACK_POP 533
+#define TAC_POINT 534
+#define TAC_VARDEC 535
 
 typedef struct tac_node
 {
