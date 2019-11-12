@@ -3,10 +3,9 @@
 
 TAC *makeBinOp(int type, TAC *code0, TAC *code1);
 TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2);
-TAC *makeWhile(TAC *code0, TAC *code1, TAC *code2);
+TAC *makeWhile(TAC *code0, TAC *code1);
 //TAC* makeFunc(TAC* symbol, TAC* params, TAC* code);
-//TAC* makeLoop(TAC* result[], NODE* loopLabel);
-//TAC* makeLeap(TAC* result[], NODE* currentLabel);
+//TAC* makeFor(TAC* result[], NODE* loopLabel);
 
 TAC *tacCreate(int type, HASH_NODE *res, HASH_NODE *op1, HASH_NODE *op2)
 {
@@ -309,7 +308,7 @@ TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2)
     return tacJoin(tacJoin(tacIf, code1), tacLabelIf);
 }
 
-TAC *makeWhile(TAC *code0, TAC *code1, TAC *code2)
+TAC *makeWhile(TAC *code0, TAC *code1)
 {
     HASH_NODE *labelConditionJump = 0;
     HASH_NODE *labelConditionFalse = 0;
