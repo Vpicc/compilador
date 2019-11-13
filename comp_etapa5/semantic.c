@@ -535,9 +535,6 @@ void checkOperands(AST *node)
             exp2 = validExpression(node->son[1]);
         if (node->son[2])
             exp3 = validExpression(node->son[2]);
-        fprintf(stderr, "FOR: 0 ******* %d\n", exp1);
-        fprintf(stderr, "FOR: 1 ******* %d\n", exp2);
-        fprintf(stderr, "FOR: 2 ******* %d\n", exp3);
         if (exp1 == DATATYPE_BOOL || exp1 == DATATYPE_ERROR)
         {
             fprintf(stderr, "Erro de semantica na linha %d. A primeira expressao do for deve ser byte, int, long ou float\n", node->lineNumber);

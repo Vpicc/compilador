@@ -6,8 +6,7 @@ TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2);
 TAC *makeWhile(TAC *code0, TAC *code1);
 void makeBreak(TAC *code, HASH_NODE *breakLabel);
 TAC *makeFor(AST *ast, TAC *code0, TAC *code1, TAC *code2, TAC *code3);
-//TAC* makeFunc(TAC* symbol, TAC* params, TAC* code);
-//TAC* makeFor(TAC* result[], NODE* loopLabel);
+TAC *makeFunc(TAC *code0, TAC *code1, TAC *code2);
 
 TAC *tacCreate(int type, HASH_NODE *res, HASH_NODE *op1, HASH_NODE *op2)
 {
@@ -241,13 +240,24 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
     case AST_WHILE:
         return makeWhile(code[0], code[1]);
     case AST_FOR:
-        //tacPrint(code[0]);
-        //tacPrint(code[1]);
-        //tacPrint(code[2]);
-        //tacPrint(code[3]);
         return makeFor(ast, code[0], code[1], code[2], code[3]);
     case AST_BREAK:
         return tacCreate(TAC_BREAK, 0, 0, 0);
+    case AST_FUNCALL:
+        label = makeLabel();
+        return tacJoin(code[0], tacJoin(tacCreate(TAC_FUNCALL, ast->symbol, label, 0), tacJoin(tacCreate(TAC_LABEL, label, 0, 0), tacCreate(TAC_STACK_POP, makeTemp(), 0, 0))));
+    case AST_FUNLIST:
+        return tacJoin(code[1], tacCreate(TAC_STACK_PUSH, code[0]->res, 0, 0));
+    case AST_FUNLIST_REST:
+        return tacJoin(code[1], tacCreate(TAC_STACK_PUSH, code[0]->res, 0, 0));
+    case AST_FUNDEC:
+        return makeFunc(tacCreate(TAC_SYMBOL, ast->symbol, 0, 0), code[1], code[2]);
+    case AST_PARLIST:
+        return tacJoin(code[1], tacCreate(TAC_STACK_POP, code[0] ? code[0]->res : 0, 0, 0));
+    case AST_PARLIST_REST:
+        return tacJoin(code[1], tacCreate(TAC_STACK_POP, code[0] ? code[0]->res : 0, 0, 0));
+    case AST_PAR:
+        return tacCreate(TAC_SYMBOL, ast->symbol, 0, 0);
     default:
         return tacJoin(tacJoin(tacJoin(code[0], code[1]), code[2]), code[3]);
     }
@@ -294,6 +304,11 @@ TAC *makeBinOp(int type, TAC *code0, TAC *code1)
     list = tacJoin(code0, code1);
     newTac->prev = list;
     return newTac;
+}
+
+TAC *makeFunc(TAC *code0, TAC *code1, TAC *code2)
+{
+    return tacJoin(tacJoin(tacJoin(tacCreate(TAC_BEGINFUN, code0->res, 0, 0), code1), code2), tacCreate(TAC_ENDFUN, code0->res, 0, 0));
 }
 
 TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2)
@@ -376,7 +391,7 @@ void makeBreak(TAC *code, HASH_NODE *breakLabel)
         makeBreak(code->prev, breakLabel);
         if (code->type == TAC_BREAK)
         {
-            fprintf(stderr, "----DEBUG--- Break Created to: %s \n", breakLabel->text);
+            //fprintf(stderr, "----DEBUG--- Break Created to: %s \n", breakLabel->text);
             code->type = TAC_JUMP;
             code->res = breakLabel;
         }
