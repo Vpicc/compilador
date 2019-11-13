@@ -42,6 +42,8 @@
 #define TAC_VARDEC 535
 #define TAC_BREAK 536
 #define TAC_FOR 537
+#define TAC_ARRDEC 538
+#define TAC_ARRDEC_LIST 539
 
 typedef struct tac_node
 {

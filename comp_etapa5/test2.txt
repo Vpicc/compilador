@@ -23,7 +23,6 @@ int main ()
 
   while (i<10)
     {
-    x = incn();
     i = incn(i,1);
     a = incn(a,1);
     c = incn(a . 1,0);
@@ -31,7 +30,7 @@ int main ()
 
   print "Incrementado algumas vezes a fica " a "\n";
 
-  for (l:1,10,1)
+  for (l:1,10 < 2,1)
     print ".";
   print "\n";
 

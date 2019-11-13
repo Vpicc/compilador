@@ -137,6 +137,15 @@ void tacPrint(TAC *tac)
         break;
     case TAC_FOR:
         fprintf(stderr, "TAC_FOR");
+    case TAC_VARDEC:
+        fprintf(stderr, "TAC_VARDEC");
+        break;
+    case TAC_ARRDEC:
+        fprintf(stderr, "TAC_ARRDEC");
+        break;
+    case TAC_ARRDEC_LIST:
+        fprintf(stderr, "TAC_ARRDEC_LIST");
+        break;
     default:
         fprintf(stderr, "UNKNOWN_TAC_TYPE");
         break;
@@ -227,8 +236,6 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
         return tacCreate(TAC_READ, ast->symbol, 0, 0);
     case AST_RETURN:
         return tacJoin(code[0], tacCreate(TAC_RETURN, code[0] ? code[0]->res : 0, 0, 0));
-    case AST_DECL:
-        return tacJoin(code[0], code[1]);
     case AST_PRINTLIST:
         return tacJoin(tacCreate(TAC_PRINT, code[0] ? code[0]->res : 0, 0, 0), code[1]);
     case AST_PRINTLIST_REST:
@@ -258,6 +265,17 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
         return tacJoin(code[1], tacCreate(TAC_STACK_POP, code[0] ? code[0]->res : 0, 0, 0));
     case AST_PAR:
         return tacCreate(TAC_SYMBOL, ast->symbol, 0, 0);
+    // talvez não precise
+    case AST_DECL:
+        //return tacJoin(code[0],code[1]);
+        return tacCreate(TAC_VARDEC, ast->symbol, ast->son[1]->symbol, 0);
+    case AST_ARRDECL:
+        return tacJoin(tacCreate(TAC_ARRDEC, ast->symbol, ast->son[1]->symbol, 0), code[2]);
+    case AST_VECLIST:
+        return tacJoin(tacCreate(TAC_ARRDEC_LIST, ast->son[0]->symbol, 0, 0), code[1]);
+    case AST_VECREST:
+        return tacJoin(tacCreate(TAC_ARRDEC_LIST, ast->son[0]->symbol, 0, 0), code[1]);
+    //
     default:
         return tacJoin(tacJoin(tacJoin(code[0], code[1]), code[2]), code[3]);
     }
