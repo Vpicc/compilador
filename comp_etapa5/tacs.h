@@ -41,6 +41,7 @@
 #define TAC_POINT 534
 #define TAC_VARDEC 535
 #define TAC_BREAK 536
+#define TAC_FOR 537
 
 typedef struct tac_node
 {
