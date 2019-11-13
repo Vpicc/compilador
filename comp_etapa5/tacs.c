@@ -5,6 +5,7 @@ TAC *makeBinOp(int type, TAC *code0, TAC *code1);
 TAC *makeIfThenElse(TAC *code0, TAC *code1, TAC *code2);
 TAC *makeWhile(TAC *code0, TAC *code1);
 void makeBreak(TAC *code, HASH_NODE *breakLabel);
+TAC *makeFor(AST *ast, TAC *code0, TAC *code1,TAC *code2,TAC *code3);
 //TAC* makeFunc(TAC* symbol, TAC* params, TAC* code);
 //TAC* makeFor(TAC* result[], NODE* loopLabel);
 
@@ -135,6 +136,8 @@ void tacPrint(TAC *tac)
     case TAC_BREAK:
         fprintf(stderr, "TAC_BREAK");
         break;
+    case TAC_FOR:
+        fprintf(stderr, "TAC_FOR");
     default:
         fprintf(stderr, "UNKNOWN_TAC_TYPE");
         break;
@@ -177,10 +180,10 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
     if (!ast)
         return 0;
 
-    //fprintf(stderr, "*****DEBUG**** AST_TYPE: %d\n", ast->type);
-    //if (ast->symbol && ast->symbol->type)
-    //    fprintf(stderr, "*****DEBUG**** AST_SYMBOL_TYPE: %d\n", ast->symbol->type);
-    // começa de baixo para cima
+    // fprintf(stderr, "*****DEBUG**** AST_TYPE: %d\n", ast->type);
+    // if (ast->symbol && ast->symbol->type)
+    //     fprintf(stderr, "*****DEBUG**** AST_SYMBOL_TYPE: %d\n", ast->symbol->type);
+    //começa de baixo para cima
     for (i = 0; i < MAX_SONS; i++)
     {
         code[i] = generateCode(ast->son[i], label);
@@ -237,6 +240,12 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
         return tacJoin(code[0], tacCreate(TAC_VEC_READ, makeTemp(), ast->symbol, code[0] ? code[0]->res : 0));
     case AST_WHILE:
         return makeWhile(code[0], code[1]);
+    case AST_FOR:
+        //tacPrint(code[0]);
+        //tacPrint(code[1]);
+        //tacPrint(code[2]);
+        //tacPrint(code[3]);
+        return makeFor(ast, code[0], code[1], code[2], code[3]);
     case AST_BREAK:
         return tacCreate(TAC_BREAK, 0, 0, 0);
     default:
@@ -333,6 +342,31 @@ TAC *makeWhile(TAC *code0, TAC *code1)
     whileConditionIf = tacCreate(TAC_IFZ, labelConditionFalse, code0 ? code0->res : 0, 0);
     whileConditionJump = tacCreate(TAC_JUMP, labelConditionJump, code0 ? code0->res : 0, 0);
     return tacJoin(tacJoin(tacJoin(tacJoin(tacJoin(tacLabelConditionJump, code0), whileConditionIf), code1), whileConditionJump), tacLabelConditionFalse);
+}
+
+TAC *makeFor(AST *ast, TAC *code0, TAC *code1, TAC *code2, TAC *code3)
+{
+    HASH_NODE *labelConditionJump = 0;
+    HASH_NODE *labelConditionFalse = 0;
+    TAC *tacLabelConditionJump = 0;
+    TAC *tacLabelConditionFalse = 0;
+    TAC *forConditionIf = 0;
+    TAC *forConditionJump = 0;
+    TAC *firstAss = 0;
+    TAC *lastAss = 0;
+
+    firstAss = tacCreate(TAC_MOVE, ast->symbol, code0 ? code0->res : 0, 0);
+    lastAss = tacCreate(TAC_MOVE, ast->symbol, code2 ? code2->res : 0, 0);
+
+    labelConditionJump = makeLabel();
+    labelConditionFalse = makeLabel();
+    makeBreak(code0, labelConditionFalse);
+    tacLabelConditionJump = tacCreate(TAC_LABEL, labelConditionJump, 0, 0);
+    tacLabelConditionFalse = tacCreate(TAC_LABEL, labelConditionFalse, 0, 0);
+    forConditionIf = tacCreate(TAC_IFZ, labelConditionFalse, code1 ? code1->res : 0, 0);
+    forConditionJump = tacCreate(TAC_JUMP, labelConditionJump, code1 ? code1->res : 0, 0);
+    
+    return tacJoin(tacLabelConditionJump, tacJoin(firstAss, tacJoin(code1, tacJoin(forConditionIf, tacJoin(code2,tacJoin(lastAss,tacJoin(code3,tacJoin(forConditionJump,tacLabelConditionFalse))))))));
 }
 
 void makeBreak(TAC *code, HASH_NODE *breakLabel)
