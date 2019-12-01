@@ -15,8 +15,11 @@ int checkVector(AST *node, int datatype);
 int validReturn(AST *nodeDec, AST *node);
 int checkPrint(AST *node);
 int functionValidation(AST *nodeDeclared, AST *node);
-void checkTypeParam(AST* nodecall);
+void checkTypeParam(AST *nodecall);
+int numParamsFunc(AST *node);
 int checkParams(AST *node);
-
+int addExpressionTypes(int type1, int type2);
+int getType(AST *node);
 AST *search(AST *node, char *name);
+int validExpression(AST *nodeSon);
 #endif

@@ -1,0 +1,10 @@
+ 
+ 
+int ve[2]: 7 6; 
+ 
+int main()
+{
+ve[0] = 5;
+if(ve[0] == 5) then  
+print "A=17\n";
+}

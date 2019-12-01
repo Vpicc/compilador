@@ -74,8 +74,8 @@ AST *root;
 %type <ast> cmdend
 
 
-%left OPERATOR_DIF OPERATOR_EQ OPERATOR_GE OPERATOR_LE '>' '<'
 %left '.' 'v' '~' '&'
+%left OPERATOR_DIF OPERATOR_EQ OPERATOR_GE OPERATOR_LE '>' '<'
 %left '+' '-'
 %left '*' '/'
 %right KW_THEN KW_ELSE 
