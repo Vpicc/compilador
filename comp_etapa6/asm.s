@@ -3,16 +3,20 @@
 	.text
 	.data
 
-_ve:
-	.globl _ve
-	.long 7
-	.long 6
+	.globl	_l
+	.data
+	.type	_l, @object
+	.size	_l, 4
+_l:	.long	2
+
 _LC0:
-		.string	"A=17\n"
+		.string	"Tela"
 
 _Temp_0:	.long	0
 
 _Temp_1:	.long	0
+
+_Temp_2:	.long	0
 
 # STRING
 .meuString:
@@ -29,17 +33,14 @@ main:
 	movq	%rsp, %rbp
 
 
-# VECTOR ASS
-	movb	$5, 0+_ve(%rip)
-
-# VEC READ
-	movl	0+_ve(%rip), %eax
-	movl %eax,  _Temp_0(%rip)
-
 # EQUAL
-	movl	_Temp_0(%rip), %eax
+	movl	_l(%rip), %eax
 	cmpl	$5, %eax
-	jne	Label_0
+	jne
+# EQUAL
+	movl	_l(%rip), %eax
+	cmpl	$2, %eax
+	jne		Label_0
 
 # PRINT
 	movq	stderr(%rip), %rax

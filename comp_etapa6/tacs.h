@@ -38,10 +38,10 @@
 #define TAC_PRINT_LIST 531
 #define TAC_STACK_PUSH 532
 #define TAC_STACK_POP 533
-#define TAC_POINT 534
+#define TAC_POINT 534   //TODO
 #define TAC_VARDEC 535 //DONE
-#define TAC_BREAK 536
-#define TAC_FOR 537
+#define TAC_BREAK 536   //TODO
+#define TAC_FOR 537    //DONE
 #define TAC_ARRDEC 538 //DONE
 #define TAC_ARRDEC_LIST 539 //DONE
 

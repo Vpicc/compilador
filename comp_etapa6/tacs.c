@@ -205,6 +205,8 @@ TAC *generateCode(AST *ast, HASH_NODE *label)
         return tacJoin(code[0], tacCreate(TAC_MOVE, ast->symbol, code[0] ? code[0]->res : 0, 0));
     case AST_ADD:
         return makeBinOp(TAC_ADD, code[0], code[1]);
+    case AST_SUB:
+        return makeBinOp(TAC_SUB, code[0], code[1]);
     case AST_MUL:
         return makeBinOp(TAC_MULT, code[0], code[1]);
     case AST_DIV:

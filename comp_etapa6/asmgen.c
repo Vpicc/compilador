@@ -61,13 +61,35 @@ void generateAsm(TAC *tac){
 					fprintf(fp,"\n\t.globl	_%s\n"
 								"\t.data\n"
 								"\t.type	_%s, @object\n"
-								"\t.size	_%s, 4\n"
+								"\t.size	_%s, %ld\n"
 							"_%s:\t.long\t%s\n",
-							tac->res->text,tac->res->text,tac->res->text,tac->res->text,tac->op1->text);
+							tac->res->text,tac->res->text,tac->res->text,sizeof(int),tac->res->text,tac->op1->text);
+				if(tac->res->datatype == DATATYPE_FLOAT)
+					fprintf(fp,"\n\t.globl	_%s\n"
+								"\t.data\n"
+								"\t.type	_%s, @object\n"
+								"\t.size	_%s, %ld\n"
+							"_%s:\t.long\t%s\n",
+							tac->res->text,tac->res->text,tac->res->text,sizeof(float),tac->res->text,tac->op1->text);
+				if(tac->res->datatype == DATATYPE_LONG)
+					fprintf(fp,"\n\t.globl	_%s\n"
+								"\t.data\n"
+								"\t.type	_%s, @object\n"
+								"\t.size	_%s, %ld\n"
+							"_%s:\t.long\t%s\n",
+							tac->res->text,tac->res->text,tac->res->text,sizeof(long),tac->res->text,tac->op1->text);
                 break;
 			}
 			case TAC_ARRDEC:
 				if(tac->res->datatype == DATATYPE_INT){
+					fprintf(fp, "\n_%s:\n"
+							"\t.globl _%s", tac->res->text, tac->res->text);
+				}
+				if(tac->res->datatype == DATATYPE_FLOAT){
+					fprintf(fp, "\n_%s:\n"
+							"\t.globl _%s", tac->res->text, tac->res->text);
+				}
+				if(tac->res->datatype == DATATYPE_LONG){
 					fprintf(fp, "\n_%s:\n"
 							"\t.globl _%s", tac->res->text, tac->res->text);
 				}
@@ -174,8 +196,8 @@ void generateAsm(TAC *tac){
 								fprintf(fp,"\tmovl	$%s, %%eax\n", initialTac->op2->text);
 							}
 							fprintf(fp,
-									"\tsubl	%%edx, %%eax\n"
-									"\tmovl	%%eax, _%s(%%rip)\n\n", initialTac->res->text);
+									"\tsubl	%%eax, %%edx\n"
+									"\tmovl	%%edx, _%s(%%rip)\n\n", initialTac->res->text);
 				break;
 				case TAC_MULT:
 					fprintf(fp,"# MULT\n");
