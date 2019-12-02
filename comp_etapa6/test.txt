@@ -1,0 +1,50 @@
+int a = 1;
+int d = 2;
+int arr[6]: 1 2 3 4 5 6;
+//bool b = TRUE;
+//bool c = FALSE;
+
+int main () {
+
+if(1>2) then {
+  if(2 > 3) then {
+    break;
+  };
+  a = 2;
+};
+//a = func(1,2,3,4,5);
+//  a= 1;
+//while(2>3) {
+//  a = 2;
+//  a=3;
+//  break;
+//  a=7;
+//};
+//
+//if(1>2) then {
+//  a = a + a;
+//  break;
+//  a = a + d;
+//} else {
+//  break;
+//  a = d + d;
+//};
+//a = 2 + 2;
+//  a = 2 * 2;
+//  a = 2 / 2;
+//  a = 2 - 2;
+//  b = 2 > 2;
+//  b = 2 < 2;
+//  b = 2 == 2;
+//  b = 2 != 2;
+//  b = TRUE & TRUE;
+//  b = TRUE v TRUE;
+//  b = ~ b;
+//  read a;
+// print "hello" a d d d a "da" '\n';
+// return a + 2 + 2 - 3;
+}
+
+int func(int c, int h, int k, int j, int kk) {
+  return c + h + k + j + kk;
+}

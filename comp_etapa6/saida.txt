@@ -1,0 +1,9 @@
+ 
+ 
+int l = 2; 
+ 
+int main()
+{
+if((l == 5) v (l == 2)) then  
+print "Tela";
+}

@@ -1,0 +1,21 @@
+ 
+ 
+int a = 2; 
+ 
+long b = 2; 
+ 
+int vec[2]; 
+ 
+bool x = TRUE; 
+ 
+int main()
+{
+a = b;
+x =  ~ x;
+return 1;
+} 
+ 
+bool f()
+{
+return (1 > 2) &  ~  ~ TRUE;
+}
