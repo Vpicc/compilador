@@ -3,20 +3,30 @@
 	.text
 	.data
 
-	.globl	_l
+	.globl	_a
 	.data
-	.type	_l, @object
-	.size	_l, 4
-_l:	.long	2
+	.type	_a, @object
+	.size	_a, 4
+_a:	.long	2
+
+_vector:
+	.size	_vector, 12
+	.globl	_vector
+	.long 1
+	.long 2
+	.long 3
+	.globl	_x
+	.data
+	.type	_x, @object
+	.size	_x, 1
+_x:	.long	TRUE
 
 _LC0:
-		.string	"Tela"
+		.string	"Correto\n"
 
 _Temp_0:	.long	0
 
 _Temp_1:	.long	0
-
-_Temp_2:	.long	0
 
 # STRING
 .meuString:
@@ -32,25 +42,25 @@ main:
 	pushq	%rbp
 	movq	%rsp, %rbp
 
+	movl	$1, %edx
+	movl	$2, %eax
+	cmpl	%eax,%edx
+	jl	labelTemp21
+	movl	_Temp_0(%rip), %eax
+	movl	%eax, _x(%rip)
 
-# EQUAL
-	movl	_l(%rip), %eax
-	cmpl	$5, %eax
-	jne
-# EQUAL
-	movl	_l(%rip), %eax
-	cmpl	$2, %eax
-	jne		Label_0
-
+	movl	_a(%rip), %edx
+	movl	$2, %eax
+	cmpl	%eax,%edx
+	jz	labelTemp21
+	jmp	Label_0
+labelTemp21:
 # PRINT
-	movq	stderr(%rip), %rax
-	movq	%rax, %rcx
-	movl	$4, %edx
-	movl	$1, %esi
 	leaq	_LC0(%rip), %rdi
-	call	fwrite@PLT
+	movl	$0, %eax
+	call	printf@PLT
 
-# LABEL
+
 Label_0:
 # END FUN
 	popq	%rbp
