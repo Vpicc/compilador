@@ -1,0 +1,10 @@
+
+int l = 10;
+int main ()
+{
+
+    while(l > 4) {
+        print "Teste\n";
+        l = l -1;
+    };
+}

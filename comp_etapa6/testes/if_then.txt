@@ -1,0 +1,12 @@
+int l = 1;
+int a = 3;
+int main ()
+{
+
+    if (a == 1 v a <2 v a >=5) then 
+    {
+        print "A...\n";
+    }
+    else
+     print "B..\n"
+}

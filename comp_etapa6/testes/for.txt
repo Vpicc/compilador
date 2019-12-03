@@ -1,0 +1,6 @@
+int l = 1;
+int main ()
+{
+  for (l:1,l <= 4,l+1)
+    print "Teste";
+}

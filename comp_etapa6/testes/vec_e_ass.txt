@@ -1,0 +1,19 @@
+int ve[3]: 8 5 1;
+int a = 1;
+int main ()
+{
+
+    ve[0] = 12;
+
+    if (ve[0]==12) then 
+    {
+        print "Agree\n";
+    };
+
+    a = 14 + 1;
+
+    if (a==15) then 
+    {
+        print "Not Agree\n";
+    }
+}

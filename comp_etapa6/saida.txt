@@ -1,9 +1,14 @@
  
  
-int l = 2; 
+int a = 2; 
+ 
+int vector[3]: 1 2 3; 
+ 
+bool x = TRUE; 
  
 int main()
 {
-if((l == 5) v (l == 2)) then  
-print "Tela";
+x = 1 < 2;
+if(a == 2) then  
+print "Correto\n";
 }
